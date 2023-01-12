@@ -1,15 +1,20 @@
 import React,{useState} from 'react';
 import axios from 'axios';
 import './AddUser.css';
-import { Grid, TextField, Button, Card, CardContent} from '@mui/material';
+import { Grid, TextField, Button, Card, CardContent,InputAdornment,MenuItem} from '@mui/material';
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import PasswordIcon from '@mui/icons-material/Accessibility';
+
 
 
 function AddUser() {
-  const [addUserFormData, setAddUserFormData] = useState({fName:'',lName:'',contact:'',empType:'',empField:'',empRole:'',address:''});
+  const [ETypes, setETypes] = useState("");
+  const [ESection, setESection] = useState("");
+  const [addUserFormData, setAddUserFormData] = useState({uname:'',email:'',site:'',password:'',contact:'',address:'',empType:'',consultant:'',empSec:'',empField:'',empRole:'',address:''});
   const formSubmit = (event) => {
     event.preventDefault();
     console.log(addUserFormData);
-    axios.post('http://localhost:80/hris/add_user', addUserFormData)
+    axios.post('http://58.27.166.43:80/hris/add_user', addUserFormData)
     .then(function (response) {
       console.log(response);
       window.location.reload();
@@ -19,6 +24,8 @@ function AddUser() {
     });
   }
   const inputEvent = (event) => {
+    setETypes(event.target.value)
+    setESection(event.target.value)
     console.log(event.target.value);
     console.log(event.target.name);
 
@@ -40,27 +47,77 @@ function AddUser() {
           <CardContent>
             <form onSubmit={formSubmit}>
               <Grid container spacing={1}>
-                <Grid xs={12} sm={6} item>
-                  <TextField placeholder="Enter first name" name='fName' onChange={inputEvent} value={addUserFormData.fname} label="First Name" variant="outlined" fullWidth required />
+              <Grid xs={12} item>
+                  <TextField placeholder='enter full name' label="username" name='uname' onChange={inputEvent} value={addUserFormData.uname} variant='outlined' fullWidth required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <AccessibilityIcon/>
+                  </InputAdornment>}}/>
                 </Grid>
-                <Grid xs={12} sm={6} item>
-                  <TextField placeholder="Enter last name" label="Last Name" name='lName' onChange={inputEvent} value={addUserFormData.lname} variant="outlined" fullWidth required />
+                <Grid xs={12} item>
+                  <TextField placeholder='enter Email ' label="email" name='email' onChange={inputEvent} value={addUserFormData.email} variant='outlined' fullWidth required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <AccessibilityIcon/>
+                  </InputAdornment>}}/>
                 </Grid>
-                <Grid xs={12} sm={6} item>
-                  <TextField placeholder="Employee Type" label="employee type" name='empType' onChange={inputEvent} value={addUserFormData.empType} variant="outlined" fullWidth required />
+                <Grid xs={12} item>
+                <TextField label="password" placeholder='enter password' name='password' onChange={inputEvent} variant='outlined' 
+                InputProps={{startAdornment: <InputAdornment position= "start">
+                <PasswordIcon/>
+                </InputAdornment>}} value={addUserFormData.password}
+                 fullWidth required
+                />
                 </Grid>
-                <Grid xs={12} sm={6} item>
-                  <TextField placeholder="Employee Field" label="employee Field" name='empField' onChange={inputEvent} value={addUserFormData.empField} variant="outlined" fullWidth required />
+                <Grid xs={12} item>
+                <TextField label="password" placeholder='confirm password' name='password' onChange={inputEvent} variant='outlined' 
+                InputProps={{startAdornment: <InputAdornment position= "start">
+                <PasswordIcon/>
+                </InputAdornment>}} value={addUserFormData.password}
+                 fullWidth required
+                />
                 </Grid>
-                <Grid xs={12} sm={6} item>
+                <Grid xs={12} item>
+                  <TextField placeholder='enter site name' label="sitename" name='site' onChange={inputEvent} value={addUserFormData.site} variant='outlined' fullWidth required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <AccessibilityIcon/>
+                  </InputAdornment>}}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField type="number" placeholder="Enter phone number" label="Phone" name='contact' onChange={inputEvent} value={addUserFormData.contact} variant="outlined" fullWidth required
+                  InputProps={{startAdornment: <InputAdornment position= "start"><PasswordIcon/></InputAdornment>}}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField type="address" placeholder="Enter your address" label="adress" name='address' onChange={inputEvent} value={addUserFormData.address} variant="outlined" fullWidth required
+                  InputProps={{startAdornment: <InputAdornment position= "start"><PasswordIcon/></InputAdornment>}}/>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="Select employee type" name='empType' onChange={inputEvent} select value={ETypes} variant="outlined" fullWidth required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=Regular</MenuItem>
+                <MenuItem value="2">2=NHA Trainee</MenuItem>
+                <MenuItem value="3">3=NHA Contract</MenuItem>
+                <MenuItem value="3">4=Consultant</MenuItem>
+                </TextField>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="Select employee section" name='empSec' onChange={inputEvent} select value={ESection} variant="outlined" fullWidth required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=MIS</MenuItem>
+                <MenuItem value="2">2=ETTM</MenuItem>
+                <MenuItem value="3">3=ITS</MenuItem>
+                <MenuItem value="3">4=Consultant</MenuItem>
+                </TextField>
+                </Grid>
+                <Grid xs={12} item>
                   <TextField placeholder="Employee Role" label="employee role" name='empRole' onChange={inputEvent} value={addUserFormData.empRole} variant="outlined" fullWidth required />
                 </Grid>
                 {/* <Grid item xs={12}>
                   <TextField type="email" placeholder="Enter email" label="Email" variant="outlined" fullWidth required />
                 </Grid> */}
-                <Grid item xs={12}>
-                  <TextField type="number" placeholder="Enter phone number" label="Phone" name='contact' onChange={inputEvent} value={addUserFormData.contact} variant="outlined" fullWidth required />
-                </Grid>
+                
                 {/* <Grid item xs={12}>
                   <TextField label="Address" multiline rows={4} placeholder="Type your address here" onChange={inputEvent} value={addUserFormData.contact} variant="outlined" fullWidth required />
                 </Grid> */}
