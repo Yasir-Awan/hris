@@ -7,6 +7,9 @@ import TextField from '@mui/joy/TextField';
 import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -16,7 +19,6 @@ function ModeToggle() {
   // because mode is undefined on the server
   React.useEffect(() => {
     setMounted(true);
-
   }, []);
 
   if (!mounted) {
@@ -38,11 +40,14 @@ function ModeToggle() {
 axios.defaults.baseURL = 'http://localhost:80/hris/';
 
 export default function Login() {
-  const navigate = useNavigate();
+
   const [loginFormData, setLoginFormData] = React.useState({username:'',password:''});
+  const navigate = useNavigate();
   localStorage.setItem('token','');
 
   const loginFormSubmit = (event) => {
+
+    // alert()
     event.preventDefault();
     console.log(loginFormData);
     axios({
@@ -52,14 +57,35 @@ export default function Login() {
     })
       .then(function (response) {
         console.log(response);
-        if(response.data){
+        if(response.data)
+        {
+          toast.success('Login Success !', {
+            position:'top-right',
+            autoClose:1000,
+            onClose: () => navigate('/home')
+        });
+      //     toast('login Failed');
+      //     position:'top-center'
+      //  autoClose:5000,
+      //  onClose: () => history.push('/')
+      //     navigate('/home')
           localStorage.setItem('token', response.data.access_token)
-          navigate('/home');
         }
       })
       .catch(error => {
+        toast.error("Invalid Credentials", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+
+      });
         console.log(error.response.data.error)
-     })
+    })
+
   }
 
   const inputEvent = (event) => {
@@ -78,6 +104,7 @@ export default function Login() {
   }
 
   return (
+    <>
     <CssVarsProvider>
       <ModeToggle/>
       <form onSubmit={loginFormSubmit}>
@@ -95,6 +122,7 @@ export default function Login() {
     boxShadow: 'md',
   }}
 >
+
 <Typography level="h4" component="h1">
     Welcome!
   </Typography>
@@ -109,6 +137,7 @@ export default function Login() {
   label="Email"
   onChange={inputEvent}
   value={loginFormData.username}
+  required
 />
 <TextField
   name="password"
@@ -117,7 +146,10 @@ export default function Login() {
   label="Password"
   onChange={inputEvent}
   value={loginFormData.password}
+  required
 />
+
+
 <Button type="submit" sx={{ mt: 1 /* margin top */ }} >
   Log in
 </Button>
@@ -132,5 +164,7 @@ export default function Login() {
 </Sheet>
 </form>
     </CssVarsProvider>
+    <ToastContainer/>
+    </>
   );
 }

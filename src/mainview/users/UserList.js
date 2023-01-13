@@ -35,7 +35,8 @@ const [tableData, setTableData] = useState([])
       .then(function (response) {
         console.log(response.data);
         if(response.data.user_info){
-          response.data.forEach(element => {
+          response.data.user_info.forEach(element => {
+            console.log(element)
             if(element.employee_type === '4'){
               nietos.push({'id':element.id,'fname':element.fname,'lname':element.lname,'contact':element.contact})
             }
@@ -57,7 +58,7 @@ const [tableData, setTableData] = useState([])
     return (
     <>
   <div style={{height:500, width: '100%', marginBottom:'2px' }}>
-  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'325px',right:'22px'}}>
+  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'600px',right:'22px'}}>
       <CustomizedDialogs size='small'>
       <AddUser/>
       </CustomizedDialogs>
