@@ -35,7 +35,7 @@ const [tableData, setTableData] = useState([])
       .then(function (response) {
         console.log(response.data);
         if(response.data.user_info){
-          response.data.forEach(element => {
+          response.data.user_info.forEach(element => {
             if(element.employee_type === '4'){
               nietos.push({'id':element.id,'fname':element.fname,'lname':element.lname,'contact':element.contact})
             }
