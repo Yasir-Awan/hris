@@ -37,7 +37,7 @@ function ModeToggle() {
   );
 }
 
-axios.defaults.baseURL = 'http://localhost:80/hris/';
+axios.defaults.baseURL = 'http://58.27.166.43:80/hris/';
 
 export default function Login() {
 
@@ -91,6 +91,8 @@ export default function Login() {
   const inputEvent = (event) => {
     console.log(event.target.value);
     console.log(event.target.name);
+    console.log('fahad');
+
 
     const {name,value} = event.target;
 
