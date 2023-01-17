@@ -85,9 +85,9 @@ function AddUser() {
                   <Textarea type="address" placeholder="Enter your address" label="adress" name='address' onChange={inputEvent} value={addUserFormData.address} variant="outlined" fullwidth required
                  />
                 </Grid>
-                <Grid xs={12} item>
+                {/* <Grid xs={12} item>
                   <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullwidth required/>
-                </Grid>
+                </Grid> */}
                 <Grid xs={12} item>
                   <TextField label="Select employee type" name='empType' onChange={inputEvent} select value={addUserFormData.empType} variant="outlined" fullwidth required
                   SelectProps={{
@@ -98,6 +98,10 @@ function AddUser() {
                 <MenuItem value="3">3=NHA Contract</MenuItem>
                 <MenuItem value="4">4=Consultant</MenuItem>
                 </TextField>
+                {addUserFormData=== '4' &&(
+                                    <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullwidth required/>
+
+                )}
                 </Grid>
                 
                 <Grid xs={12} item>
