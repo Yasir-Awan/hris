@@ -57,7 +57,7 @@ const [tableData, setTableData] = useState([])
     return (
     <>
   <div style={{height:500, width: '100%', marginBottom:'2px' }}>
-  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'550px',right:'22px'}}>
+  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'83.5%',right:'22px'}}>
       <CustomizedDialogs size='small'>
       <AddUser/>
       </CustomizedDialogs>
