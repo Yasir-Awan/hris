@@ -1,10 +1,12 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
 import AddUser from '../../forms/add_user/AddUser';
 import axios from 'axios';
+import EditIcon from '@mui/icons-material/Edit';
+import { color } from '@mui/system';
 // const rows: GridRowsProp = [
 //   { id: 1, col1: 'Hello', col2: 'World' },
 //   { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
@@ -15,7 +17,14 @@ const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
     { field: 'fname', headerName: 'Fname', width: 100 },
     { field: 'lname', headerName: 'LName', width: 150 },
-    { field: 'contact', headerName: 'Contact', width: 150 }
+    { field: 'contact', headerName: 'Contact', width: 150 },
+    {field: 'Actions', headerName: 'Actions', renderCell:(value) => {
+      return(
+        <Button 
+        varient="contained"
+        color="primary">
+          Edit{value} </Button>
+      )    }}
 ];
 
 const UserList = () => {
@@ -35,7 +44,7 @@ const [tableData, setTableData] = useState([])
       .then(function (response) {
         console.log(response.data);
         if(response.data.user_info){
-          response.data.forEach(element => {
+          response.data.user_info.forEach(element => {
             if(element.employee_type === '4'){
               nietos.push({'id':element.id,'fname':element.fname,'lname':element.lname,'contact':element.contact})
             }
