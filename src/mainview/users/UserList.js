@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { Box,Button } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
 import AddUser from '../../forms/add_user/AddUser';
 import axios from 'axios';
@@ -15,7 +15,19 @@ const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
     { field: 'fname', headerName: 'Fname', width: 100 },
     { field: 'lname', headerName: 'LName', width: 150 },
-    { field: 'contact', headerName: 'Contact', width: 150 }
+    { field: 'contact', headerName: 'Contact', width: 150 },
+    { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          // className={classes.button}
+          // onClick={}
+        >
+          Edit
+        </Button>
+      );
+    }, }
 ];
 
 const UserList = () => {
