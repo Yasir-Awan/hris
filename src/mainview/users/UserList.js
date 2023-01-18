@@ -1,12 +1,10 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Button } from '@mui/material';
+import { Box,Button } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
 import AddUser from '../../forms/add_user/AddUser';
 import axios from 'axios';
-import EditIcon from '@mui/icons-material/Edit';
-import { color } from '@mui/system';
 // const rows: GridRowsProp = [
 //   { id: 1, col1: 'Hello', col2: 'World' },
 //   { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
@@ -18,13 +16,17 @@ const columns: GridColDef[] = [
     { field: 'fname', headerName: 'Fname', width: 100 },
     { field: 'lname', headerName: 'LName', width: 150 },
     { field: 'contact', headerName: 'Contact', width: 150 },
-    {field: 'Actions', headerName: 'Actions', renderCell:(value) => {
-      return(
-        <Button 
-        varient="contained"
-        color="primary">
-          Edit{value} </Button>
-      )    }}
+    { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick= {()=>{console.log(value.id)}}
+        >
+          Edit
+        </Button>
+      );
+    }, }
 ];
 
 const UserList = () => {
@@ -66,7 +68,7 @@ const [tableData, setTableData] = useState([])
     return (
     <>
   <div style={{height:500, width: '100%', marginBottom:'2px' }}>
-  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'83.5%',right:'22px'}}>
+  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'500px',right:'22px'}}>
       <CustomizedDialogs size='small'>
       <AddUser/>
       </CustomizedDialogs>
