@@ -4,6 +4,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box,Button } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
 import AddUser from '../../forms/add_user/AddUser';
+import EditUser from '../../forms/EditUser';
 import axios from 'axios';
 // const rows: GridRowsProp = [
 //   { id: 1, col1: 'Hello', col2: 'World' },
@@ -21,14 +22,18 @@ const columns: GridColDef[] = [
         <Button
           variant="contained"
           color="primary"
-          onClick= {()=>{console.log(value.id)}}
+          onClick= {()=>{Edit_user(value.id)}}
+          // className={classes.button}
+          // onClick={}
         >
           Edit
         </Button>
       );
     }, }
 ];
-
+function Edit_user(ID){
+  console.log(ID)
+}
 const UserList = () => {
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
@@ -68,11 +73,13 @@ const [tableData, setTableData] = useState([])
     return (
     <>
   <div style={{height:500, width: '100%', marginBottom:'2px' }}>
-  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'500px',right:'22px'}}>
+  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'500px',right:'22px'}}></Box>
+  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'550px',right:'22px'}}>
       <CustomizedDialogs size='small'>
       <AddUser/>
       </CustomizedDialogs>
     </Box>
+    
     <DataGrid rows={tableData} columns={columns} />
   </div>
     </>
