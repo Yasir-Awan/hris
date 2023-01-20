@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box,Button } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
+import CustomizedDialogs_edit from '../../components/dialog_edit';
 import AddUser from '../../forms/add_user/AddUser';
 import EditUser from '../../forms/EditUser';
 import axios from 'axios';
@@ -14,27 +15,24 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
-    { field: 'fname', headerName: 'Fname', width: 100 },
-    { field: 'lname', headerName: 'LName', width: 150 },
+    { field: 'uname', headerName: 'Name', width: 150 },
     { field: 'contact', headerName: 'Contact', width: 150 },
     { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
       return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick= {()=>{Edit_user(value.id)}}
-          // className={classes.button}
-          // onClick={}
-        >
-          Edit
-        </Button>
+        <CustomizedDialogs_edit size='small'>
+        <EditUser uname={value.row.uname} contact={value.row.contact}/>
+        </CustomizedDialogs_edit>
       );
     }, }
 ];
-function Edit_user(ID){
-  console.log(ID)
-}
+
+// const [state, setstate] = useState({data:""})
+// console.log(ID)
+// const changeState = () => {  
+//   setstate({data:ID}); 
+//  };
 const UserList = () => {
+ 
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
 
@@ -53,7 +51,7 @@ const [tableData, setTableData] = useState([])
         if(response.data.user_info){
           response.data.user_info.forEach(element => {
             if(element.employee_type === '4'){
-              nietos.push({'id':element.id,'fname':element.fname,'lname':element.lname,'contact':element.contact})
+              nietos.push({'id':element.id,'uname':element.fname+ ' '+ element.lname,'contact':element.contact})
             }
           }
             );

@@ -91,9 +91,6 @@ function AddUser() {
                   <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
                 </Grid> */}
                 <Grid xs={12} item>
-                  <TextField label="Select employee type" name='empType' onChange={inputEvent} select value={addUserFormData.empType} variant="outlined" fullWidth required/></Grid>
-
-                <Grid xs={12} item>
                   <TextField name='empType' onChange={inputEvent} select value={addUserFormData.empType} label="Select employee type" variant="outlined" sx={{width:"100%"}} required
                   SelectProps={{
                     multiple:false
