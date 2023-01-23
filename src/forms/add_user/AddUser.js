@@ -100,10 +100,10 @@ function AddUser() {
                 <MenuItem value="3">3=NHA Contract</MenuItem>
                 <MenuItem value="4">4=Consultant</MenuItem>
                 </TextField>
-                {addUserFormData=== '4' &&(
-                                    <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
+                {/* {addUserFormData=== '4' &&(
+                                    // <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
 
-                )}
+                )} */}
                 </Grid>
 
                 {addUserFormData.empType === '4' &&(

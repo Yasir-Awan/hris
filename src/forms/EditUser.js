@@ -53,12 +53,107 @@ function EditUser(props) {
                   <AccessibilityIcon/>
                   </InputAdornment>}}/>
                 </Grid>
-
+                <Grid xs={12} item>
+                  <TextField placeholder='enter Email ' label="email" name='email' onChange={inputEvent} value={addUserFormData.email} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <EmailIcon/>
+                  </InputAdornment>}}/>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField placeholder='enter site name' label="sitename" name='site' onChange={inputEvent} value={addUserFormData.site} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <TollIcon/>
+                  </InputAdornment>}}/>
+                </Grid>
                 <Grid item xs={12}>
                   <TextField type="number" label="Phone" placeholder="Enter phone number" name='contact' onChange={inputEvent} value={addUserFormData.contact} variant="outlined" sx={{width:"100%"}} required
                   InputProps={{startAdornment: <InputAdornment position= "start"><PhoneIcon/></InputAdornment>}}/>
                 </Grid>
-                
+                <Grid item xs={12}>
+                  <TextField type="address" label="adress" placeholder="Enter your address" name='address' onChange={inputEvent} value={addUserFormData.address} variant="outlined" sx={{width:"100%"}} required
+                 />
+                </Grid>
+                {/* <Grid xs={12} item>
+                  <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
+                </Grid> */}
+                <Grid xs={12} item>
+                  <TextField name='empType' onChange={inputEvent} select value={addUserFormData.empType} label="Select employee type" variant="outlined" sx={{width:"100%"}} required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=Regular</MenuItem>
+                <MenuItem value="2">2=NHA Trainee</MenuItem>
+                <MenuItem value="3">3=NHA Contract</MenuItem>
+                <MenuItem value="4">4=Consultant</MenuItem>
+                </TextField>
+                {/* {addUserFormData=== '4' &&(
+                                    // <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
+
+                )} */}
+                </Grid>
+
+                {addUserFormData.empType === '4' &&(
+                  <Grid xs={12} item>
+                  <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' sx={{width:"100%"}} required/>
+                </Grid>
+                ) }
+
+
+                <Grid xs={12} item>
+                  <TextField label="Select employee section" name='empSec' onChange={inputEvent} select value={addUserFormData.empSec} variant="outlined" sx={{width:"100%"}} required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=MIS</MenuItem>
+                <MenuItem value="2">2=ETTM</MenuItem>
+                <MenuItem value="3">3=ITS</MenuItem>
+                </TextField>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="Select employee field" name='empField' onChange={inputEvent} select value={addUserFormData.empField} variant="outlined" sx={{width:"100%"}} required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=Programming</MenuItem>
+                <MenuItem value="2">2=HR</MenuItem>
+                <MenuItem value="3">3=Networking</MenuItem>
+                <MenuItem value="4">4=Accounting</MenuItem>
+                <MenuItem value="5">5=Traffic Counting</MenuItem>
+                <MenuItem value="6">6=Engineering</MenuItem>
+                </TextField>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="Select employee role" name='empRole' onChange={inputEvent} select value={addUserFormData.empRole} variant="outlined" sx={{width:"100%"}} required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=Technical Manager</MenuItem>
+                <MenuItem value="2">2=HR Manager</MenuItem>
+                <MenuItem value="3">3=Ops Manager</MenuItem>
+                <MenuItem value="4"> 4=Network Manager</MenuItem>
+                <MenuItem value="5">5=Programming Manager</MenuItem>
+                <MenuItem value="6">6=Traffic Counting Manager</MenuItem>
+                <MenuItem value="7">7=Inventory Manager</MenuItem>
+                <MenuItem value="8">8=Team Member</MenuItem>
+                </TextField>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="Select employee team" name='empTeam' onChange={inputEvent} select value={addUserFormData.empTeam} variant="outlined" sx={{width:"100%"}} required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">1=tecnical team</MenuItem>
+                <MenuItem value="2">2=web development</MenuItem>
+                <MenuItem value="3">3=Hr team</MenuItem>
+                </TextField>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="Select status" name='status' onChange={inputEvent} select value={addUserFormData.status} variant="outlined" sx={{width:"100%"}} required
+                  SelectProps={{
+                    multiple:false
+                  }}>
+                <MenuItem value="1">0= Status Off</MenuItem>
+                <MenuItem value="2"> 1= Status on</MenuItem>
+                     </TextField>
+                </Grid>
                 <Grid item xs={12}>
                   <Button type="submit" variant="contained" color="primary" sx={{width:"100%"}} >Edit</Button>
                 </Grid>
