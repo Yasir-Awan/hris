@@ -12,7 +12,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 
 function AddUser() {
 
-  const [addUserFormData, setAddUserFormData] = useState({uname:'',email:'',site:'',password:'',confirmPassword:'',contact:'',empType:'',consultant:'',empSec:'',empField:'',empRole:'',empTeam:'',address:'',status:''});
+  const [addUserFormData, setAddUserFormData] = useState({fname:'',lname:'',email:'',site:'',password:'',contact:'',empType:'',consultant:'',empSec:'',empField:'',empRole:'',address:''});
   // const [isConsultant, setIsConsultant] = useState(false);
   const formSubmit = (event) => {
     event.preventDefault();
@@ -49,7 +49,12 @@ function AddUser() {
             <form onSubmit={formSubmit}>
               <Grid container spacing={1}>
               <Grid xs={12} item>
-                  <TextField placeholder='enter full name' label="username" name='uname' onChange={inputEvent} value={addUserFormData.uname} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <TextField placeholder='enter first name' label="firstname" name='fname' onChange={inputEvent} value={addUserFormData.fname} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <AccessibilityIcon/>
+                  </InputAdornment>}}/>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField placeholder='enter last name' label="lastname" name='lname' onChange={inputEvent} value={addUserFormData.lname} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
                   <AccessibilityIcon/>
                   </InputAdornment>}}/>
                 </Grid>
@@ -65,20 +70,16 @@ function AddUser() {
                 </InputAdornment>}} value={addUserFormData.password}
                  sx={{width:"100%"}} required
                 />
-                </Grid>
-                <Grid xs={12} item>
+                 </Grid>
+                {/* <Grid xs={12} item>
                 <TextField label="confirm password" placeholder='confirm password' name='confirmPassword' onChange={inputEvent} variant='outlined'
                 InputProps={{startAdornment: <InputAdornment position= "start">
                 <KeyIcon/>
                 </InputAdornment>}} value={addUserFormData.confirmPassword}
                  sx={{width:"100%"}} required
                 />
-                </Grid>
-                <Grid xs={12} item>
-                  <TextField placeholder='enter site name' label="sitename" name='site' onChange={inputEvent} value={addUserFormData.site} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
-                  <TollIcon/>
-                  </InputAdornment>}}/>
-                </Grid>
+                </Grid> */}
+                
                 <Grid item xs={12}>
                   <TextField type="number" label="Phone" placeholder="Enter phone number" name='contact' onChange={inputEvent} value={addUserFormData.contact} variant="outlined" sx={{width:"100%"}} required
                   InputProps={{startAdornment: <InputAdornment position= "start"><PhoneIcon/></InputAdornment>}}/>
@@ -86,6 +87,29 @@ function AddUser() {
                 <Grid item xs={12}>
                   <TextField type="address" label="adress" placeholder="Enter your address" name='address' onChange={inputEvent} value={addUserFormData.address} variant="outlined" sx={{width:"100%"}} required
                  />
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField label="sitename" name='site' onChange={inputEvent} select value={addUserFormData.site} variant='outlined' sx={{width:"100%"}} required
+                  SelectProps={{
+                   multiple: false
+                  }}>
+                    <MenuItem value="1">1=National Engineers</MenuItem>
+                    <MenuItem value="2">2=Sangjani</MenuItem>
+                    <MenuItem value="3">3=Harro</MenuItem>
+                    <MenuItem value="4">4=Iqbal Shaheed</MenuItem>
+                    <MenuItem value="5">5=NHA-HQ</MenuItem>
+                    <MenuItem value="6">6=Mandra</MenuItem>
+                    <MenuItem value="7">7=Terraki</MenuItem>
+                    <MenuItem value="8">8=Jhelum</MenuItem>
+                    <MenuItem value="9">9=Chenab</MenuItem>
+                    <MenuItem value="12">12=IMDCW OLD</MenuItem>
+                    <MenuItem value="13">14=IMDCW</MenuItem>
+                    <MenuItem value="14">14=Qutbal</MenuItem>
+                    <MenuItem value="15">15=Harrapa</MenuItem>
+                    <MenuItem value="16">16=Khanbella</MenuItem>
+                    <MenuItem value="17">17=Okara</MenuItem>
+                    <MenuItem value="18">18=Gujranwalla</MenuItem>
+                    </TextField>
                 </Grid>
                 {/* <Grid xs={12} item>
                   <TextField placeholder='enter your consultant name ' label="consultant-name" name='consultant' onChange={inputEvent} value={addUserFormData.consultant} variant='outlined' fullWidth required/>
@@ -151,7 +175,7 @@ function AddUser() {
                 <MenuItem value="8">8=Team Member</MenuItem>
                 </TextField>
                 </Grid>
-                <Grid xs={12} item>
+                {/* <Grid xs={12} item>
                   <TextField label="Select employee team" name='empTeam' onChange={inputEvent} select value={addUserFormData.empTeam} variant="outlined" sx={{width:"100%"}} required
                   SelectProps={{
                     multiple:false
@@ -160,8 +184,8 @@ function AddUser() {
                 <MenuItem value="2">2=web development</MenuItem>
                 <MenuItem value="3">3=Hr team</MenuItem>
                 </TextField>
-                </Grid>
-                <Grid xs={12} item>
+                </Grid> */}
+                {/* <Grid xs={12} item>
                   <TextField label="Select status" name='status' onChange={inputEvent} select value={addUserFormData.status} variant="outlined" sx={{width:"100%"}} required
                   SelectProps={{
                     multiple:false
@@ -169,7 +193,7 @@ function AddUser() {
                 <MenuItem value="1">0= Status Off</MenuItem>
                 <MenuItem value="2"> 1= Status on</MenuItem>
                      </TextField>
-                </Grid>
+                </Grid> */}
                 {/* <Grid item xs={12}>
                   <TextField type="email" placeholder="Enter email" label="Email" variant="outlined" sx={{width:"100%"}} required />
                 </Grid> */}

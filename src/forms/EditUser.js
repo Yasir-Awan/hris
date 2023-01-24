@@ -49,7 +49,12 @@ function EditUser(props) {
             <form onSubmit={formSubmit}>
               <Grid container spacing={1}>
               <Grid xs={12} item>
-                  <TextField placeholder='enter full name' label="username" name='uname' onChange={inputEvent} value={addUserFormData.uname} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <TextField placeholder='enter first name' label="firstname" name='fname' onChange={inputEvent} value={addUserFormData.fname} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
+                  <AccessibilityIcon/>
+                  </InputAdornment>}}/>
+                </Grid>
+                <Grid xs={12} item>
+                  <TextField placeholder='enter last name' label="lastname" name='lname' onChange={inputEvent} value={addUserFormData.lname} variant='outlined' sx={{width:"100%"}} required InputProps={{startAdornment: <InputAdornment position= "start">
                   <AccessibilityIcon/>
                   </InputAdornment>}}/>
                 </Grid>
