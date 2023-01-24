@@ -15,19 +15,18 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
-    { field: 'uname', headerName: 'Name', width: 150 },
+    { field: 'uname', headerName: 'Full Name', width: 150 },
     { field: 'email', headerName: 'Email', width: 150 },
-    { field: 'password', headerName: 'password', width: 150 },
-    { field: 'site', headerName: 'site_Name', width: 150 },
+    { field: 'site', headerName: 'Site', width: 150 },
     { field: 'contact', headerName: 'Contact', width: 150 },
-    { field: 'address', headerName: 'address', width: 150 },
-    { field: 'empType', headerName: 'Emp_Type', width: 150 },
-    { field: 'consultant', headerName: 'consultant', width: 150 },
-    { field: 'empSec', headerName: 'Emp_Sec', width: 150 },
-    { field: 'empField', headerName: 'Emp_Field', width: 150 },
-    { field: 'empRole', headerName: 'Emp_Role', width: 150 },
-    { field: 'empTeam', headerName: 'Emp_Team', width: 150 },
-    { field: 'status', headerName: 'status', width: 150 },
+    { field: 'address', headerName: 'Address', width: 150 },
+    { field: 'empType', headerName: 'Empolyee Type', width: 150 },
+    { field: 'consultant', headerName: 'Consultant', width: 150 },
+    { field: 'empSec', headerName: 'Empolyee Section', width: 150 },
+    { field: 'empField', headerName: 'Empolyee Field', width: 150 },
+    { field: 'empRole', headerName: 'Empolyee Role', width: 150 },
+    // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
+    // { field: 'status', headerName: 'status', width: 150 },
     { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
       return (
         <CustomizedDialogsEdit size='small'>
