@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box,Button } from '@mui/material';
+import { Box } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
-import CustomizedDialogs_edit from '../../components/dialog_edit';
+import CustomizedDialogsEdit from '../../components/dialog_edit';
 import AddUser from '../../forms/add_user/AddUser';
 import EditUser from '../../forms/EditUser';
 import axios from 'axios';
@@ -30,23 +30,23 @@ const columns: GridColDef[] = [
     { field: 'status', headerName: 'status', width: 150 },
     { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
       return (
-        <CustomizedDialogs_edit size='small'>
-        <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password} 
+        <CustomizedDialogsEdit size='small'>
+        <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
          site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
          consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}
          empTeam={value.row.empTeam} status={value.row.status}/>
-        </CustomizedDialogs_edit>
+        </CustomizedDialogsEdit>
       );
     }, }
 ];
 
 // const [state, setstate] = useState({data:""})
 // console.log(ID)
-// const changeState = () => {  
-//   setstate({data:ID}); 
+// const changeState = () => {
+//   setstate({data:ID});
 //  };
 const UserList = () => {
- 
+
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
 
@@ -65,7 +65,7 @@ const [tableData, setTableData] = useState([])
         if(response.data.user_info){
           response.data.user_info.forEach(element => {
             if(element.employee_type === '4'){
-              nietos.push({'id':element.id,'uname':element.fname+ ' '+ element.lname,'email':element.email, 
+              nietos.push({'id':element.id,'uname':element.fname+ ' '+ element.lname,'email':element.email,
               'password':element.password, 'sitename':element.site, 'contact':element.contact, 'address':element.address,
             'empType':element.empType, 'consultant':element.consultant, 'empSec':element.empSec,'empField':element.empField,
           'empRole':element.empRole, 'empTeam':element.empTeam, 'status':element.status})
@@ -88,13 +88,12 @@ const [tableData, setTableData] = useState([])
     return (
     <>
   <div style={{height:500, width: '100%', marginBottom:'2px' }}>
-  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'500px',right:'22px'}}></Box>
-  <Box sx={{marginLeft:'97%', position: "absolute",bottom:'550px',right:'22px'}}>
+  <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'22px'}}>
       <CustomizedDialogs size='small'>
       <AddUser/>
       </CustomizedDialogs>
     </Box>
-    
+
     <DataGrid rows={tableData} columns={columns} />
   </div>
     </>
