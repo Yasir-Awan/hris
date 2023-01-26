@@ -17,7 +17,7 @@ const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
     { field: 'uname', headerName: 'Full Name', width: 150 },
     { field: 'email', headerName: 'Email', width: 150 },
-    { field: 'site', headerName: 'Site', width: 150 },
+    { field: 'sitename', headerName: 'Site', width: 150 },
     { field: 'contact', headerName: 'Contact', width: 150 },
     { field: 'address', headerName: 'Address', width: 150 },
     { field: 'empType', headerName: 'Empolyee Type', width: 150 },
@@ -63,12 +63,12 @@ const [tableData, setTableData] = useState([])
         console.log(response.data);
         if(response.data.user_info){
           response.data.user_info.forEach(element => {
-            if(element.employee_type === '4'){
+
               nietos.push({'id':element.id,'uname':element.fname+ ' '+ element.lname,'email':element.email,
-              'password':element.password, 'sitename':element.site, 'contact':element.contact, 'address':element.address,
-            'empType':element.empType, 'consultant':element.consultant, 'empSec':element.empSec,'empField':element.empField,
-          'empRole':element.empRole, 'empTeam':element.empTeam, 'status':element.status})
-            }
+              'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
+            'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
+          'empRole':element.role_name, 'empTeam':element.empTeam, 'status':element.status})
+
           }
             );
         }

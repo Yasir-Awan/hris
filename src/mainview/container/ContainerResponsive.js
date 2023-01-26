@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 // import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import UserList from '../users/UserList';
+import AttendanceList from '../attandance/AttendanceList';
 
 const bull = (
   <Box
@@ -26,6 +27,21 @@ export default function BasicCard(props) {
             Users{bull}List
           </Typography>
           <UserList/>
+        </CardContent>
+        {/* <CardActions>
+          <Button size="small">Learn More</Button>
+        </CardActions> */}
+      </Card>
+    );
+  }
+  if(props.name===1){
+    return (
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography variant="h5" component="div" gutterBottom>
+            Attendance{bull}List
+          </Typography>
+          <AttendanceList/>
         </CardContent>
         {/* <CardActions>
           <Button size="small">Learn More</Button>
