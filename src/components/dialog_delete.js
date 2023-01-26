@@ -76,7 +76,7 @@ export default function CustomizedDialogs_delete({children}) {
           Delete User
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          {children}
+          {children }
         </DialogContent>
         {/* <DialogActions>
           <Button autoFocus onClick={handleClose}>

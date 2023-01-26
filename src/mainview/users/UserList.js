@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
          />
         </CustomizedDialogs_edit>
         <CustomizedDialogs_delete size='small'>
-          <DeleteUser/>
+          <DeleteUser id={value.id}/>
         </CustomizedDialogs_delete>
         </>
       );
@@ -70,12 +70,11 @@ const [tableData, setTableData] = useState([])
         console.log(response.data);
         if(response.data.user_info){
           response.data.user_info.forEach(element => {
-            if(element.employee_type === '4'){
               nietos.push({'id':element.id,'uname':element.fname + ' ' + element.lname , 'email':element.email, 
               'password':element.password, 'sitename':element.site, 'contact':element.contact, 'address':element.address,
             'empType':element.empType, 'consultant':element.consultant, 'empSec':element.empSec,'empField':element.empField,
           'empRole':element.empRole,})
-            }
+            
           }
             );
         }
