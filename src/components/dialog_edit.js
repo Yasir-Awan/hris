@@ -50,7 +50,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs_edit({children}) {
+export default function CustomizedDialogsEdit({children}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

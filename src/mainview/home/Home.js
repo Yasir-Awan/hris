@@ -4,7 +4,9 @@ import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab, Button, useMediaQuery
 import ThreePIcon from '@mui/icons-material/ThreeP';
 import DrawerComp from '../drawer/DrawerComp';
 import ContainerResponsive from '../container/ContainerResponsive';
-import AttandanceList from '../attandance/AttandanceList';
+import Remarks from '../remarks/Remarks';
+import Teams from '../teams/Teams';
+import Projects from '../projects/Projects';
 
 const PAGES = ["Users","Attendance","Remarks","Teams","Projects"]
 
@@ -50,7 +52,10 @@ const Home = () => {
           </Toolbar>
         </AppBar>
         { value === 0 && <ContainerResponsive name={value}></ContainerResponsive> }
-      { value === 1 && <AttandanceList/>}
+      { value === 1 && <ContainerResponsive name={value}></ContainerResponsive>}
+      { value === 2 && <Remarks/>}
+      { value === 3 && <Teams/>}
+      { value === 4 && <Projects/>}
     </>
   )
 }

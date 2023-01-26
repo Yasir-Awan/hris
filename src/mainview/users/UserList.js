@@ -1,10 +1,10 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box,Button } from '@mui/material';
+import { Box } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
-import CustomizedDialogs_edit from '../../components/dialog_edit';
-import CustomizedDialogs_delete from '../../components/dialog_delete';
+import CustomizedDialogsEdit from '../../components/dialog_edit';
+import CustomizedDialogsDelete from '../../components/dialog_delete';
 import AddUser from '../../forms/add_user/AddUser';
 import EditUser from '../../forms/EditUser';
 import DeleteUser from '../../forms/DeleteUser';
@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
     { field: 'uname', headerName: 'Full Name', width: 150 },
     { field: 'email', headerName: 'Email', width: 150 },
-    { field: 'site', headerName: 'Site', width: 150 },
+    { field: 'sitename', headerName: 'Site', width: 150 },
     { field: 'contact', headerName: 'Contact', width: 150 },
     { field: 'address', headerName: 'Address', width: 150 },
     { field: 'empType', headerName: 'Empolyee Type', width: 150 },
@@ -32,15 +32,14 @@ const columns: GridColDef[] = [
     { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
       return (
         <>
-        <CustomizedDialogs_edit size='small'>
-        <EditUser fname={value.row.fname} lname={value.row.lname} email={value.row.email} password={value.row.password} 
+        <CustomizedDialogsEdit size='small'>
+        <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
          site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
-         consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}
-         />
-        </CustomizedDialogs_edit>
-        <CustomizedDialogs_delete size='small'>
+         consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
+        </CustomizedDialogsEdit>
+        <CustomizedDialogsDelete size='small'>
           <DeleteUser id={value.id}/>
-        </CustomizedDialogs_delete>
+        </CustomizedDialogsDelete>
         </>
       );
     }, }
@@ -48,11 +47,11 @@ const columns: GridColDef[] = [
 
 // const [state, setstate] = useState({data:""})
 // console.log(ID)
-// const changeState = () => {  
-//   setstate({data:ID}); 
+// const changeState = () => {
+//   setstate({data:ID});
 //  };
 const UserList = () => {
- 
+
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
 
@@ -98,7 +97,7 @@ const [tableData, setTableData] = useState([])
       <AddUser/>
       </CustomizedDialogs>
     </Box>
-    
+
     <DataGrid rows={tableData} columns={columns} />
   </div>
     </>
