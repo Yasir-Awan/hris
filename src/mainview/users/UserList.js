@@ -51,7 +51,7 @@ const columns: GridColDef[] = [
 //   setstate({data:ID});
 //  };
 const UserList = () => {
-
+ 
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
 
@@ -72,8 +72,7 @@ const [tableData, setTableData] = useState([])
               nietos.push({'id':element.id,'uname':element.fname + ' ' + element.lname , 'email':element.email, 
               'password':element.password, 'sitename':element.site, 'contact':element.contact, 'address':element.address,
             'empType':element.empType, 'consultant':element.consultant, 'empSec':element.empSec,'empField':element.empField,
-          'empRole':element.empRole,})
-            
+          'empRole':element.empRole,})            
           }
             );
         }
@@ -84,7 +83,7 @@ const [tableData, setTableData] = useState([])
       })
       .catch(error => {
         console.log(error);
-    })
+          })
 
     },[])
 
