@@ -1,11 +1,11 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import CustomizedDialogs from '../../components/dialog';
-import CustomizedDialogsEdit from '../../components/dialog_edit';
-import AddUser from '../../forms/add_user/AddUser';
-import EditUser from '../../forms/EditUser';
+// import { Box } from '@mui/material';
+// import CustomizedDialogs from '../../components/dialog';
+// import CustomizedDialogsEdit from '../../components/dialog_edit';
+// import AddUser from '../../forms/add_user/AddUser';
+// import EditUser from '../../forms/EditUser';
 import axios from 'axios';
 // const rows: GridRowsProp = [
 //   { id: 1, col1: 'Hello', col2: 'World' },
@@ -15,12 +15,16 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
-    { field: 'uname', headerName: 'Full Name', width: 150 },
+    { field: 'uname', headerName: 'Name', width: 150 },
     { field: 'attendance_date', headerName: 'Date', width: 150 },
     { field: 'checkin', headerName: 'CheckIN', width: 150 },
     { field: 'checkout', headerName: 'CheckOut', width: 150 },
-    { field: 'hours', headerName: 'Hours', width: 150 },
-    { field: 'minutes', headerName: 'Minutes', width: 150 },
+    { field: 'time', headerName: 'TIME', width: 150 },
+    { field: 'early_sitting', headerName: 'Early Sitting', width: 150 },
+    { field: 'late_sitting', headerName: 'Late Sitting', width: 150 },
+    { field: 'extra_time', headerName: 'Extra Time', width: 150 },
+    { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 },
+    // { field: 'minutes', headerName: 'Minutes', width: 150 },
     // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
     // { field: 'status', headerName: 'status', width: 150 },
     // { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
@@ -61,7 +65,9 @@ const [tableData, setTableData] = useState([])
           response.data.attendance_info.forEach(element => {
 
             attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
-              'checkin':element.checkin, 'checkout':element.checkout, 'hours':element.hours, 'minutes':element.minutes})
+              'checkin':element.checkin, 'checkout':element.checkout, 'time':element.time,
+              'early_sitting':element.early_sitting,'late_sitting':element.late_sitting,'extra_time':element.extra_time,
+              'acceptable_time':element.acceptable_time})
 
           }
             );
