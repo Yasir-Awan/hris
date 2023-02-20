@@ -1,19 +1,17 @@
-import React,{useEffect,useState} from 'react';
-import {json, useNavigate} from 'react-router-dom';
+import React,{useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 // import ServerPaginationGrid from './ServerPaginationGrid';
 import { createFakeServer } from '@mui/x-data-grid-generator';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import CustomizedDialogs from '../../components/dialog';
-import CustomizedDialogsEdit from '../../components/dialog_edit';
-import AddUser from '../../forms/add_user/AddUser';
-import EditUser from '../../forms/EditUser';
 import axios from 'axios';
+// import { EnhancedEncryptionTwoTone } from '@mui/icons-material';
+// import { passFilterLogic } from '@mui/x-data-grid/internals';
 // const rows: GridRowsProp = [
 //   { id: 1, col1: 'Hello', col2: 'World' },
 //   { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
 //   { id: 3, col1: 'MUI', col2: 'is Amazing' },
 // ];
+
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
@@ -43,31 +41,40 @@ const columns: GridColDef[] = [
 // const changeState = () => {
 //   setstate({data:ID});
 //  };
-
+const SERVER_OPTIONS = {
+  useCursorPagination: false,
+};
+const {useQuery} = createFakeServer({}, SERVER_OPTIONS);
 const AttendanceList = () => {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(5);
+  const queryOptions = React.useMemo(
+    () => ({
+      page,
+      pageSize,
+    }),
+    [page, pageSize],
+  );
+
+  const {isLoading, pageInfo } = useQuery(queryOptions);
   var attendanceRows = [];
-var isLoading = false
-var pageInfo = {
-  "totalRowCount": page,
-  "pageSize": pageSize
-}
+// var pageInfo = {
+//   "totalRowCount": page,
+//   "pageSize": pageSize
+// }
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
-const load_data= () => {
-  isLoading = true
+const load_data = () => {
   axios({
-    method: 'get',
-    url: 'attendance_list? pageSize=5 & totalRowCount=700',
+    method: 'post',
+    url: 'attendance_list?',
     headers: {
       'Authorization': 'Bearer '+localStorage.getItem('token'),
     },
-    // data: {'pageSize':pageSize, 'page':page},
+    data: {'pageSize':pageSize, 'page':page},
   }
   )
     .then(function (response) {
-      isLoading = false
       console.log(response);
       // if (response.pageInfo){
       //   var pageInfo = response.pageInfo
@@ -90,19 +97,20 @@ const load_data= () => {
   })
 
   }
-useEffect(load_data, [])
-
+// useEffect(, [])
+// useEffect(load_data, []);
 const [rowCountState, setRowCountState] = React.useState(
   pageInfo?.totalRowCount || 0,
-);
+  );
 
-  React.useEffect(() => {
+  React.useEffect(() => 
+  {
     setRowCountState((prevRowCountState) =>
-      pageInfo?.totalRowCount !== undefined
-        ? pageInfo?.totalRowCount
-        : prevRowCountState,
+    pageInfo?.totalRowCount !== undefined ? 
+    pageInfo?.totalRowCount : prevRowCountState,
     );
-  }, [pageInfo?.totalRowCount, setRowCountState]);
+
+  }, [pageInfo?.totalRowCount,setRowCountState]);
 
 
     return (
