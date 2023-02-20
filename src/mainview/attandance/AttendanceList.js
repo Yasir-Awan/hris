@@ -1,5 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+// import ServerPaginationGrid from './ServerPaginationGrid';
+// import { createFakeServer } from '@mui/x-data-grid-generator';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 // import { Box } from '@mui/material';
 // import CustomizedDialogs from '../../components/dialog';
@@ -39,56 +41,91 @@ const columns: GridColDef[] = [
     // }, }
 ];
 
+
 // const [state, setstate] = useState({data:""})
 // console.log(ID)
 // const changeState = () => {
 //   setstate({data:ID});
 //  };
+
 const AttendanceList = () => {
-
-const navigate = useNavigate();
-const [tableData, setTableData] = useState([])
-
+  const [page, setPage] = React.useState(0);
+  const [pageSize, setPageSize] = React.useState(5);
   var attendanceRows = [];
-  useEffect(() => {
-    axios({
-      method: 'get',
-      url: 'attendance_list',
-      headers: {
-        'Authorization': 'Bearer '+localStorage.getItem('token'),
-      }
-    }
-    )
-      .then(function (response) {
-        console.log(response.data);
-        if(response.data.attendance_info){
-          response.data.attendance_info.forEach(element => {
+  let isLoading = false
+  let pageInfo = {
+    "totalRowCount": page,
+    "pageSize": pageSize
+  }
+  const navigate = useNavigate();
+  const [tableData, setTableData] = useState([]);
+  const [rowCountState, setRowCountState] = React.useState(
+    pageInfo?.totalRowCount || 0,
+  );
 
-            attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
-              'checkin':element.checkin, 'checkout':element.checkout, 'time':element.time,
-              'early_sitting':element.early_sitting,'late_sitting':element.late_sitting,'extra_time':element.extra_time,
-              'acceptable_time':element.acceptable_time})
-
+  const load_data = () => {
+        axios({
+          method: 'post',
+          url: 'attendance_list',
+          headers: {
+            'Authorization': 'Bearer '+localStorage.getItem('token'),
+          },
+          data:{'pageSize':100 , 'totalRowCount':200}
+        })
+        .then(function (response) {
+          console.log(response.data);
+          if(response.data.attendance_info){
+            response.data.attendance_info.forEach(element => {
+                attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
+                'checkin':element.checkin, 'checkout':element.checkout, 'time':element.time, 'minutes':element.minutes})
+                });
+          }else{
+            navigate('/');
           }
-            );
-        }
-        else{
-          navigate('/');
-        }
-        setTableData(attendanceRows);
-      })
-      .catch(error => {
-        console.log(error);
-    })
+          setTableData(attendanceRows);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+  }
 
-    },[])
+useEffect(load_data, [])
 
-    console.log(tableData)
+
+  React.useEffect(
+    () => {
+      // other code
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+      setRowCountState((prevRowCountState) =>
+        pageInfo?.totalRowCount !== undefined
+          ? pageInfo?.totalRowCount
+          : prevRowCountState,
+      );
+    }
+  , [pageInfo?.totalRowCount, setRowCountState]
+  );
+
+
     return (
     <>
-  <div style={{height:500, width: '100%', marginBottom:'2px' }}>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={tableData}
+        rowCount={rowCountState}
+        loading={isLoading}
+        rowsPerPageOptions={[5,10,20,50,100]}
+        pagination
+        page={page}
+        pageSize={pageSize}
+        paginationMode="server"
+        onPageChange={(newPage) =>{ setPage(newPage); load_data()}}
+        onPageSizeChange={(newPageSize) => {setPageSize(newPageSize); load_data()}}
+        columns={columns}
+      />
+    </div>
+  <div style={{height:500, width: '100%', marginBottom:'2px'}}>
 
-    <DataGrid rows={tableData} columns={columns} />
+    {/* <DataGrid rows={tableData} columns={columns} /> */}
   </div>
     </>
   )
