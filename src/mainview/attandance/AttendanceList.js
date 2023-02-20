@@ -1,19 +1,22 @@
 import React,{useEffect,useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {json, useNavigate} from 'react-router-dom';
 // import ServerPaginationGrid from './ServerPaginationGrid';
 // import { createFakeServer } from '@mui/x-data-grid-generator';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-// import { Box } from '@mui/material';
-// import CustomizedDialogs from '../../components/dialog';
-// import CustomizedDialogsEdit from '../../components/dialog_edit';
-// import AddUser from '../../forms/add_user/AddUser';
-// import EditUser from '../../forms/EditUser';
+import { Box } from '@mui/material';
+import CustomizedDialogs from '../../components/dialog';
+import CustomizedDialogsEdit from '../../components/dialog_edit';
+import AddUser from '../../forms/add_user/AddUser';
+import EditUser from '../../forms/EditUser';
 import axios from 'axios';
+// import { EnhancedEncryptionTwoTone } from '@mui/icons-material';
+// import { passFilterLogic } from '@mui/x-data-grid/internals';
 // const rows: GridRowsProp = [
 //   { id: 1, col1: 'Hello', col2: 'World' },
 //   { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
 //   { id: 3, col1: 'MUI', col2: 'is Amazing' },
 // ];
+
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
@@ -47,63 +50,78 @@ const columns: GridColDef[] = [
 // const changeState = () => {
 //   setstate({data:ID});
 //  };
-
+const SERVER_OPTIONS = {
+  useCursorPagination: false,
+};
+const {useQuery} = createFakeServer({}, SERVER_OPTIONS);
 const AttendanceList = () => {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(5);
-  var attendanceRows = [];
-  let isLoading = false
-  let pageInfo = {
-    "totalRowCount": page,
-    "pageSize": pageSize
-  }
-  const navigate = useNavigate();
-  const [tableData, setTableData] = useState([]);
-  const [rowCountState, setRowCountState] = React.useState(
-    pageInfo?.totalRowCount || 0,
+  const queryOptions = React.useMemo(
+    () => ({
+      page,
+      pageSize,
+    }),
+    [page, pageSize],
   );
 
-  const load_data = () => {
-        axios({
-          method: 'post',
-          url: 'attendance_list',
-          headers: {
-            'Authorization': 'Bearer '+localStorage.getItem('token'),
-          },
-          data:{'pageSize':100 , 'totalRowCount':200}
-        })
-        .then(function (response) {
-          console.log(response.data);
-          if(response.data.attendance_info){
-            response.data.attendance_info.forEach(element => {
-                attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
-                'checkin':element.checkin, 'checkout':element.checkout, 'time':element.time, 'minutes':element.minutes})
-                });
-          }else{
-            navigate('/');
-          }
-          setTableData(attendanceRows);
-        })
-        .catch(error => {
-          console.log(error);
-        })
+  const {isLoading, pageInfo } = useQuery(queryOptions);
+  var attendanceRows = [];
+var isLoading = false
+var pageInfo = {
+  "totalRowCount": page,
+  "pageSize": pageSize
+}
+const navigate = useNavigate();
+const [tableData, setTableData] = useState([])
+const load_data= () => {
+  isLoading = true
+  axios({
+    method: 'get',
+    url: 'attendance_list? pageSize=5 & totalRowCount=700',
+    headers: {
+      'Authorization': 'Bearer '+localStorage.getItem('token'),
+    },
+    // data: {'pageSize':pageSize, 'page':page},
   }
+  )
+    .then(function (response) {
+      isLoading = false
+      console.log(response);
+      // if (response.pageInfo){
+      //   var pageInfo = response.pageInfo
+      // }
+      if(response.data.attendance_info){
+        response.data.attendance_info.forEach(element => {
 
+          attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
+            'checkin':element.checkin, 'checkout':element.checkout, 'hours':element.hours, 'minutes':element.minutes})
+        }
+          );
+      }
+      else{
+        navigate('/');
+      }
+      setTableData(attendanceRows);
+    })
+    .catch(error => {
+      console.log(error);
+  })
+
+  }
 useEffect(load_data, [])
 
+const [rowCountState, setRowCountState] = React.useState(
+  pageInfo?.totalRowCount || 0,
+);
 
-  React.useEffect(
-    () => {
-      // other code
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-      setRowCountState((prevRowCountState) =>
-        pageInfo?.totalRowCount !== undefined
-          ? pageInfo?.totalRowCount
-          : prevRowCountState,
-      );
-    }
-  , [pageInfo?.totalRowCount, setRowCountState]
-  );
+  React.useEffect(() => {
+    setRowCountState((prevRowCountState) =>
+      pageInfo?.totalRowCount !== undefined
+        ? pageInfo?.totalRowCount
+        : prevRowCountState,
+    );
+  }, [pageInfo?.totalRowCount, setRowCountState]);
 
 
     return (

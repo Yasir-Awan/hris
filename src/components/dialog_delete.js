@@ -51,7 +51,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs_delete({children}) {
+export default function CustomizedDialogsDelete({children}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
