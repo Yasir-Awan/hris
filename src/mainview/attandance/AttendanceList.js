@@ -41,29 +41,31 @@ const columns: GridColDef[] = [
 // const changeState = () => {
 //   setstate({data:ID});
 //  };
-const SERVER_OPTIONS = {
-  useCursorPagination: false,
-};
-const {useQuery} = createFakeServer({}, SERVER_OPTIONS);
+// const SERVER_OPTIONS = {
+//   useCursorPagination: false,
+// };
+// const {useQuery} = createFakeServer({}, SERVER_OPTIONS);
 const AttendanceList = () => {
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(5);
-  const queryOptions = React.useMemo(
-    () => ({
-      page,
-      pageSize,
-    }),
-    [page, pageSize],
-  );
+  // const queryOptions = React.useMemo(
+  //   () => ({
+  //     page,
+  //     pageSize,
+  //   }),
+  //   [page, pageSize],
+  // );
 
-  const {isLoading, pageInfo } = useQuery(queryOptions);
-  var attendanceRows = [];
-// var pageInfo = {
-//   "totalRowCount": page,
-//   "pageSize": pageSize
-// }
+  // const {isLoading, pageInfo } = useQuery(queryOptions);
+  var attendance_rows = [];
+  let isLoading = false
+var pageInfo = {
+  "totalRowCount": page,
+  "pageSize": pageSize
+}
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
+isLoading=true
 const load_data = () => {
   axios({
     method: 'post',
@@ -75,14 +77,15 @@ const load_data = () => {
   }
   )
     .then(function (response) {
+      isLoading=false
       console.log(response);
       // if (response.pageInfo){
       //   var pageInfo = response.pageInfo
       // }
-      if(response.data.attendance_info){
-        response.data.attendance_info.forEach(element => {
+      if(response.data.attendance_rows){
+        response.data.attendance_rows.forEach(element => {
 
-          attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
+          attendance_rows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
             'checkin':element.checkin, 'checkout':element.checkout, 'hours':element.hours, 'minutes':element.minutes})
         }
           );
@@ -90,7 +93,7 @@ const load_data = () => {
       else{
         navigate('/');
       }
-      setTableData(attendanceRows);
+      setTableData(attendance_rows);
     })
     .catch(error => {
       console.log(error);
@@ -100,17 +103,17 @@ const load_data = () => {
 // useEffect(, [])
 // useEffect(load_data, []);
 const [rowCountState, setRowCountState] = React.useState(
-  pageInfo?.totalRowCount || 0,
+  pageInfo.totalRowCount || 0,
   );
 
   React.useEffect(() => 
   {
     setRowCountState((prevRowCountState) =>
-    pageInfo?.totalRowCount !== undefined ? 
-    pageInfo?.totalRowCount : prevRowCountState,
+    pageInfo.totalRowCount !== undefined ? 
+    pageInfo.totalRowCount : prevRowCountState,
     );
 
-  }, [pageInfo?.totalRowCount,setRowCountState]);
+  }, [load_data, pageInfo.totalRowCount,setRowCountState]);
 
 
     return (

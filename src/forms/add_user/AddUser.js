@@ -7,8 +7,6 @@ import EmailIcon from '@mui/icons-material/Email';
 import KeyIcon from '@mui/icons-material/Key';
 import TollIcon from '@mui/icons-material/Toll';
 import PhoneIcon from '@mui/icons-material/Phone';
-// import HomeIcon from '@mui/icons-material/Home';
-// import { Textarea } from '@mui/joy';
 
 function AddUser() {
 
@@ -71,14 +69,6 @@ function AddUser() {
                  sx={{width:"100%"}} required
                 />
                  </Grid>
-                {/* <Grid xs={12} item>
-                <TextField label="confirm password" placeholder='confirm password' name='confirmPassword' onChange={inputEvent} variant='outlined'
-                InputProps={{startAdornment: <InputAdornment position= "start">
-                <KeyIcon/>
-                </InputAdornment>}} value={addUserFormData.confirmPassword}
-                 sx={{width:"100%"}} required
-                />
-                </Grid> */}
                 
                 <Grid item xs={12}>
                   <TextField type="number" label="Phone" placeholder="Enter phone number" name='contact' onChange={inputEvent} value={addUserFormData.contact} variant="outlined" sx={{width:"100%"}} required

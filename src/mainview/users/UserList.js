@@ -3,17 +3,13 @@ import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
-import CustomizedDialogsEdit from '../../components/dialog_edit';
-import CustomizedDialogsDelete from '../../components/dialog_delete';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddUser from '../../forms/add_user/AddUser';
 import EditUser from '../../forms/EditUser';
 import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
-// const rows: GridRowsProp = [
-//   { id: 1, col1: 'Hello', col2: 'World' },
-//   { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-//   { id: 3, col1: 'MUI', col2: 'is Amazing' },
-// ];
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
@@ -32,24 +28,19 @@ const columns: GridColDef[] = [
     { field: 'action', headerName: 'Action', width: 150, renderCell:(value) => {
       return (
         <>
-        <CustomizedDialogsEdit size='small'>
+        <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />}>
         <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
          site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
          consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
-        </CustomizedDialogsEdit>
-        <CustomizedDialogsDelete size='small'>
+        </CustomizedDialogs>
+        <CustomizedDialogs size='small' title="Delete User" icon={<DeleteIcon />}>
           <DeleteUser id={value.id}/>
-        </CustomizedDialogsDelete>
+        </CustomizedDialogs>
         </>
       );
     }, }
 ];
 
-// const [state, setstate] = useState({data:""})
-// console.log(ID)
-// const changeState = () => {
-//   setstate({data:ID});
-//  };
 const UserList = () => {
  
 const navigate = useNavigate();
@@ -92,7 +83,7 @@ const [tableData, setTableData] = useState([])
     <>
   <div style={{height:500, width: '100%', marginBottom:'2px' }}>
   <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'22px'}}>
-      <CustomizedDialogs size='small'>
+      <CustomizedDialogs size='small' title= "Add New User" icon={<AddIcon />}>
       <AddUser/>
       </CustomizedDialogs>
     </Box>
