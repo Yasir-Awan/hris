@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CustomizedDialogs from '../../components/dialog';
 import { Box } from '@mui/material';
-import Add_shift from "../../forms/Add_shift";
+import AddShift from "../../forms/AddShift";
 
 
 const columns: GridColDef[] = [
@@ -32,8 +32,8 @@ const Shift = () => {
     //         console.log(response.data);
     //         if(response.data.shift){
     //           response.data.shift.forEach(element => {
-    //               mydata.push({'id':element.id, 'shift_name':element.shift_name, 
-    //               'shift_type':element.shift_type, 'start':element.start, 'end':element.end,})            
+    //               mydata.push({'id':element.id, 'shift_name':element.shift_name,
+    //               'shift_type':element.shift_type, 'start':element.start, 'end':element.end,})
     //           }
     //             );
     //         }
@@ -51,7 +51,7 @@ const Shift = () => {
         <div style={{height:500, width: '100%', marginBottom:'2px' }}>
             <Box sx={{marginLeft:'97%', position: "absolute",top:'580px',right:'400px'}}>
                 <CustomizedDialogs size='small' title= "Add New Shift" icon={<AddIcon />}>
-                    <Add_shift/>
+                    <AddShift/>
                 </CustomizedDialogs>
             </Box>
             <DataGrid rows={tableData} columns={columns}/>

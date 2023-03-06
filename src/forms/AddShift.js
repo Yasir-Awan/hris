@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 
-function Add_shift() {
+function AddShift() {
   const [addShiftFormData, setaddShiftFormData] = useState({ shift_name: '', shift_type: '', start: null, end: null });
 
   const formSubmit = (event) => {
@@ -97,7 +97,7 @@ function Add_shift() {
                                   required
                                   renderInput={(params) => <TextField {...params} />}
                                 />
-     
+
                     </Stack>
                 </LocalizationProvider>
                 <Grid item xs={12}>
@@ -113,4 +113,4 @@ function Add_shift() {
   );
 }
 
-export default Add_shift;
+export default AddShift;

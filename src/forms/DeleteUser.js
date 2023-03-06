@@ -1,6 +1,5 @@
-import React,{useState} from 'react';
+import React from 'react';
 import { Button } from '@mui/material';
-import { ConstructionOutlined } from '@mui/icons-material';
 
 function DeleteUser(props){
     const id = props.id;

@@ -16,29 +16,22 @@ const columns: GridColDef[] = [
     { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 },
 ];
 
-  const AttendanceList = () => {
-    const [data, setData] = useState({
-      loading: true,
-      rows: [],
-      totalRows: 0,
-      rowsPerPageOptions: [5,10,20,50,100],
-      pageSize: 5,
-      page: 1
-    });
+const AttendanceList = () => {
+  const [data, setData] = useState({
+    loading: true,
+    rows: [],
+    totalRows: 0,
+    rowsPerPageOptions: [5,10,20,50,100],
+    pageSize: 5,
+    page: 1
+  });
 
-    const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
-  // const [page, setPage] = useState(0);
-  // const [pageSize, setPageSize] = useState(5);
-  // const [totalRows, setTotalRows] = useState();
-  // const [tableData, setTableData] = useState([]);
+  const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
   const navigate = useNavigate();
   let attendanceRows = [];
 
   useEffect(() => {
     updateData("loading", true);
-
-
-
       axios({
         method: 'post',
         url: 'attendance_list',
@@ -46,13 +39,12 @@ const columns: GridColDef[] = [
         data: {'pageSize':data.pageSize, 'page':data.page},
       })
       .then(function (response) {
-
               // setTotalRows(response.total_rows);
-
               if(response.data.attendance_rows){
                   response.data.attendance_rows.forEach(element => {
                     attendanceRows.push({'id':element.id,'uname':element.user_name,'attendance_date':element.attendance_date,
-                      'checkin':element.checkin, 'checkout':element.checkout, 'hours':element.hours, 'minutes':element.minutes})
+                      'checkin':element.checkin, 'checkout':element.checkout, 'hours':element.hours, 'minutes':element.minutes, 'time':element.time,
+                      'early_sitting':element.early_sitting,'late_sitting':element.late_sitting,'extra_time':element.extra_time, 'acceptable_time':element.acceptable_time})
                   }
                 );
               }else{
@@ -63,58 +55,46 @@ const columns: GridColDef[] = [
               setTimeout(() => {
 
                 const rows = attendanceRows;
+                updateData("totalRows", response.data.total_rows);
 
-              console.log(data.page, data.pageSize, "");
-              console.log(rows,attendanceRows.length);
+                setTimeout(() => {
+                  updateData("rows", rows);
+                  updateData("loading", false);
+                }, 100);
 
-              updateData("totalRows", response.data.total_rows);
-
-              setTimeout(() => {
-                updateData("rows", rows);
-                updateData("loading", false);
-              }, 100);
-            }, 500);
-              // setTableData(attendanceRows);
-      })
-      .catch(error => { console.log(error); })
-
-      // setData((d) => ({
-      //   ...d,
-      //   rowCount: dummyColorsDB.length,
-      //   rows,
-      //   loading: false
-      // }));
+              }, 500);
+        })
+        .catch(error => { console.log(error); })
 
   }, [data.page, data.pageSize]);
 
-
-    return (
-        <>
-          <div style={{ height: 'auto', width: '100%' }}>
-              <DataGrid
-                // density="compact"
-                autoHeight
-                rowHeight={50}
-                loading={data.loading}
-                rowsPerPageOptions={data.rowsPerPageOptions}
-                pagination
-                page={data.page-1}
-                pageSize={data.pageSize}
-                paginationMode="server"
-                onPageChange={(newpage) => {
-                  updateData("page", newpage+1);
-                }}
-                onPageSizeChange={(newPageSize) => {
-                  updateData("page", 1);
-                  updateData("pageSize", newPageSize);
-                }}
-                rowCount={data.totalRows}
-                rows={data.rows}
-                columns={columns}
-              />
-          </div>
-        </>
-      )
+  return (
+      <>
+        <div style={{ height: 'auto', width: '100%' }}>
+            <DataGrid
+              // density="compact"
+              autoHeight
+              rowHeight={50}
+              loading={data.loading}
+              rowsPerPageOptions={data.rowsPerPageOptions}
+              pagination
+              page={data.page-1}
+              pageSize={data.pageSize}
+              paginationMode="server"
+              onPageChange={(newpage) => {
+                updateData("page", newpage+1);
+              }}
+              onPageSizeChange={(newPageSize) => {
+                updateData("page", 1);
+                updateData("pageSize", newPageSize);
+              }}
+              rowCount={data.totalRows}
+              rows={data.rows}
+              columns={columns}
+            />
+        </div>
+      </>
+    )
 }
 
 export default AttendanceList
