@@ -7,9 +7,8 @@ import ContainerResponsive from '../container/ContainerResponsive';
 import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
-import Shift from '../Shift/Shift';
 
-const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Shift"]
+const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Shift", "Schedule"]
 
 const Home = () => {
 
@@ -57,7 +56,8 @@ const Home = () => {
       { value === 2 && <Remarks/>}
       { value === 3 && <Teams/>}
       { value === 4 && <Projects/>}
-      {value === 5 && <Shift/>}
+      {value === 5 && <ContainerResponsive name={value}></ContainerResponsive>}
+      {value === 6 && <ContainerResponsive name={value}></ContainerResponsive>}
     </>
   )
 }

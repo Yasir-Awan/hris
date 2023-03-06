@@ -16,7 +16,7 @@ function Add_shift() {
     axios.post('', addShiftFormData)
       .then(function (response) {
         console.log(response);
-        window.location.reload();
+        window.location.reload(); 
       })
       .catch(function (error) {
         console.log(error);

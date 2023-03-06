@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID' },
-  { field: 'uname', headerName: 'Name', width: 150 },
+  { field: 'user_name', headerName: 'Name', width: 150 },
   { field: 'attendance_date', headerName: 'Date', width: 150 },
   { field: 'checkin', headerName: 'CheckIN', width: 150 },
   { field: 'checkout', headerName: 'CheckOut', width: 150 },
@@ -29,9 +29,9 @@ const AttendanceList = () => {
   const [filterModel, setFilterModel] = useState({
     items: [
       {
-        columnField: 'uname',
-        operatorValue: 'contains',
-        value: 'Fahad',
+        columnField: '',
+        operatorValue: '',
+        value: '',
       },
     ],
   });
@@ -67,12 +67,16 @@ const AttendanceList = () => {
           response.data.attendance_rows.forEach((element) => {
             attendanceRows.push({
               id: element.id,
-              uname: element.user_name,
+              user_name: element.user_name,
               attendance_date: element.attendance_date,
               checkin: element.checkin,
               checkout: element.checkout,
-              hours: element.hours,
-              minutes: element.minutes,
+              time: element.time,
+              early_sitting: element.early_sitting,
+              late_sitting: element.late_sitting,
+              extra_time: element.extra_time,
+              acceptable_time: element.acceptable_time,
+
             });
           });
         } else {
@@ -126,7 +130,7 @@ const AttendanceList = () => {
                 columns={columns}
           filterMode="server" // enable server-side filtering
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)} // handle filter changes made by the user
-        filterModel={filterModel} // pass filterModel state to the DataGrid component
+        filterModel={ filterModel} // pass filterModel state to the DataGrid component
               />
           </div>
         </>

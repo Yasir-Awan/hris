@@ -49,7 +49,7 @@ const Shift = () => {
 
     return (
         <div style={{height:500, width: '100%', marginBottom:'2px' }}>
-            <Box sx={{marginLeft:'97%', position: "absolute",top:'580px',right:'400px'}}>
+            <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
                 <CustomizedDialogs size='small' title= "Add New Shift" icon={<AddIcon />}>
                     <Add_shift/>
                 </CustomizedDialogs>
