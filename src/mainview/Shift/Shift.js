@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CustomizedDialogs from '../../components/dialog';
 import { Box } from '@mui/material';
-import Add_shift from "../../forms/Add_shift";
+import Addshift from "../../forms/Add_Shift/Addshift";
 
 
 const columns: GridColDef[] = [
@@ -51,7 +51,7 @@ const Shift = () => {
         <div style={{height:500, width: '100%', marginBottom:'2px' }}>
             <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
                 <CustomizedDialogs size='small' title= "Add New Shift" icon={<AddIcon />}>
-                    <Add_shift/>
+                    <Addshift/>
                 </CustomizedDialogs>
             </Box>
             <DataGrid rows={tableData} columns={columns}/>

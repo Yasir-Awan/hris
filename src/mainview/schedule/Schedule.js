@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CustomizedDialogs from '../../components/dialog';
 import { Box } from '@mui/material';
-import AddSchedule from "../../forms/AddSchedule";
+import AddSchedule from "../../forms/Add_Schedule/AddSchedule";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },

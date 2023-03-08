@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './add_user/AddUser.css';
+// import './Addshift.css';
 import axios from 'axios';
 import { Grid, TextField, Button, Card, CardContent, MenuItem } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 
-function Add_shift() {
+function Addshift() {
   const [addShiftFormData, setaddShiftFormData] = useState({ shift_name: '', shift_type: '', start: null, end: null });
 
   const formSubmit = (event) => {
@@ -62,11 +62,11 @@ function Add_shift() {
         <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
           <CardContent>
             <form onSubmit={formSubmit}>
-              <Grid container spacing={-4}>
+              <Grid >
                 <Grid xs={12} item>
                   <TextField placeholder='enter shift name' label="ShiftName " name='shift_name' onChange={inputEvent} value={addShiftFormData.shift_name} variant='outlined' sx={{ width: "100%" }} required />
                 </Grid>
-                <Grid xs={12} item>
+                <Grid xs={12} item sx={{ mt: 2 }}>
                   <TextField label="Select shift type" name='shift_type' onChange={inputEvent} select value={addShiftFormData.shift_type} variant="outlined" sx={{ width: "100%" }} required
                     SelectProps={{
                       multiple: false
@@ -77,7 +77,7 @@ function Add_shift() {
                 </Grid>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={2}>
-                      <Grid>
+                      <Grid sx={{ mt: 2 }}>
                         <DesktopTimePicker
                                 label="Start Time"
                                 value={addShiftFormData.start}
@@ -100,7 +100,7 @@ function Add_shift() {
      
                     </Stack>
                 </LocalizationProvider>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ mt: 2 }}>
                   <Button type="submit" variant="contained" color="primary" sx={{ width: "100%" }} >Add</Button>
                 </Grid>
 
@@ -113,4 +113,4 @@ function Add_shift() {
   );
 }
 
-export default Add_shift;
+export default Addshift;
