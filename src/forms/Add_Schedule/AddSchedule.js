@@ -21,16 +21,29 @@ function AddSchedule() {
             console.log(error);
           });
       }
-  const [options, setOptions] = useState([]);
+  // const [options, setOptions] = useState();
+  var options = [];
 
   useEffect(() => {
-    axios.get('')
-      .then(response => {
-        setOptions(response.data);
+    axios({
+      method: 'get',
+      url:'shift_list',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+    }
+    })
+      .then(function (response) {
+          response.data.shift_info.forEach(element => {
+              options.push({'id':element.id,'shift_name':element.shift_name,})
+          });
+            console.log(options);
+
       })
       .catch(error => {
-        console.error(error);
+         
       });
+    //     console.log(error.response.data.error)
+    // }
+
   }, []);
     
       const inputEvent = (event) => {
@@ -104,9 +117,11 @@ function AddSchedule() {
                             SelectProps={{
                             multiple: false
                               }}>
-                              {options.map(option => (
-                                <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>
-                                  ))}
+                              {
+                              options.map(option => (
+                                <MenuItem key={option.key} value={option.id}>{option.name}</MenuItem>
+                                  ))
+                                  }
                         </TextField>
                     </Grid>
 
