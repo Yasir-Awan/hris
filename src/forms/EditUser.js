@@ -4,7 +4,6 @@ import './add_user/AddUser.css';
 import { Grid, TextField, Button, Card, CardContent,InputAdornment,MenuItem} from '@mui/material';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import EmailIcon from '@mui/icons-material/Email';
-import KeyIcon from '@mui/icons-material/Key';
 import TollIcon from '@mui/icons-material/Toll';
 import PhoneIcon from '@mui/icons-material/Phone';
 // import HomeIcon from '@mui/icons-material/Home';
@@ -14,7 +13,7 @@ function EditUser(props) {
 
   const [addUserFormData, setAddUserFormData] = useState({...props});
   // const [isConsultant, setIsConsultant] = useState(false);
-  
+
   const formSubmit = (event) => {
     event.preventDefault();
     console.log(addUserFormData);

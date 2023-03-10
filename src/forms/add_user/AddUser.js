@@ -5,7 +5,6 @@ import { Grid, TextField, Button, Card, CardContent,InputAdornment,MenuItem} fro
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import EmailIcon from '@mui/icons-material/Email';
 import KeyIcon from '@mui/icons-material/Key';
-import TollIcon from '@mui/icons-material/Toll';
 import PhoneIcon from '@mui/icons-material/Phone';
 
 function AddUser() {
@@ -69,7 +68,7 @@ function AddUser() {
                  sx={{width:"100%"}} required
                 />
                  </Grid>
-                
+
                 <Grid item xs={12}>
                   <TextField type="number" label="Phone" placeholder="Enter phone number" name='contact' onChange={inputEvent} value={addUserFormData.contact} variant="outlined" sx={{width:"100%"}} required
                   InputProps={{startAdornment: <InputAdornment position= "start"><PhoneIcon/></InputAdornment>}}/>

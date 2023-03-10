@@ -16,22 +16,21 @@ const columns: GridColDef[] = [
   { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 },
 ];
 
-const AttendanceList = () => {
-  const [data, setData] = useState({
-    loading: true,
-    rows: [],
-    totalRows: 0,
-    rowsPerPageOptions: [5, 10, 20, 50, 100],
-    pageSize: 5,
-    page: 1,
-    // filterModel: {}, // add filterModel state
+  const AttendanceList = () => {
+    const [data, setData] = useState({
+      loading: true,
+      rows: [],
+      totalRows: 0,
+      rowsPerPageOptions: [5,10,20,50,100],
+      pageSize: 5,
+      page: 1
     });
   const [filterModel, setFilterModel] = useState({
     items: [
       {
-        columnField: '',
-        operatorValue: '',
-        value: '',
+        columnField: 'uname',
+        operatorValue: 'contains',
+        value: 'Fahad',
       },
     ],
   });
@@ -40,10 +39,6 @@ const AttendanceList = () => {
   // const [pageSize, setPageSize] = useState(5);
   // const [totalRows, setTotalRows] = useState();
   // const [tableData, setTableData] = useState([]);
-  // const handleFilterModelChange = (model) => {
-  //   updateData('page', 1);
-  //   updateData('filterModel', model);
-  // };
   const navigate = useNavigate();
   let attendanceRows = [];
 
@@ -67,57 +62,60 @@ const AttendanceList = () => {
           response.data.attendance_rows.forEach((element) => {
             attendanceRows.push({
               id: element.id,
-              user_name: element.user_name,
+              uname: element.user_name,
               attendance_date: element.attendance_date,
               checkin: element.checkin,
               checkout: element.checkout,
-              time: element.time,
-              early_sitting: element.early_sitting,
-              late_sitting: element.late_sitting,
-              extra_time: element.extra_time,
-              acceptable_time: element.acceptable_time,
-
+              hours: element.hours,
+              minutes: element.minutes,
             });
           });
         } else {
           navigate('/');
         }
 
-        setTimeout(() => {
-          const rows = attendanceRows;
+              console.log(attendanceRows);
+              setTimeout(() => {
 
-          updateData('totalRows', response.data.total_rows);
+                const rows = attendanceRows;
 
-          setTimeout(() => {
-            updateData('rows', rows);
-            updateData('loading', false);
-          }, 100);
-        }, 500);
+              console.log(data.page, data.pageSize, "");
+              console.log(rows,attendanceRows.length);
+
+              updateData("totalRows", response.data.total_rows);
+
+              setTimeout(() => {
+                updateData("rows", rows);
+                updateData("loading", false);
+              }, 100);
+            }, 500);
+              // setTableData(attendanceRows);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(error => { console.log(error); })
+
       // setData((d) => ({
       //   ...d,
       //   rowCount: dummyColorsDB.length,
       //   rows,
       //   loading: false
       // }));
-  }, [data.page, data.pageSize, filterModel]);
-  console.log(filterModel)
 
-  return (
-    <>
-      <div style={{ height: 'auto', width: '100%' }}>
-        <DataGrid
-          autoHeight
-          rowHeight={50}
-          loading={data.loading}
-          rowsPerPageOptions={data.rowsPerPageOptions}
-          pagination
-          page={data.page - 1}
-          pageSize={data.pageSize}
-          paginationMode="server"
+  }, [data.page, data.pageSize]);
+
+
+    return (
+        <>
+          <div style={{ height: 'auto', width: '100%' }}>
+              <DataGrid
+                // density="compact"
+                autoHeight
+                rowHeight={50}
+                loading={data.loading}
+                rowsPerPageOptions={data.rowsPerPageOptions}
+                pagination
+                page={data.page-1}
+                pageSize={data.pageSize}
+                paginationMode="server"
                 onPageChange={(newpage) => {
                   updateData("page", newpage+1);
                 }}
@@ -130,7 +128,7 @@ const AttendanceList = () => {
                 columns={columns}
           filterMode="server" // enable server-side filtering
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)} // handle filter changes made by the user
-        filterModel={ filterModel} // pass filterModel state to the DataGrid component
+        filterModel={filterModel} // pass filterModel state to the DataGrid component
               />
           </div>
         </>

@@ -32,8 +32,8 @@ const Shift = () => {
     //         console.log(response.data);
     //         if(response.data.shift){
     //           response.data.shift.forEach(element => {
-    //               mydata.push({'id':element.id, 'shift_name':element.shift_name, 
-    //               'shift_type':element.shift_type, 'start':element.start, 'end':element.end,})            
+    //               mydata.push({'id':element.id, 'shift_name':element.shift_name,
+    //               'shift_type':element.shift_type, 'start':element.start, 'end':element.end,})
     //           }
     //             );
     //         }
