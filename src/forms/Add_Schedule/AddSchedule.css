@@ -1,0 +1,24 @@
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background-color: #faf5f5;
+  }
+  
+  form {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+  }
+  
+  input,
+  select {
+    margin-bottom: 20px;
+  }
+  
+  MuiGrid-root {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+  

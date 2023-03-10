@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './add_user/AddUser.css';
+import React, { useState, useEffect } from 'react';
+// import './AddSchedule.css'
 import axios from 'axios';
 import { Grid, TextField, Button, Card, CardContent, MenuItem } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -21,6 +21,30 @@ function AddSchedule() {
             console.log(error);
           });
       }
+  // const [options, setOptions] = useState();
+  var options = [];
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url:'shift_list',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+    }
+    })
+      .then(function (response) {
+          response.data.shift_info.forEach(element => {
+              options.push({'id':element.id,'shift_name':element.shift_name,})
+          });
+            console.log(options);
+
+      })
+      .catch(error => {
+         
+      });
+    //     console.log(error.response.data.error)
+    // }
+
+  }, []);
     
       const inputEvent = (event) => {
         console.log(event.target.value);
@@ -59,13 +83,13 @@ function AddSchedule() {
             <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
               <CardContent>
                 <form onSubmit={formSubmit}>
-                  <Grid container spacing={-4}>
+                  <Grid>
                     <Grid xs={12} item>
                       <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id' onChange={inputEvent} value={addScheduleFormData.user_bio_id} variant='outlined' sx={{ width: "100%" }} required />
                     </Grid>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={2}>
-                          <Grid>
+                          <Grid sx={{ mt: 2 }}>
                             <DatePicker
                                     label="Start Date "
                                     value={addScheduleFormData.from_date}
@@ -88,10 +112,20 @@ function AddSchedule() {
          
                         </Stack>
                     </LocalizationProvider>
-                    <Grid xs={12} item>
-                      <TextField placeholder='Add Shift ID' label="Add Shift ID " name='shift_id' onChange={inputEvent} value={addScheduleFormData.shift_id} variant='outlined' sx={{ width: "100%" }} required />
+                    <Grid xs={12} item sx={{ mt: 2 }}>
+                        <TextField label="Shift ID" name='shift_id' onChange={inputEvent} select value={addScheduleFormData.shift_id} variant='outlined' sx={{width:"100%"}} required
+                            SelectProps={{
+                            multiple: false
+                              }}>
+                              {
+                              options.map(option => (
+                                <MenuItem key={option.key} value={option.id}>{option.name}</MenuItem>
+                                  ))
+                                  }
+                        </TextField>
                     </Grid>
-                    <Grid xs={12} item>
+
+                    <Grid xs={12} item sx={{ mt: 2 }}>
                       <TextField label="Select Leave Status" name='leave_status' onChange={inputEvent} select value={addScheduleFormData.leave_status} variant="outlined" sx={{ width: "100%" }} required
                         SelectProps={{
                           multiple: false
@@ -100,7 +134,7 @@ function AddSchedule() {
                         <MenuItem value="2">2=No</MenuItem>
                       </TextField>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ mt: 2 }}>
                       <Button type="submit" variant="contained" color="primary" sx={{ width: "100%" }} >Add</Button>
                     </Grid>
     
