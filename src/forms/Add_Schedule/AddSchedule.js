@@ -8,8 +8,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function AddSchedule(props) {
-    const [addScheduleFormData, setAddScheduleFormData] = useState({ user_bio_id: '', from_date: null, to_date: null,shift_id:'',leave_status: '' });
+    const [addScheduleFormData, setAddScheduleFormData] = useState({ user_selection:'',user_bio_id: '',
+                  from_date: null, to_date: null,shift_id:'',leave_status: '',users:'' });
     console.log(props.name)
+    var usersList = [];
 
     const formSubmit = (event) => {
         event.preventDefault();
@@ -23,13 +25,6 @@ function AddSchedule(props) {
             console.log(error);
           });
       }
-
-
-  useEffect(() => {
-
-        console.log(addScheduleFormData)
-
-  }, [addScheduleFormData]);
 
       const inputEvent = (event) => {
         console.log(event.target.value);
@@ -45,6 +40,43 @@ function AddSchedule(props) {
           };
         })
       }
+
+      const UserSelection = (event) => {
+        console.log(event.target.value);
+        console.log(event.target.name);
+
+        const { name, value } = event.target;
+
+        setAddScheduleFormData((preValue) => {
+          console.log(preValue);
+          return {
+            ...preValue,
+            [name]: value
+          };
+        })
+
+        // api call for users list START
+        console.log(usersList);
+        axios({
+          method: 'get',
+          url:'user_list',
+          headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+        }
+        })
+          .then(function (response) {
+              response.data.user_info.forEach(element => {
+                  usersList.push({'id':element.id,'name':element.fname + ' ' + element.lname ,})
+              });
+              setAddScheduleFormData(preValue => ({
+                ...preValue,
+                users: usersList
+              }));
+                console.log(usersList);
+                console.log(addScheduleFormData);
+          })
+          .catch(error => {});// api call for users list END
+      }
+
       const handleStartDateChange = (date) => {
         setAddScheduleFormData((preValue) => {
           return {
@@ -70,10 +102,24 @@ function AddSchedule(props) {
                 <form onSubmit={formSubmit}>
                   <Grid>
                     <Grid xs={12} item>
-                      <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id'
+                    <TextField label="Select User" name='user_selection' onChange={UserSelection} select value={addScheduleFormData.user_selection} variant="outlined" sx={{ width: "100%" }} required
+                    SelectProps={{
+                      multiple: false
+                    }}>
+                    <MenuItem value="1">1=Single User</MenuItem>
+                    <MenuItem value="2">2=Group by Role</MenuItem>
+                  </TextField>
+                  {/* <TextField label="Select shift type" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id.shift_type} variant="outlined" sx={{ width: "100%" }} required
+                    SelectProps={{
+                      multiple: false
+                    }}>
+                    <MenuItem value="1">1=Standard</MenuItem>
+                    <MenuItem value="2">2=Custom</MenuItem>
+                  </TextField> */}
+                      {/* <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id'
                        onChange={inputEvent}
                         value={addScheduleFormData.user_bio_id}
-                         variant='outlined' sx={{ width: "100%" }} required />
+                         variant='outlined' sx={{ width: "100%" }} required /> */}
                     </Grid>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={2}>
@@ -121,7 +167,6 @@ function AddSchedule(props) {
       {shift.name}
     </MenuItem>
     ))
-
   }
 </TextField>
 
