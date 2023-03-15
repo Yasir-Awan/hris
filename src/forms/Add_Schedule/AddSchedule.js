@@ -8,10 +8,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function AddSchedule(props) {
+    const [usersList,setUserList] = useState([]);
     const [addScheduleFormData, setAddScheduleFormData] = useState({ user_selection:'',user_bio_id: '',
-                  from_date: null, to_date: null,shift_id:'',leave_status: '',users:'' });
+                  from_date: null, to_date: null,shift_id:'',leave_status: '',users:usersList});
     console.log(props.name)
-    var usersList = [];
 
     const formSubmit = (event) => {
         event.preventDefault();
@@ -45,18 +45,8 @@ function AddSchedule(props) {
         console.log(event.target.value);
         console.log(event.target.name);
 
-        const { name, value } = event.target;
-
-        setAddScheduleFormData((preValue) => {
-          console.log(preValue);
-          return {
-            ...preValue,
-            [name]: value
-          };
-        })
-
         // api call for users list START
-        console.log(usersList);
+        // console.log(usersList.length );
         axios({
           method: 'get',
           url:'user_list',
@@ -64,17 +54,33 @@ function AddSchedule(props) {
         }
         })
           .then(function (response) {
+            let usersRecord = [];
               response.data.user_info.forEach(element => {
-                  usersList.push({'id':element.id,'name':element.fname + ' ' + element.lname ,})
+                usersRecord.push({'id':element.id,'name':element.fname + ' ' + element.lname ,})
               });
-              setAddScheduleFormData(preValue => ({
-                ...preValue,
-                users: usersList
-              }));
-                console.log(usersList);
+
+              setUserList([]);
+              // setUserList((prevProducts) => [ ...prevProducts, []]);
+              setUserList(usersRecord);
+
+                console.log(usersRecord.length );
+                console.log(usersRecord);
                 console.log(addScheduleFormData);
           })
           .catch(error => {});// api call for users list END
+
+          setAddScheduleFormData(preValue => ({
+            ...preValue,
+            users: usersList
+          }));
+          const { name, value } = event.target;
+          setAddScheduleFormData((preValue) => {
+            console.log(preValue);
+            return {
+              ...preValue,
+              [name]: value
+            };
+          })
       }
 
       const handleStartDateChange = (date) => {
@@ -117,10 +123,41 @@ function AddSchedule(props) {
                     <MenuItem value="2">2=Custom</MenuItem>
                   </TextField> */}
                       {/* <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id'
-                       onChange={inputEvent}
+                        onChange={inputEvent}
                         value={addScheduleFormData.user_bio_id}
                          variant='outlined' sx={{ width: "100%" }} required /> */}
                     </Grid>
+                    {usersList.length > 0 ? (
+                                            <Grid xs={12} item>
+                                            {/* <TextField label="Select User" name='user_selection' onChange={UserSelection} select value={addScheduleFormData.user_selection} variant="outlined" sx={{ width: "100%" }} required
+                                            SelectProps={{
+                                              multiple: false
+                                            }}>
+                                            <MenuItem value="1">1=Single User</MenuItem>
+                                            <MenuItem value="2">2=Group by Role</MenuItem>
+                                          </TextField> */}
+                                          <TextField label="Select shift type" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
+                                            SelectProps={{
+                                              multiple: false
+                                            }}>
+                                              {
+                                                usersList.map((user,index) => (
+                                                  <MenuItem key={user.id} value={user.id}>
+                                                  {user.name}
+                                                </MenuItem>
+                                                ))
+                                              }
+                                          </TextField>
+                                              {/* <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id'
+                                                onChange={inputEvent}
+                                                value={addScheduleFormData.user_bio_id}
+                                                 variant='outlined' sx={{ width: "100%" }} required /> */}
+                                            </Grid>
+                      ) : (
+                        <div>
+                        </div>
+                      )}
+
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={2}>
                           <Grid sx={{ mt: 2 }}>
@@ -147,7 +184,6 @@ function AddSchedule(props) {
                     </LocalizationProvider>
                     <Grid xs={12} item sx={{ mt: 2 }}>
                     {
-
 <TextField
   label="Shift ID"
   name="shift_id"
