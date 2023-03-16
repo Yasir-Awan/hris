@@ -9,7 +9,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function AddSchedule(props) {
     const [usersList,setUserList] = useState([]);
-    const [endTime, setEndTime] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [EndDate, setEndDate] = useState(null);
     const [addScheduleFormData, setAddScheduleFormData] = useState({ user_selection:'',user_bio_id: '',
                   from_date: null, to_date: null,shift_id:'',leave_status: '',users:usersList});
     console.log(props.name)
@@ -93,30 +94,43 @@ function AddSchedule(props) {
       }
 
       const handleStartDateChange = (date) => {
+        setStartDate(date);
         setAddScheduleFormData((preValue) => {
           return {
             ...preValue,
             from_date: date
           };
         });
+        axios({
+          method: 'post',
+          url: '',
+          headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+          data: {
+            user_id: addScheduleFormData.user_bio_id,
+            from_date: date,
+          },
+        })
+        .then(response => console.log(response.data)
+        )
+        .catch(error => console.error(error));
       }
 
       const handleEndDateChange = (date) => {
-        setEndTime(date);
+        setEndDate(date);
         setAddScheduleFormData((preValue) => {
           return {
             ...preValue,
             to_date: date
           };
         });
-        // axios.post('', { to_date: date }, addScheduleFormData.user_bio_id)
         axios({
           method: 'post',
           url: '',
           headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
           data: {
+            user_id: addScheduleFormData.user_bio_id,
+            from_date: startDate,
             to_date: date,
-            user_id: addScheduleFormData.user_bio_id
           },
         })
         .then(response => console.log(response.data)
@@ -186,7 +200,7 @@ function AddSchedule(props) {
                           <Grid sx={{ mt: 2 }}>
                             <DatePicker
                                     label="Start Date "
-                                    value={addScheduleFormData.from_date}
+                                    value={startDate ?? addScheduleFormData.from_date ?? null}
                                     onChange={(handleStartDateChange)}
                                     variant='outlined'
                                     sx={{ width: "100%" }}
@@ -196,7 +210,7 @@ function AddSchedule(props) {
                             </Grid>
                             <DatePicker
                                       label="End Date"
-                                      value={endTime ?? addScheduleFormData.to_date ?? null}
+                                      value={EndDate ?? addScheduleFormData.to_date ?? null}
                                       onChange={handleEndDateChange}
                                       variant='outlined'
                                       sx={{ width: "150%"}}
