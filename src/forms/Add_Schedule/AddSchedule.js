@@ -11,7 +11,7 @@ function AddSchedule(props) {
     const [usersList,setUserList] = useState([]);
     const [addScheduleFormData, setAddScheduleFormData] = useState({ user_selection:'',user_bio_id: '',
                   from_date: null, to_date: null,shift_id:'',leave_status: '',users:usersList});
-    console.log(props.name)
+    // console.log(props.name)
 
     const formSubmit = (event) => {
         event.preventDefault();
@@ -29,10 +29,10 @@ function AddSchedule(props) {
       const inputEvent = (event) => {
         console.log(event.target.value);
         console.log(event.target.name);
-
         const { name, value } = event.target;
-
         setAddScheduleFormData((preValue) => {
+          console.log([name]);
+          console.log(value);
           console.log(preValue);
           return {
             ...preValue,
@@ -40,6 +40,7 @@ function AddSchedule(props) {
           };
         })
       }
+      console.log(addScheduleFormData);
 
       const UserSelection = (event) => {
         console.log(event.target.value);
@@ -50,8 +51,7 @@ function AddSchedule(props) {
         axios({
           method: 'get',
           url:'user_list',
-          headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
-        }
+          headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
         })
           .then(function (response) {
             let usersRecord = [];
@@ -62,8 +62,6 @@ function AddSchedule(props) {
               setUserList([]);
               // setUserList((prevProducts) => [ ...prevProducts, []]);
               setUserList(usersRecord);
-
-                console.log(usersRecord.length );
                 console.log(usersRecord);
                 console.log(addScheduleFormData);
           })
@@ -115,28 +113,10 @@ function AddSchedule(props) {
                     <MenuItem value="1">1=Single User</MenuItem>
                     <MenuItem value="2">2=Group by Role</MenuItem>
                   </TextField>
-                  {/* <TextField label="Select shift type" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id.shift_type} variant="outlined" sx={{ width: "100%" }} required
-                    SelectProps={{
-                      multiple: false
-                    }}>
-                    <MenuItem value="1">1=Standard</MenuItem>
-                    <MenuItem value="2">2=Custom</MenuItem>
-                  </TextField> */}
-                      {/* <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id'
-                        onChange={inputEvent}
-                        value={addScheduleFormData.user_bio_id}
-                         variant='outlined' sx={{ width: "100%" }} required /> */}
                     </Grid>
-                    {usersList.length > 0 ? (
-                                            <Grid xs={12} item>
-                                            {/* <TextField label="Select User" name='user_selection' onChange={UserSelection} select value={addScheduleFormData.user_selection} variant="outlined" sx={{ width: "100%" }} required
-                                            SelectProps={{
-                                              multiple: false
-                                            }}>
-                                            <MenuItem value="1">1=Single User</MenuItem>
-                                            <MenuItem value="2">2=Group by Role</MenuItem>
-                                          </TextField> */}
-                                          <TextField label="Select shift type" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
+                          <Grid xs={12} item sx={{mt:2}}>
+                          {usersList.length > 0 ? (
+                                          <TextField label="Select User" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
                                             SelectProps={{
                                               multiple: false
                                             }}>
@@ -148,15 +128,8 @@ function AddSchedule(props) {
                                                 ))
                                               }
                                           </TextField>
-                                              {/* <TextField placeholder='Scan User Bio Id' label="scan User Bio Id " name='user_bio_id'
-                                                onChange={inputEvent}
-                                                value={addScheduleFormData.user_bio_id}
-                                                 variant='outlined' sx={{ width: "100%" }} required /> */}
-                                            </Grid>
-                      ) : (
-                        <div>
-                        </div>
-                      )}
+                                          ) : (<div></div>)}
+                            </Grid>
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={2}>
