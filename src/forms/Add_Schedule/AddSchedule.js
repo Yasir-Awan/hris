@@ -9,6 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function AddSchedule(props) {
     const [usersList,setUserList] = useState([]);
+    const [endTime, setEndTime] = useState(null);
     const [addScheduleFormData, setAddScheduleFormData] = useState({ user_selection:'',user_bio_id: '',
                   from_date: null, to_date: null,shift_id:'',leave_status: '',users:usersList});
     console.log(props.name)
@@ -34,12 +35,16 @@ function AddSchedule(props) {
 
         setAddScheduleFormData((preValue) => {
           console.log(preValue);
-          return {
+          const updatedValue = {
             ...preValue,
             [name]: value
           };
+          // console.log(updatedValue);
+          return updatedValue;
         })
       }
+      console.log(addScheduleFormData);
+
 
       const UserSelection = (event) => {
         console.log(event.target.value);
@@ -59,9 +64,13 @@ function AddSchedule(props) {
                 usersRecord.push({'id':element.id,'name':element.fname + ' ' + element.lname ,})
               });
 
-              setUserList([]);
+              // setUserList([]);
               // setUserList((prevProducts) => [ ...prevProducts, []]);
               setUserList(usersRecord);
+              setAddScheduleFormData(preValue => ({
+                ...preValue,
+                users: usersRecord
+              }))
 
                 console.log(usersRecord.length );
                 console.log(usersRecord);
@@ -93,12 +102,26 @@ function AddSchedule(props) {
       }
 
       const handleEndDateChange = (date) => {
+        setEndTime(date);
         setAddScheduleFormData((preValue) => {
           return {
             ...preValue,
             to_date: date
           };
         });
+        // axios.post('', { to_date: date }, addScheduleFormData.user_bio_id)
+        axios({
+          method: 'post',
+          url: '',
+          headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+          data: {
+            to_date: date,
+            user_id: addScheduleFormData.user_bio_id
+          },
+        })
+        .then(response => console.log(response.data)
+        )
+        .catch(error => console.error(error));
       }
       return (
         <div className="App">
@@ -128,7 +151,7 @@ function AddSchedule(props) {
                          variant='outlined' sx={{ width: "100%" }} required /> */}
                     </Grid>
                     {usersList.length > 0 ? (
-                                            <Grid xs={12} item>
+                                            <Grid xs={12} sx={{ mt: 2 }} item>
                                             {/* <TextField label="Select User" name='user_selection' onChange={UserSelection} select value={addScheduleFormData.user_selection} variant="outlined" sx={{ width: "100%" }} required
                                             SelectProps={{
                                               multiple: false
@@ -173,7 +196,7 @@ function AddSchedule(props) {
                             </Grid>
                             <DatePicker
                                       label="End Date"
-                                      value={addScheduleFormData.to_date}
+                                      value={endTime ?? addScheduleFormData.to_date ?? null}
                                       onChange={handleEndDateChange}
                                       variant='outlined'
                                       sx={{ width: "150%"}}
