@@ -9,6 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function AddSchedule(props) {
     const [usersList,setUserList] = useState([]);
+    const [endTime, setEndTime] = useState(null);
     const [addScheduleFormData, setAddScheduleFormData] = useState({ user_selection:'',user_bio_id: '',
                   from_date: null, to_date: null,shift_id:'',leave_status: '',users:usersList});
     // console.log(props.name)
@@ -34,13 +35,14 @@ function AddSchedule(props) {
           console.log([name]);
           console.log(value);
           console.log(preValue);
-          return {
+          const updatedValue = {
             ...preValue,
             [name]: value
           };
+          // console.log(updatedValue);
+          return updatedValue;
         })
       }
-      console.log(addScheduleFormData);
 
       const UserSelection = (event) => {
         console.log(event.target.value);
@@ -59,9 +61,11 @@ function AddSchedule(props) {
                 usersRecord.push({'id':element.id,'name':element.fname + ' ' + element.lname ,})
               });
 
-              setUserList([]);
+              // setUserList([]);
               // setUserList((prevProducts) => [ ...prevProducts, []]);
               setUserList(usersRecord);
+
+                console.log(usersRecord.length );
                 console.log(usersRecord);
                 console.log(addScheduleFormData);
           })
@@ -91,14 +95,29 @@ function AddSchedule(props) {
       }
 
       const handleEndDateChange = (date) => {
+        setEndTime(date);
         setAddScheduleFormData((preValue) => {
           return {
             ...preValue,
             to_date: date
           };
         });
+        // axios.post('', { to_date: date }, addScheduleFormData.user_bio_id)
+        axios({
+          method: 'post',
+          url: '',
+          headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+          data: {
+            to_date: date,
+            user_id: addScheduleFormData.user_bio_id
+          },
+        })
+        .then(response => console.log(response.data)
+        )
+        .catch(error => console.error(error));
       }
       return (
+        <>
         <div className="App">
           <Grid>
             <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
@@ -114,9 +133,16 @@ function AddSchedule(props) {
                     <MenuItem value="2">2=Group by Role</MenuItem>
                   </TextField>
                     </Grid>
-                          <Grid xs={12} item sx={{mt:2}}>
-                          {usersList.length > 0 ? (
-                                          <TextField label="Select User" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
+                    {usersList.length > 0 ? (
+                                            <Grid xs={12} item>
+                                            {/* <TextField label="Select User" name='user_selection' onChange={UserSelection} select value={addScheduleFormData.user_selection} variant="outlined" sx={{ width: "100%" }} required
+                                            SelectProps={{
+                                              multiple: false
+                                            }}>
+                                            <MenuItem value="1">1=Single User</MenuItem>
+                                            <MenuItem value="2">2=Group by Role</MenuItem>
+                                          </TextField> */}
+                                          <TextField label="Select shift type" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
                                             SelectProps={{
                                               multiple: false
                                             }}>
@@ -128,14 +154,15 @@ function AddSchedule(props) {
                                                 ))
                                               }
                                           </TextField>
-                                          ) : (<div></div>)}
-                            </Grid>
+                                          </Grid>
+                                          ) : (<div></div>)
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                          }
+
+<LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={2}>
-                          <Grid sx={{ mt: 2 }}>
                             <DatePicker
-                                    label="Start Date "
+                                    label="Start Date"
                                     value={addScheduleFormData.from_date}
                                     onChange={(handleStartDateChange)}
                                     variant='outlined'
@@ -143,10 +170,10 @@ function AddSchedule(props) {
                                     required
                                     renderInput={(params) => <TextField {...params} />}
                                   />
-                            </Grid>
+
                             <DatePicker
                                       label="End Date"
-                                      value={addScheduleFormData.to_date}
+                                      value={endTime ?? addScheduleFormData.to_date ?? null}
                                       onChange={handleEndDateChange}
                                       variant='outlined'
                                       sx={{ width: "150%"}}
@@ -155,6 +182,7 @@ function AddSchedule(props) {
                                     />
                         </Stack>
                     </LocalizationProvider>
+
                     <Grid xs={12} item sx={{ mt: 2 }}>
                     {
 <TextField
@@ -201,6 +229,7 @@ function AddSchedule(props) {
             </Card>
           </Grid>
         </div>
-      );
+        </>
+          );
     }
 export default AddSchedule
