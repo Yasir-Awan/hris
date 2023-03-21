@@ -23,13 +23,13 @@ const Home = () => {
     <>
         <AppBar position='static' sx={{background:'#063970'}}>
           <Toolbar>
-            <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
+            <IconButton size='small' edge='start' color='inherit' aria-label='Logo'>
               <ThreePIcon/>
             </IconButton>
             {
               isMatch ? (
                 <>
-                <Typography sx={{fontSize:'1.5rem', paddingLeft:'10%'}}>HR APP</Typography>
+                <Typography sx={{fontSize:'1.5rem', paddingLeft:'5%'}}>HR APP</Typography>
                 <DrawerComp/>
                 </>
               ):

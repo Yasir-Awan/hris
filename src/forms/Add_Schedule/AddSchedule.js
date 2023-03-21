@@ -140,7 +140,7 @@ function AddSchedule(props) {
       return (
         <div className="App">
           <Grid>
-            <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
+            <Card style={{ maxWidth: 450, padding: "0% 0%", margin: "5% auto" }}>
               <CardContent>
                 <form onSubmit={formSubmit}>
                   <Grid>
