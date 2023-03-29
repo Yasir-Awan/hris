@@ -9,43 +9,75 @@ import AddSchedule from "../../forms/Add_Schedule/AddSchedule";
 // import Shift from "../Shift/Shift";
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID' },
-    { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
+  { field: 'id', headerName: 'ID' },
+    // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
+    { field: 'user_name', headerName: 'User Name', width: 150 },
     { field: 'from_date', headerName: 'From Date', width: 150 },
     { field: 'to_date', headerName: 'To Date', width: 150 },
-    { field: 'shift_id', headerName: 'Shift ID', width: 150 },
-    { field: 'leave_status', headerName: 'Leave Status', width: 150 },
+    { field: 'shift_name', headerName: 'Shift Name', width: 150 },
+    { field: 'shift_start', headerName: 'Shift Start', width: 150 },
+    { field: 'shift_end', headerName: 'Shift End', width: 150 },
+    // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
 ];
 const ScheduleList = () => {
     const navigate = useNavigate();
-    const [tableData, setTableData] = useState([])
+    const [shifts,setShifts] = useState([]);
+    const [tableData, setTableData] = useState({
+      loading: true,
+      rows: [],
+      totalRows: 0,
+      rowsPerPageOptions: [5,10,20,50,100],
+      pageSize: 5,
+      page: 1
+    });
+    const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
+    const updateData = (k, v) => setTableData((prev) => ({ ...prev, [k]: v }));
     var mydata =[];
-    var shifts = [];
+    var shiftRecords = [];
     useEffect(() => {
+      updateData('loading', true);
       // api call for schedule List START
-        axios({
-            method: 'get',
-            url: 'schedule',
-            headers: {
-              'Authorization': 'Bearer '+localStorage.getItem('token'),
-            }
-          })
+      axios({
+        method: 'post',
+        url: 'schedule_list',
+        headers: {
+          'Authorization': 'Bearer '+localStorage.getItem('token'),
+        },
+        data: {
+          pageSize: tableData.pageSize,
+          page: tableData.page,
+          filters: filterModel // pass filterModel to the server,
+        },
+      }
+      )
         .then(function (response) {
-            console.log(response.data);
-            if(response.data.schedule){
-              response.data.schedule.forEach(element => {
-                  mydata.push({'id':element.id, 'user_bio_id':element.user_bio_id,
-                  'from_date':element.from_date, 'to_date':element.to_date, 'shift_id':element.shift_id, 'leave_status':element.leave_status})
-              });
+          console.log(response.data);
+          if(response.data.schedule_rows){
+            response.data.schedule_rows.forEach(element => {
+                mydata.push({id:element.id,user_name:element.user_name ,
+                from_date:element.from_date, to_date:element.to_date, shift_name:element.shift_name,
+                shift_start:element.shift_start,shift_end:element.shift_end
+              })
             }
-            else{
-              navigate('/');
-            }
-            setTableData(mydata);
-          })
-          .catch(error => {
-            console.log(error);
-              }) // api call for schedule list END
+              );
+          }
+          else{
+            navigate('/');
+          }
+          // setTableData(mydata);
+          setTimeout(() => {
+            const rows = mydata;
+            updateData("totalRows", response.data.total_rows);
+                setTimeout(() => {
+                  updateData("rows", rows);
+                  updateData("loading", false);
+                }, 100);
+          }, 500);
+        })
+        .catch(error => {
+          console.log(error);
+            })
+              // api call for schedule list END
 
 // api call for shifts list START
 axios({
@@ -56,24 +88,49 @@ axios({
 })
   .then(function (response) {
       response.data.shift_info.forEach(element => {
-          shifts.push({'id':element.id,'name':element.shift_name,})
+          shiftRecords.push({'id':element.id,'name':element.shift_name,})
       });
+      setShifts(shiftRecords);
         console.log(shifts);
 
   })
   .catch(error => {});// api call for shifts list END
 
-    }, []);
+    }, [tableData.page, tableData.pageSize,filterModel]);
 
     return (
       <>
-        <div style={{height:500, width: '100%', marginBottom:'2px' }}>
+        <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
             <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
                 <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />}>
                     <AddSchedule name={shifts}/>
                 </CustomizedDialogs>
             </Box>
-            <DataGrid rows={tableData} columns={columns}/>
+            <DataGrid
+                autoHeight
+                rowHeight={50}
+                loading={tableData.loading}
+                rowsPerPageOptions={tableData.rowsPerPageOptions}
+                pagination
+                page={tableData.page-1}
+                pageSize={tableData.pageSize}
+                paginationMode="server"
+                onPageChange={(newpage) => {
+                  updateData("page", newpage+1);
+                }}
+                onPageSizeChange={(newPageSize) => {
+                  updateData("page", 1);
+                  updateData("pageSize", newPageSize);
+                }}
+                rowCount={tableData.totalRows}
+                rows={tableData.rows}
+                columns={columns}
+                filterMode="server" // enable server-side filtering
+                onFilterModelChange={
+                  (newFilterModel) => setFilterModel(newFilterModel)
+                } // handle filter changes made by the user
+                filterModel={filterModel} // pass filterModel state to the DataGrid component
+                />
         </div>
         </>
     )

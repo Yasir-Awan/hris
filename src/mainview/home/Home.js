@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab, Button, useMediaQuery,useTheme } from "@mui/material";
 import ThreePIcon from '@mui/icons-material/ThreeP';
 import DrawerComp from '../drawer/DrawerComp';
@@ -8,58 +8,74 @@ import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
 
-const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Shift", "Schedule"]
+const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Shifts", "Schedules","Leaves"]
 
 const Home = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [value,setValue] = useState(0);
 
   const theme = useTheme();
+  const scheduleData = location.state && location.state.scheduleData;
   console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+
   console.log(isMatch);
-  return (
-    <>
-        <AppBar position='static' sx={{background:'#063970'}}>
-          <Toolbar>
-            <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-              <ThreePIcon/>
-            </IconButton>
-            {
-              isMatch ? (
-                <>
-                <Typography sx={{fontSize:'1.5rem', paddingLeft:'10%'}}>HR APP</Typography>
-                <DrawerComp/>
-                </>
-              ):
-              (
-                <>
-                <Typography variant='h6' component='div'>
-              HR APP
-            </Typography>
-            <Tabs textColor='inherit' value={value} onChange={(e,value)=>setValue(value)} indicatorColor='secondary'>
+  if (scheduleData) {
+    return (
+      <>
+        {/* Render the ScheduleList component inside the Home component */}
+        <Tabs textColor='inherit' value={value} onChange={(e,value)=>setValue(value)} indicatorColor='secondary'>
+                    <Tab key={6} label={'Schedule'} />
+              </Tabs>
+        <ContainerResponsive name={6}></ContainerResponsive>
+      </>
+    );
+  }else{
+    return (
+      <>
+          <AppBar position='static' sx={{background:'#063970'}}>
+            <Toolbar>
+              <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
+                <ThreePIcon/>
+              </IconButton>
               {
-                PAGES.map((page,index) => (
-                  <Tab key={index} label={page} />
-                ))
+                isMatch ? (
+                  <>
+                  <Typography sx={{fontSize:'1.5rem', paddingLeft:'10%'}}>HR APP</Typography>
+                  <DrawerComp/>
+                  </>
+                ):
+                (
+                  <>
+                  <Typography variant='h6' component='div'>
+                HR APP
+              </Typography>
+              <Tabs textColor='inherit' value={value} onChange={(e,value)=>setValue(value)} indicatorColor='secondary'>
+                {
+                  PAGES.map((page,index) => (
+                    <Tab key={index} label={page} />
+                  ))
+                }
+              </Tabs>
+              <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button>
+                  </>
+                )
               }
-            </Tabs>
-            <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button>
-                </>
-              )
-            }
-          </Toolbar>
-        </AppBar>
-        { value === 0 && <ContainerResponsive name={value}></ContainerResponsive> }
-      { value === 1 && <ContainerResponsive name={value}></ContainerResponsive>}
-      { value === 2 && <Remarks/>}
-      { value === 3 && <Teams/>}
-      { value === 4 && <Projects/>}
-      {value === 5 && <ContainerResponsive name={value}></ContainerResponsive>}
-      {value === 6 && <ContainerResponsive name={value}></ContainerResponsive>}
-    </>
-  )
+            </Toolbar>
+          </AppBar>
+          { value === 0 && <ContainerResponsive name={value}></ContainerResponsive>}
+        { value === 1 && <ContainerResponsive name={value}></ContainerResponsive>}
+        { value === 2 && <Remarks/>}
+        { value === 3 && <Teams/>}
+        { value === 4 && <Projects/>}
+        {value === 5 && <ContainerResponsive name={value}></ContainerResponsive>}
+        {value === 6 && <ContainerResponsive name={value}></ContainerResponsive>}
+        {value === 7 && <ContainerResponsive name={value}></ContainerResponsive>}
+      </>
+    )
+    }
 }
 
 export default Home

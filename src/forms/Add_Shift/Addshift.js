@@ -16,7 +16,7 @@ function Addshift() {
     axios.post('', addShiftFormData)
       .then(function (response) {
         console.log(response);
-        window.location.reload(); 
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
@@ -59,7 +59,7 @@ function Addshift() {
   return (
     <div className="App">
       <Grid>
-        <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
+        <Card style={{ maxWidth: 450, padding: "0px 0px", margin: "0 auto" }}>
           <CardContent>
             <form onSubmit={formSubmit}>
               <Grid >
@@ -97,7 +97,7 @@ function Addshift() {
                                   required
                                   renderInput={(params) => <TextField {...params} />}
                                 />
-     
+
                     </Stack>
                 </LocalizationProvider>
                 <Grid item xs={12} sx={{ mt: 2 }}>

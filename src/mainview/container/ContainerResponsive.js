@@ -7,8 +7,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import UserList from '../users/UserList';
 import AttendanceList from '../attandance/AttendanceList';
-import Shift from '../Shift/Shift';
+import Shift from '../shift/Shift';
 import ScheduleList from '../schedule/ScheduleList';
+import LeavesList from '../leaves/LeavesList';
 
 const bull = (
   <Box
@@ -74,6 +75,21 @@ export default function BasicCard(props) {
           Schedule{bull}List
         </Typography>
         <ScheduleList/>
+      </CardContent>
+      {/* <CardActions>
+        <Button size="small">Learn More</Button>
+      </CardActions> */}
+    </Card>
+    )
+  }
+  if(props.name === 7){
+    return(
+      <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography variant="h5" component="div" gutterBottom>
+          Leaves{bull}List
+        </Typography>
+        <LeavesList/>
       </CardContent>
       {/* <CardActions>
         <Button size="small">Learn More</Button>

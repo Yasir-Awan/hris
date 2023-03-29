@@ -70,7 +70,7 @@ export default function CustomizedDialogs({ children, title, icon }) {
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           {title}
         </BootstrapDialogTitle>
-        <DialogContent dividers>{children}</DialogContent>
+        <DialogContent dividers style={{overflow:"auto", scrollbarwidth: "thin", maxwidth: 450, padding: "0% 0%", margin: "o auto"}}>{children}</DialogContent>
       </BootstrapDialog>
     </div>
   );

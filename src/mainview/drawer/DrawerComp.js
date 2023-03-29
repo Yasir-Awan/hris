@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 // import UserList from '../users/UserList';
 // import AttandanceList from '../attandance/AttandanceList';
 import Box from '@mui/material/Box';
-const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Login","Logout"]
+const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Shift", "Schedule"]
 
 const DrawerComp = () => {
     const [openDrawer, setopenDrawer] = useState(false);

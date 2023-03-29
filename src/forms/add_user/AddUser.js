@@ -41,7 +41,7 @@ function AddUser() {
   return (
     <div className="App">
       <Grid>
-        <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
+        <Card style={{ maxWidth: 450, padding: "0px 0px", margin: "0 auto" }}>
           <CardContent>
             <form onSubmit={formSubmit}>
               <Grid container spacing={1}>
