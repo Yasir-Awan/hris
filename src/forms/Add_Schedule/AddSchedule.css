@@ -1,4 +1,4 @@
-.App {
+/* .App {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
     flex-direction:column;
     align-items: center;
   }
-  
+
   input,
   select {
     margin-bottom: 20px;
@@ -19,10 +19,16 @@
 .css-1t4vnk2-MuiDialogContent-root{
     padding-top: inherit;
     padding-left: inherit;
+  } */
+
+  .blocked-date {
+    color: red !important;
+    font-size: 18px !important;
+    text-decoration: line-through !important;
   }
-/*   
+
+/*
   MuiGrid-root {
     margin-top: 1px;
     margin-bottom: 80px;
   } */
-  
