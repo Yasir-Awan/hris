@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CustomizedDialogs from '../../components/dialog';
 import { Box } from '@mui/material';
-import Addshift from "../../forms/Add_Shift/Addshift";
+import Addshift from "../../forms/add_shift/Addshift";
 
 
 const columns: GridColDef[] = [

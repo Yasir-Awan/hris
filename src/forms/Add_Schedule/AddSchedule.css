@@ -21,7 +21,12 @@
     padding-left: inherit;
   } */
 
-  .blocked-date {
+  .blocked-leave-date {
+    color: green !important;
+    font-size: 18px !important;
+    text-decoration: line-through !important;
+  }
+  .blocked-schedule-date {
     color: red !important;
     font-size: 18px !important;
     text-decoration: line-through !important;
