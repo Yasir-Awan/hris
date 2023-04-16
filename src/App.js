@@ -6,13 +6,17 @@ import Login from './forms/login/Login';
 import Error from './mainview/error/Error';
 // import UserList from './mainview/users/UserList';
 import './App.css';
-import {Route,Routes} from 'react-router-dom';
+import {Route,Routes,Navigate} from 'react-router-dom';
 
-function App() {
+function App(props) {
   return (
     <>
     <Routes>
-      <Route exact path='/home' element={<Home/>} />
+      <Route exact path='/home/:page?' element={<Home {...props}/>} />
+      <Route
+        path="/home"
+        element={<Navigate to="/home/employees" replace />}
+    />
       <Route exact path='/' element={<Login/>} />
       <Route exact path='*' element={<Error/>} />
     </Routes>

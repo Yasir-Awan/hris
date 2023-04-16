@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from "react";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from "axios";
+import './ScheduleList.css';
 import {useNavigate} from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CustomizedDialogs from '../../components/dialog';
@@ -9,15 +10,15 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 // import Shift from "../Shift/Shift";
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID' },
+  { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
     // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
-    { field: 'fullname', headerName: 'EMPLOYEE', width: 150 },
+    { field: 'fullname', headerName: 'EMPLOYEE', width: 150,headerAlign:'center',align:'center'},
     // { field: 'user_name', headerName: 'User Name', width: 150 },
-    { field: 'from_date', headerName: 'FROM', width: 150 },
-    { field: 'to_date', headerName: 'TO', width: 150 },
-    { field: 'shift_name', headerName: 'SHIFT', width: 150 },
-    { field: 'shift_start', headerName: 'SHIFT START', width: 150 },
-    { field: 'shift_end', headerName: 'SHIFT END', width: 150 },
+    { field: 'from_date', headerName: 'FROM', width: 150,headerAlign:'center',align:'center'},
+    { field: 'to_date', headerName: 'TO', width: 150,headerAlign:'center',align:'center'},
+    { field: 'shift_name', headerName: 'SHIFT', width: 150,headerAlign:'center',align:'center'},
+    { field: 'shift_start', headerName: 'SHIFT START', width: 150,headerAlign:'center',align:'center'},
+    { field: 'shift_end', headerName: 'SHIFT END', width: 150,headerAlign:'center',align:'center'},
     // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
 ];
 const ScheduleList = () => {
@@ -109,7 +110,7 @@ axios({
             </Box>
             <DataGrid
                 autoHeight
-                rowHeight={50}
+                // rowHeight={50}
                 loading={tableData.loading}
                 rowsPerPageOptions={tableData.rowsPerPageOptions}
                 pagination

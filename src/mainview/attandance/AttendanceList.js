@@ -4,16 +4,16 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID' , width: 70},
-  { field: 'fullname', headerName: 'EMPLOYEE', width: 150 },
-  { field: 'attendance_date', headerName: 'DATE', width: 120 },
-  { field: 'checkin', headerName: 'CHECKIN', width: 120 },
-  { field: 'checkout', headerName: 'CHECKOUT', width: 120 },
-  { field: 'time', headerName: 'TOTAL TIME', width: 130 },
-  { field: 'early_sitting', headerName: 'EARLY', width: 130 },
-  { field: 'late_sitting', headerName: 'LATE', width: 130 },
-  { field: 'extra_time', headerName: 'EXTRA TIME', width: 150 },
-  { field: 'acceptable_time', headerName: 'ACCEPTED TIME', width: 150 },
+  { field: 'id', headerName: 'ID' , width: 70 ,headerAlign:'center',align:'center'},
+  { field: 'fullname', headerName: 'EMPLOYEE', width: 150,headerAlign:'center',align:'center'},
+  { field: 'attendance_date', headerName: 'DATE', width: 120,headerAlign:'center',align:'center'},
+  { field: 'checkin', headerName: 'CHECKIN', width: 120,headerAlign:'center',align:'center'},
+  { field: 'checkout', headerName: 'CHECKOUT', width: 120,headerAlign:'center',align:'center'},
+  { field: 'time', headerName: 'TOTAL TIME', width: 130,headerAlign:'center',align:'center'},
+  { field: 'early_sitting', headerName: 'EARLY', width: 130,headerAlign:'center',align:'center'},
+  { field: 'late_sitting', headerName: 'LATE', width: 130,headerAlign:'center',align:'center'},
+  { field: 'extra_time', headerName: 'EXTRA TIME', width: 150,headerAlign:'center',align:'center'},
+  { field: 'acceptable_time', headerName: 'ACCEPTED TIME', width: 150,headerAlign:'center',align:'center'},
 ];
 
   const AttendanceList = () => {
@@ -76,7 +76,7 @@ const columns: GridColDef[] = [
               <DataGrid
                 // density="compact"
                 autoHeight
-                rowHeight={50}
+                // rowHeight={50}
                 loading={data.loading}
                 rowsPerPageOptions={data.rowsPerPageOptions}
                 pagination

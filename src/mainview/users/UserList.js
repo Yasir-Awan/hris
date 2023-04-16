@@ -12,17 +12,17 @@ import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 30 },
-    { field: 'uname', headerName: 'EMPLOYEE', width: 130 },
-    { field: 'email', headerName: 'EMAIL', width: 200 },
-    { field: 'sitename', headerName: 'SITE', width: 80 },
-    { field: 'contact', headerName: 'CONTACT', width: 120 },
-    { field: 'address', headerName: 'ADDRESS', width: 100 },
-    { field: 'empType', headerName: 'TYPE', width: 90 },
-    { field: 'consultant', headerName: 'CONSULTANT', width: 190 },
-    { field: 'empSec', headerName: 'SECTION', width: 70 },
-    { field: 'empField', headerName: 'FIELD', width: 160 },
-    { field: 'empRole', headerName: 'ROLE', width: 170 },
+    { field: 'id', headerName: 'ID', width: 20,headerAlign:'center',align:'center'},
+    { field: 'uname', headerName: 'EMPLOYEE', width: 130,headerAlign:'center',align:'center'},
+    { field: 'email', headerName: 'EMAIL', width: 200,headerAlign:'center',align:'center'},
+    { field: 'sitename', headerName: 'SITE', width: 80,headerAlign:'center',align:'center'},
+    { field: 'contact', headerName: 'CONTACT', width: 120,headerAlign:'center',align:'center'},
+    { field: 'address', headerName: 'ADDRESS', width: 100,headerAlign:'center',align:'center'},
+    { field: 'empType', headerName: 'TYPE', width: 90,headerAlign:'center',align:'center'},
+    { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
+    { field: 'empSec', headerName: 'SECTION', width: 85,headerAlign:'center',align:'center'},
+    { field: 'empField', headerName: 'FIELD', width: 155,headerAlign:'center',align:'center'},
+    { field: 'empRole', headerName: 'ROLE', width: 170,headerAlign:'center',align:'center'},
     // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
     // { field: 'status', headerName: 'status', width: 150 },
     { field: 'action', headerName: 'ACTION', width: 75, renderCell:(value) => {
@@ -38,7 +38,7 @@ const columns: GridColDef[] = [
         </CustomizedDialogs> */}
         </>
       );
-    }, }
+    },  headerAlign:'center',align:'center'}
 ];
 
 const UserList = () => {
@@ -81,14 +81,17 @@ const [tableData, setTableData] = useState([])
     console.log(tableData)
     return (
     <>
-  <div style={{height:500, width: '100%', marginBottom:'2px' }}>
+  <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
   <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'22px'}}>
       {/* <CustomizedDialogs size='small' title= "Add New User" icon={<AddIcon />}>
       <AddUser/>
       </CustomizedDialogs> */}
     </Box>
 
-    <DataGrid rows={tableData} columns={columns} />
+    <DataGrid
+    autoHeight
+    // rowHeight={50}
+    rows={tableData} columns={columns} />
   </div>
     </>
   )

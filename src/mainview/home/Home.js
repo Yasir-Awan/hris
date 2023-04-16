@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate,useLocation,useParams} from 'react-router-dom';
 import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab, Button, useMediaQuery,useTheme } from "@mui/material";
 import ThreePIcon from '@mui/icons-material/ThreeP';
 import DrawerComp from '../drawer/DrawerComp';
@@ -8,13 +8,43 @@ import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
 
-const PAGES = ["Employees","Shifts","Leaves","Schedules","Attendance","Remarks","Teams","Projects"]
+// const PAGES = ["Employees","Shifts","Leaves","Schedules","Attendance","Remarks","Teams","Projects"]
 
-const Home = () => {
+const Home = props => {
 
+  const { page } = useParams();
+
+  const tabNameToIndex = {
+    0 : "employees",
+    1 : "shifts",
+    2 : "leaves",
+    3: "schedules",
+    4: "attendance",
+    5: "remarks",
+    6: "teams",
+    7: "projects"
+  }
+  const  indexToTabName = {
+      "employees":0,
+      "shifts":1,
+      "leaves":2,
+      "schedules":3,
+      "attendance":4,
+      "remarks":5,
+      "teams":6,
+      "projects":7}
   const navigate = useNavigate();
   const location = useLocation();
-  const [value,setValue] = useState(0);
+  const [SelectedTab,setSelectedTab] = useState(indexToTabName['employees']);
+
+  if(!page==='undefined'){
+    setSelectedTab(indexToTabName[page])
+  }
+
+  const handleChange = (event, newValue) => {
+    navigate(`/home/${tabNameToIndex[newValue]}`);
+    setSelectedTab(newValue);
+  };
 
   const theme = useTheme();
   const scheduleData = location.state && location.state.scheduleData;
@@ -26,7 +56,7 @@ const Home = () => {
     return (
       <>
         {/* Render the ScheduleList component inside the Home component */}
-        <Tabs textColor='inherit' value={value} onChange={(e,value)=>setValue(value)} indicatorColor='secondary'>
+        <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary'>
                     <Tab key={6} label={'Schedule'} />
               </Tabs>
         <ContainerResponsive name={6}></ContainerResponsive>
@@ -49,15 +79,18 @@ const Home = () => {
                 ):
                 (
                   <>
-                  <Typography variant='h6' component='div'>
+                  <Typography variant='h5' component='div'>
                 HR IS
               </Typography>
-              <Tabs textColor='inherit' value={value} onChange={(e,value)=>setValue(value)} indicatorColor='secondary'>
-                {
-                  PAGES.map((page,index) => (
-                    <Tab key={index} label={page} />
-                  ))
-                }
+              <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <Tab label="Employees"/>
+                <Tab label="Shifts"/>
+                <Tab label="Leaves"/>
+                <Tab label="Schedules"/>
+                <Tab label="Attendance"/>
+                <Tab label="Remarks"/>
+                <Tab label="Teams"/>
+                <Tab label="Projects"/>
               </Tabs>
               <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button>
                   </>
@@ -65,14 +98,14 @@ const Home = () => {
               }
             </Toolbar>
           </AppBar>
-          { value === 0 && <ContainerResponsive name={value}></ContainerResponsive>}
-        { value === 1 && <ContainerResponsive name={value}></ContainerResponsive>}
-        {value === 2 && <ContainerResponsive name={value}></ContainerResponsive>}
-        {value === 3 && <ContainerResponsive name={value}></ContainerResponsive>}
-        {value === 4 && <ContainerResponsive name={value}></ContainerResponsive>}
-        { value === 5 && <Remarks/>}
-        { value === 6 && <Teams/>}
-        { value === 7 && <Projects/>}
+          { SelectedTab === 0 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+        { SelectedTab === 1 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+        {SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+        {SelectedTab === 3 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+        {SelectedTab === 4 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+        { SelectedTab === 5 && <Remarks/>}
+        { SelectedTab === 6 && <Teams/>}
+        { SelectedTab === 7 && <Projects/>}
       </>
     )
     }
