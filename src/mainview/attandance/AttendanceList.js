@@ -4,32 +4,24 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID' },
-  { field: 'user_name', headerName: 'Name', width: 150 },
-  { field: 'attendance_date', headerName: 'Date', width: 150 },
-  { field: 'checkin', headerName: 'CheckIN', width: 150 },
-  { field: 'checkout', headerName: 'CheckOut', width: 150 },
-  { field: 'time', headerName: 'TIME', width: 150 },
-  { field: 'early_sitting', headerName: 'Early Sitting', width: 150 },
-  { field: 'late_sitting', headerName: 'Late Sitting', width: 150 },
-  { field: 'extra_time', headerName: 'Extra Time', width: 150 },
-  { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 },
+  { field: 'id', headerName: 'ID' , width: 70},
+  { field: 'fullname', headerName: 'EMPLOYEE', width: 150 },
+  { field: 'attendance_date', headerName: 'DATE', width: 120 },
+  { field: 'checkin', headerName: 'CHECKIN', width: 120 },
+  { field: 'checkout', headerName: 'CHECKOUT', width: 120 },
+  { field: 'time', headerName: 'TOTAL TIME', width: 130 },
+  { field: 'early_sitting', headerName: 'EARLY', width: 130 },
+  { field: 'late_sitting', headerName: 'LATE', width: 130 },
+  { field: 'extra_time', headerName: 'EXTRA TIME', width: 150 },
+  { field: 'acceptable_time', headerName: 'ACCEPTED TIME', width: 150 },
 ];
 
   const AttendanceList = () => {
-      const [data, setData] = useState({
-        loading: true,
-        rows: [],
-        totalRows: 0,
-        rowsPerPageOptions: [5,10,20,50,100],
-        pageSize: 5,
-        page: 1
-      });
-    const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
-
-    const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
-    const navigate = useNavigate();
-    let attendanceRows = [];
+      const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
+      const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
+      const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
+      const navigate = useNavigate();
+      let attendanceRows = [];
 
   useEffect(() => {
       updateData('loading', true);
@@ -50,7 +42,7 @@ const columns: GridColDef[] = [
                         response.data.attendance_rows.forEach((element) => {
                           attendanceRows.push({
                             id: element.id,
-                            user_name: element.user_name,
+                            fullname: element.fullname,
                             attendance_date: element.attendance_date,
                             checkin: element.checkin,
                             checkout: element.checkout,
@@ -62,7 +54,7 @@ const columns: GridColDef[] = [
                           });
                         });
                       } else {
-                        navigate('/');
+                        // navigate('/');
                       }
 
               setTimeout(() => {

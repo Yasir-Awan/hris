@@ -44,7 +44,7 @@ function AddSchedule(props) {
             .then(function (response) {
                   let usersRecord = [];
                       response.data.user_info.forEach(element => {
-                      usersRecord.push({'id':element.id,'name':element.fname + ' ' + element.lname ,})
+                      usersRecord.push({'id':element.bio_ref_id,'name':element.fname + ' ' + element.lname ,})
                     });
                     setUserList(usersRecord);
                 })
@@ -99,8 +99,9 @@ function AddSchedule(props) {
                   },
                 })
                   .then(function (response) {
-                    if(response.data.blocked_info.leaveCount > 0 || response.data.blocked_info.scheduleCount > 0){
-                      let startDateString = response.data.blocked_info.leaveDates[0].start_date;
+
+                    if(response.data.blocked_info.leaveCount > 0 ){
+                                let startDateString = response.data.blocked_info.leaveDates[0].start_date;
                                 let stopDateString = response.data.blocked_info.leaveDates[0].end_date;
 
                                 let startDateParts = startDateString.split(/[- :]/);
@@ -112,20 +113,21 @@ function AddSchedule(props) {
                                 let dateArray = getDates(startDate, stopDate);
                                 console.log(dateArray);
                                 setBlockedLeaveDates(dateArray);
-
-                                let scheduleDates = response.data.blocked_info.scheduleDates;
-                                let shapackArray = scheduleDates.map(schedule => {
-                                     startDateString = schedule.from_date;
-                                     stopDateString = schedule.to_date;
+                    }
+                    if(response.data.blocked_info.scheduleCount > 0){
+                                    let scheduleDates = response.data.blocked_info.scheduleDates;
+                                    let shapackArray = scheduleDates.map(schedule => {
+                                    let startDateString = schedule.from_date;
+                                    let stopDateString = schedule.to_date;
 
                                     let formattedStartDateString = startDateString + " 00:00:00";
                                     let formattedStopDateString = stopDateString + " 00:00:00";
 
-                                     startDateParts = formattedStartDateString.split(/[- :]/);
-                                     stopDateParts = formattedStopDateString.split(/[- :]/);
+                                    let startDateParts = formattedStartDateString.split(/[- :]/);
+                                    let stopDateParts = formattedStopDateString.split(/[- :]/);
 
-                                     startDate = new Date(Date.UTC(startDateParts[0], startDateParts[1]-1, startDateParts[2], startDateParts[3], startDateParts[4], startDateParts[5]));
-                                     stopDate = new Date(Date.UTC(stopDateParts[0], stopDateParts[1]-1, stopDateParts[2], stopDateParts[3], stopDateParts[4], stopDateParts[5]));
+                                    let startDate = new Date(Date.UTC(startDateParts[0], startDateParts[1]-1, startDateParts[2], startDateParts[3], startDateParts[4], startDateParts[5]));
+                                    let stopDate = new Date(Date.UTC(stopDateParts[0], stopDateParts[1]-1, stopDateParts[2], stopDateParts[3], stopDateParts[4], stopDateParts[5]));
 
                                     return getDates(startDate, stopDate);
                                 });
@@ -429,7 +431,7 @@ function AddSchedule(props) {
                                 </Grid>
                                 {usersList.length > 0 ? (
                                 <Grid xs={12} item sx={{ mt: 2}}>
-                                    <TextField label="Select User" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
+                                    <TextField label="Select Employee" name='user_bio_id' onChange={inputEvent} select value={addScheduleFormData.user_bio_id} variant="outlined" sx={{ width: "100%" }} required
                                       SelectProps={{
                                         multiple: false
                                       }}>
@@ -465,6 +467,7 @@ function AddSchedule(props) {
                                             onBlur={event => this.focousOut(event.target.value)}
                                             onOpen={() => setOpenDatePicker(true)}
                                             onClose={() => setOpenDatePicker(false)}
+                                            minDate={dayjs().month(3).startOf('month')}
                                             // disablePast={true}
                                           />
                                     </Grid>

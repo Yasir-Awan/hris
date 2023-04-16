@@ -8,7 +8,7 @@ import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
 
-const PAGES = ["Users","Attendance","Remarks","Teams","Projects","Shifts", "Schedules","Leaves"]
+const PAGES = ["Employees","Shifts","Leaves","Schedules","Attendance","Remarks","Teams","Projects"]
 
 const Home = () => {
 
@@ -50,7 +50,7 @@ const Home = () => {
                 (
                   <>
                   <Typography variant='h6' component='div'>
-                HR APP
+                HR IS
               </Typography>
               <Tabs textColor='inherit' value={value} onChange={(e,value)=>setValue(value)} indicatorColor='secondary'>
                 {
@@ -67,12 +67,12 @@ const Home = () => {
           </AppBar>
           { value === 0 && <ContainerResponsive name={value}></ContainerResponsive>}
         { value === 1 && <ContainerResponsive name={value}></ContainerResponsive>}
-        { value === 2 && <Remarks/>}
-        { value === 3 && <Teams/>}
-        { value === 4 && <Projects/>}
-        {value === 5 && <ContainerResponsive name={value}></ContainerResponsive>}
-        {value === 6 && <ContainerResponsive name={value}></ContainerResponsive>}
-        {value === 7 && <ContainerResponsive name={value}></ContainerResponsive>}
+        {value === 2 && <ContainerResponsive name={value}></ContainerResponsive>}
+        {value === 3 && <ContainerResponsive name={value}></ContainerResponsive>}
+        {value === 4 && <ContainerResponsive name={value}></ContainerResponsive>}
+        { value === 5 && <Remarks/>}
+        { value === 6 && <Teams/>}
+        { value === 7 && <Projects/>}
       </>
     )
     }

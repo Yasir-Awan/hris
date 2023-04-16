@@ -11,12 +11,13 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID' },
     // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
-    { field: 'user_name', headerName: 'User Name', width: 150 },
-    { field: 'from_date', headerName: 'From Date', width: 150 },
-    { field: 'to_date', headerName: 'To Date', width: 150 },
-    { field: 'shift_name', headerName: 'Shift Name', width: 150 },
-    { field: 'shift_start', headerName: 'Shift Start', width: 150 },
-    { field: 'shift_end', headerName: 'Shift End', width: 150 },
+    { field: 'fullname', headerName: 'EMPLOYEE', width: 150 },
+    // { field: 'user_name', headerName: 'User Name', width: 150 },
+    { field: 'from_date', headerName: 'FROM', width: 150 },
+    { field: 'to_date', headerName: 'TO', width: 150 },
+    { field: 'shift_name', headerName: 'SHIFT', width: 150 },
+    { field: 'shift_start', headerName: 'SHIFT START', width: 150 },
+    { field: 'shift_end', headerName: 'SHIFT END', width: 150 },
     // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
 ];
 const ScheduleList = () => {
@@ -54,8 +55,8 @@ const ScheduleList = () => {
           console.log(response.data);
           if(response.data.schedule_rows){
             response.data.schedule_rows.forEach(element => {
-                mydata.push({id:element.id,user_name:element.user_name ,
-                from_date:element.from_date, to_date:element.to_date, shift_name:element.shift_name,
+                mydata.push({id:element.id,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
+                from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
                 shift_start:element.shift_start,shift_end:element.shift_end
               })
             }

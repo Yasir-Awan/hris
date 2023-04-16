@@ -27,7 +27,7 @@ export default function BasicCard(props) {
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
-            Users{bull}List
+            Employees{bull}List
           </Typography>
           <UserList/>
         </CardContent>
@@ -39,7 +39,52 @@ export default function BasicCard(props) {
   }
   if(props.name===1){
     return (
-      <Card sx={{ minWidth: 275 }}>
+          <Card sx={{ minWidth: 275 }}>
+              <CardContent>
+                <Typography variant="h5" component="div" gutterBottom>
+                  Shifts{bull}List
+                </Typography>
+                <Shift/>
+              </CardContent>
+              {/* <CardActions>
+                <Button size="small">Learn More</Button>
+              </CardActions> */}
+            </Card>
+    );
+  }
+  if(props.name === 2){
+    return (
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Leaves{bull}List
+                  </Typography>
+                  <LeavesList/>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
+    );
+  }
+  if(props.name === 3){
+    return(
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Schedule{bull}List
+                  </Typography>
+                  <ScheduleList/>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
+    )
+  }
+  if(props.name === 4){
+    return(
+    <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
             Attendance{bull}List
@@ -50,51 +95,6 @@ export default function BasicCard(props) {
           <Button size="small">Learn More</Button>
         </CardActions> */}
       </Card>
-    );
-  }
-  if(props.name === 5){
-    return (
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography variant="h5" component="div" gutterBottom>
-            Shifts{bull}List
-          </Typography>
-          <Shift/>
-        </CardContent>
-        {/* <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions> */}
-      </Card>
-    );
-  }
-  if(props.name === 6){
-    return(
-      <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
-          Schedule{bull}List
-        </Typography>
-        <ScheduleList/>
-      </CardContent>
-      {/* <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions> */}
-    </Card>
-    )
-  }
-  if(props.name === 7){
-    return(
-      <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
-          Leaves{bull}List
-        </Typography>
-        <LeavesList/>
-      </CardContent>
-      {/* <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions> */}
-    </Card>
     )
   }
 }

@@ -91,7 +91,7 @@ export default function Login() {
   const inputEvent = (event) => {
     console.log(event.target.value);
     console.log(event.target.name);
-    console.log('fahad');
+    console.log('yasir');
 
 
     const {name,value} = event.target;
