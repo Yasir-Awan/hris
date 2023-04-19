@@ -5,22 +5,59 @@ import { Grid, TextField, Button, Card, CardContent, MenuItem } from '@mui/mater
 import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { ToastContainer, toast } from 'react-toastify';
+import {useNavigate} from 'react-router-dom';
 
-function Addshift() {
-  const [addShiftFormData, setaddShiftFormData] = useState({ shift_name: '', shift_type: '', start: null, end: null });
+function AddShift() {
+  const navigate = useNavigate();
+  const [addShiftFormData, setAddShiftFormData] = useState({ shift_name: '', shift_type: '', start: null, end: null });
 
   const formSubmit = (event) => {
     event.preventDefault();
     console.log(addShiftFormData);
-    axios.post('', addShiftFormData)
-      .then(function (response) {
-        console.log(response);
-        window.location.reload();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+    const startDate = new Date(addShiftFormData.start);
+    const startDatetimeStr = startDate.toLocaleString('en-US', { hour12: false });
+    const startTimeStr = startDatetimeStr.split(", ")[1]; // split the string by comma and get the second part
+
+    const endDate = new Date(addShiftFormData.end);
+    const endDatetimeStr = endDate.toLocaleString('en-US', { hour12: false });
+    const endTimeStr = endDatetimeStr.split(", ")[1]; // split the string by comma and get the second part
+
+    axios({
+                method: 'post',
+                url: 'add_shift',
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                data: {
+                  shift_name : addShiftFormData.shift_name,
+                  shift_type: addShiftFormData.shift_type,
+                  start: startTimeStr,
+                  end: endTimeStr
+                },
+          })
+          .then(
+                function (response) {
+                  if(response.data.status==='200'){
+                                  toast.success('Shift Added', {
+                                                    position:'top-right',
+                                                    autoClose:1000,
+                                                    onClose: () => {
+                                                      navigate('/home/schedules'); // Redirect to Schedule component
+                                                      window.location.reload(); // Refresh the page
+                                                  }
+                                                });
+                  }
+                  else{
+                                  toast.success('not on leave', {
+                                        position:'top-right',
+                                        autoClose:1000,
+                                        onClose: () => navigate('/home')
+                                    });
+                    }
+                }
+          )
+          .catch(error => console.error(error));
   }
 
   const inputEvent = (event) => {
@@ -29,7 +66,7 @@ function Addshift() {
 
     const { name, value } = event.target;
 
-    setaddShiftFormData((preValue) => {
+    setAddShiftFormData((preValue) => {
       console.log(preValue);
       return {
         ...preValue,
@@ -39,7 +76,19 @@ function Addshift() {
   }
 
   const handleStartTimeChange = (time) => {
-    setaddShiftFormData((preValue) => {
+    const date = new Date(time);
+    const datetimeStr = date.toLocaleString('en-US', { hour12: false });
+    // const datetimeStr = "4/18/2023, 19:30:00";
+    const timeStr = datetimeStr.split(", ")[1]; // split the string by comma and get the second part
+    const timeParts = timeStr.split(":");
+    const start = new Date();
+    start.setHours(parseInt(timeParts[0]));
+    start.setMinutes(parseInt(timeParts[1]));
+    start.setSeconds(parseInt(timeParts[2]));
+console.log(timeStr); // output: "19:30:00"
+console.log(start)
+
+    setAddShiftFormData((preValue) => {
       return {
         ...preValue,
         start: time
@@ -48,7 +97,18 @@ function Addshift() {
   }
 
   const handleEndTimeChange = (time) => {
-    setaddShiftFormData((preValue) => {
+    const date = new Date(time);
+    const datetimeStr = date.toLocaleString('en-US', { hour12: false });
+    // const datetimeStr = "4/18/2023, 19:30:00";
+    const timeStr = datetimeStr.split(", ")[1]; // split the string by comma and get the second part
+    const timeParts = timeStr.split(":");
+    const end = new Date();
+    end.setHours(parseInt(timeParts[0]));
+    end.setMinutes(parseInt(timeParts[1]));
+    end.setSeconds(parseInt(timeParts[2]));
+console.log(timeStr); // output: "19:30:00"
+console.log(end)
+    setAddShiftFormData((preValue) => {
       return {
         ...preValue,
         end: time
@@ -57,6 +117,7 @@ function Addshift() {
   }
 
   return (
+    <>
     <div className="App">
       <Grid>
         <Card style={{ maxWidth: 450, padding: "0px 0px", margin: "0 auto" }}>
@@ -78,7 +139,7 @@ function Addshift() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={2}>
                       <Grid sx={{ mt: 2 }}>
-                        <DesktopTimePicker
+                        <TimePicker
                                 label="Start Time"
                                 value={addShiftFormData.start}
                                 onChange={(handleStartTimeChange)}
@@ -88,7 +149,7 @@ function Addshift() {
                                 renderInput={(params) => <TextField {...params} />}
                               />
                         </Grid>
-                        <DesktopTimePicker
+                        <TimePicker
                                   label="End Time"
                                   value={addShiftFormData.end}
                                   onChange={handleEndTimeChange}
@@ -110,7 +171,9 @@ function Addshift() {
         </Card>
       </Grid>
     </div>
+    <ToastContainer/>
+    </>
   );
 }
 
-export default Addshift;
+export default AddShift;

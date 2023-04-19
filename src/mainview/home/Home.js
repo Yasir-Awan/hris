@@ -35,11 +35,11 @@ const Home = props => {
       "projects":7}
   const navigate = useNavigate();
   const location = useLocation();
-  const [SelectedTab,setSelectedTab] = useState(indexToTabName['employees']);
+  const [SelectedTab,setSelectedTab] = useState(indexToTabName[page]);
 
-  if(!page==='undefined'){
-    setSelectedTab(indexToTabName[page])
-  }
+  // if(!page==='undefined'){
+  //   setSelectedTab(indexToTabName[page])
+  // }
 
   const handleChange = (event, newValue) => {
     navigate(`/home/${tabNameToIndex[newValue]}`);

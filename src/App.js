@@ -12,11 +12,11 @@ function App(props) {
   return (
     <>
     <Routes>
-      <Route exact path='/home/:page?' element={<Home {...props}/>} />
-      <Route
+    <Route
         path="/home"
         element={<Navigate to="/home/employees" replace />}
     />
+      <Route exact path='/home/:page?' element={<Home {...props}/>} />
       <Route exact path='/' element={<Login/>} />
       <Route exact path='*' element={<Error/>} />
     </Routes>

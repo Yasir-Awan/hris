@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import UserList from '../users/UserList';
 import AttendanceList from '../attandance/AttendanceList';
-import Shift from '../shift/Shift';
+import ShiftsList from '../shift/ShiftsList';
 import ScheduleList from '../schedule/ScheduleList';
 import LeavesList from '../leaves/LeavesList';
 
@@ -44,7 +44,7 @@ export default function BasicCard(props) {
                 <Typography variant="h5" component="div" gutterBottom>
                   Shifts{bull}List
                 </Typography>
-                <Shift/>
+                <ShiftsList/>
               </CardContent>
               {/* <CardActions>
                 <Button size="small">Learn More</Button>
@@ -72,7 +72,7 @@ export default function BasicCard(props) {
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
                   <Typography variant="h5" component="div" gutterBottom>
-                    Schedule{bull}List
+                    Schedules{bull}List
                   </Typography>
                   <ScheduleList/>
                 </CardContent>

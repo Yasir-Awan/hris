@@ -397,7 +397,10 @@ function AddSchedule(props) {
                                   toast.success('Schedule Added', {
                                                     position:'top-right',
                                                     autoClose:1000,
-                                                    onClose: () => navigate('/home/schedules') // Redirect to Schedule component
+                                                    onClose: () => {
+                                                      navigate('/home/schedules'); // Redirect to Schedule component
+                                                      window.location.reload(); // Refresh the page
+                                                  }
                                                 });
                   }
                   else{
