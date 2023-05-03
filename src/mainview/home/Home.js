@@ -82,7 +82,7 @@ const Home = props => {
                   <Typography variant='h5' component='div'>
                 HR IS
               </Typography>
-              <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
+              <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '15%', marginRight: 'auto' }}>
                 <Tab label="Employees"/>
                 <Tab label="Shifts"/>
                 <Tab label="Leaves"/>

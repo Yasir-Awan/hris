@@ -9,7 +9,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 
-function AddShift() {
+function AddShift({ refreshList }) {
   const navigate = useNavigate();
   const [addShiftFormData, setAddShiftFormData] = useState({ shift_name: '', shift_type: '', start: null, end: null });
 
@@ -43,8 +43,9 @@ function AddShift() {
                                                     position:'top-right',
                                                     autoClose:1000,
                                                     onClose: () => {
-                                                      navigate('/home/schedules'); // Redirect to Schedule component
-                                                      window.location.reload(); // Refresh the page
+                                                      refreshList();
+                                                     // navigate('/home/shifts'); // Redirect to Schedule component
+                                                      //window.location.reload(); // Refresh the page
                                                   }
                                                 });
                   }
