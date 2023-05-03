@@ -9,6 +9,7 @@ import Link from '@mui/joy/Link';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Input } from '@mui/joy';
 
 
 function ModeToggle() {
@@ -130,7 +131,7 @@ export default function Login() {
   </Typography>
   <Typography level="body2">Sign in to continue.</Typography>
 
-  <TextField
+  <Input
   // html input attribute
   name="username"
   type="email"
@@ -141,7 +142,7 @@ export default function Login() {
   value={loginFormData.username}
   required
 />
-<TextField
+<Input
   name="password"
   type="password"
   placeholder="password"
