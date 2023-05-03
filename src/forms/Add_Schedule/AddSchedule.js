@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './AddSchedule.css';
 import axios from 'axios';
@@ -398,8 +398,9 @@ function AddSchedule(props) {
                                                     position:'top-right',
                                                     autoClose:1000,
                                                     onClose: () => {
-                                                      navigate('/home/schedules'); // Redirect to Schedule component
-                                                      window.location.reload(); // Refresh the page
+                                                      props.refreshList();
+                                                      // navigate('/home/schedules'); // Redirect to Schedule component
+                                                      // window.location.reload(); // Refresh the page
                                                   }
                                                 });
                   }

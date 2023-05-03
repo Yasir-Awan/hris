@@ -23,6 +23,7 @@ const columns: GridColDef[] = [
 ];
 const ScheduleList = () => {
     const navigate = useNavigate();
+    const [showDialog,setShowDialog] = useState(false)
     const [shifts,setShifts] = useState([]);
     const [tableData, setTableData] = useState({
       loading: true,
@@ -38,48 +39,7 @@ const ScheduleList = () => {
     var shiftRecords = [];
     useEffect(() => {
       updateData('loading', true);
-      // api call for schedule List START
-      axios({
-        method: 'post',
-        url: 'schedule_list',
-        headers: {
-          'Authorization': 'Bearer '+localStorage.getItem('token'),
-        },
-        data: {
-          pageSize: tableData.pageSize,
-          page: tableData.page,
-          filters: filterModel // pass filterModel to the server,
-        },
-      }
-      )
-        .then(function (response) {
-          console.log(response.data);
-          if(response.data.schedule_rows){
-            response.data.schedule_rows.forEach(element => {
-                mydata.push({id:element.id,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
-                from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
-                shift_start:element.shift_start,shift_end:element.shift_end
-              })
-            }
-              );
-          }
-          else{
-            navigate('/');
-          }
-          // setTableData(mydata);
-          setTimeout(() => {
-            const rows = mydata;
-            updateData("totalRows", response.data.total_rows);
-                setTimeout(() => {
-                  updateData("rows", rows);
-                  updateData("loading", false);
-                }, 100);
-          }, 500);
-        })
-        .catch(error => {
-          console.log(error);
-            })
-              // api call for schedule list END
+      refreshSchedulesList();
 
 // api call for shifts list START
 axios({
@@ -100,12 +60,59 @@ axios({
 
     }, [tableData.page, tableData.pageSize,filterModel]);
 
+    const refreshSchedulesList = () => {
+          setShowDialog(false)
+          // let shiftRecords =[];
+          // api call for schedule List START
+          axios({
+            method: 'post',
+            url: 'schedule_list',
+            headers: {
+              'Authorization': 'Bearer '+localStorage.getItem('token'),
+            },
+            data: {
+              pageSize: tableData.pageSize,
+              page: tableData.page,
+              filters: filterModel // pass filterModel to the server,
+            },
+          }
+          )
+            .then(function (response) {
+              console.log(response.data);
+              if(response.data.schedule_rows){
+                response.data.schedule_rows.forEach(element => {
+                    mydata.push({id:element.id,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
+                    from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
+                    shift_start:element.shift_start,shift_end:element.shift_end
+                  })
+                }
+                  );
+              }
+              else{
+                navigate('/');
+              }
+              // setTableData(mydata);
+              setTimeout(() => {
+                const rows = mydata;
+                updateData("totalRows", response.data.total_rows);
+                    setTimeout(() => {
+                      updateData("rows", rows);
+                      updateData("loading", false);
+                    }, 100);
+              }, 500);
+            })
+            .catch(error => {
+              console.log(error);
+                })
+                  // api call for schedule list END
+      }
+
     return (
       <>
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
             <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
-                <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />}>
-                    <AddSchedule name={shifts}/>
+                <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
+                    <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
                 </CustomizedDialogs>
             </Box>
             <DataGrid
