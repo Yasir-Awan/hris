@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef,GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
@@ -98,6 +98,7 @@ const columns: GridColDef[] = [
                   (newFilterModel) => setFilterModel(newFilterModel)
                 } // handle filter changes made by the user
                 filterModel={filterModel} // pass filterModel state to the DataGrid component
+                components={{Toolbar: GridToolbar}}
               />
           </div>
         </>

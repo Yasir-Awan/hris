@@ -72,7 +72,7 @@ const columns: GridColDef[] = [
             setLoading(true)
 
         setShiftsList(shiftRecords);
-                setLoading(true)
+                setLoading(false)
                 // console.log(shifts);
             })
             .catch(error => {});// api call for shifts list END
