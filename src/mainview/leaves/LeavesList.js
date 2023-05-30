@@ -5,15 +5,13 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID' },
-  { field: 'user_name', headerName: 'Name', width: 150 },
-  { field: 'attendance_date', headerName: 'Date', width: 150 },
-  { field: 'checkin', headerName: 'CheckIN', width: 150 },
-  { field: 'checkout', headerName: 'CheckOut', width: 150 },
-  { field: 'time', headerName: 'TIME', width: 150 },
-  { field: 'early_sitting', headerName: 'Early Sitting', width: 150 },
-  { field: 'late_sitting', headerName: 'Late Sitting', width: 150 },
-  { field: 'extra_time', headerName: 'Extra Time', width: 150 },
-  { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 },
+  { field: 'name', headerName: 'Name', width: 150 },
+  { field: 'leave_type', headerName: 'Leave Type', width: 150 },
+  { field: 'leave_start', headerName: 'Leave Start', width: 200 },
+  { field: 'leave_end', headerName: 'Leave End', width: 200 },
+  { field: 'weekend_count', headerName: 'WeekEnd', width: 150 },
+  { field: 'reason', headerName: 'Reason', width: 150 },
+  { field: 'time', headerName: 'Time', width: 150 },
 ];
 
   const LeavesList = () => {
@@ -33,9 +31,10 @@ const columns: GridColDef[] = [
 
   useEffect(() => {
       updateData('loading', true);
-      console.log('filterModel:', filterModel); // add this line to check filterModel value
+      // console.log('filterModel:', filterModel);
+      // add this line to check filterModel value
       axios({
-        method: 'post',
+        method: 'get',
         url: 'leaves_list',
         headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
         data: {
@@ -46,23 +45,21 @@ const columns: GridColDef[] = [
       })
       .then(function (response) {
                       // setTotalRows(response.total_rows);
-                      if (response.data.attendance_rows) {
-                        response.data.attendance_rows.forEach((element) => {
+                      if (response.data.leave_info) {
+                        response.data.leave_info.forEach((element) => {
                           attendanceRows.push({
                             id: element.id,
-                            user_name: element.user_name,
-                            attendance_date: element.attendance_date,
-                            checkin: element.checkin,
-                            checkout: element.checkout,
-                            time: element.time,
-                            early_sitting: element.early_sitting,
-                            late_sitting: element.late_sitting,
-                            extra_time: element.extra_time,
-                            acceptable_time: element.acceptable_time,
+                            name: element.fname+' '+element.lname,
+                            leave_type: element.leave_type,
+                            leave_start: element.start_date,
+                            leave_end: element.end_date,
+                            weekend_count: element.weekend_count,
+                            reason: element.reason,
+                            time: element.time
                           });
                         });
                       } else {
-                        navigate('/');
+                        // navigate('/');
                       }
 
               setTimeout(() => {

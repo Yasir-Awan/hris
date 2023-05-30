@@ -16,7 +16,7 @@ const columns: GridColDef[] = [
     // { field: 'user_name', headerName: 'User Name', width: 150 },
     { field: 'from_date', headerName: 'FROM', width: 150,headerAlign:'center',align:'center'},
     { field: 'to_date', headerName: 'TO', width: 150,headerAlign:'center',align:'center'},
-    { field: 'shift_name', headerName: 'SHIFT', width: 150,headerAlign:'center',align:'center'},
+    { field: 'shift_name', headerName: 'SHIFT', width: 170,headerAlign:'center',align:'center'},
     { field: 'shift_start', headerName: 'SHIFT START', width: 150,headerAlign:'center',align:'center'},
     { field: 'shift_end', headerName: 'SHIFT END', width: 150,headerAlign:'center',align:'center'},
     // { field: 'leave_status', headerName: 'Leave Status', width: 150 },

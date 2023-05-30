@@ -13,9 +13,9 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 20,headerAlign:'center',align:'center'},
-    { field: 'uname', headerName: 'EMPLOYEE', width: 130,headerAlign:'center',align:'center'},
-    { field: 'email', headerName: 'EMAIL', width: 200,headerAlign:'center',align:'center'},
-    { field: 'sitename', headerName: 'SITE', width: 80,headerAlign:'center',align:'center'},
+    { field: 'uname', headerName: 'EMPLOYEE', width: 200,headerAlign:'center',align:'center'},
+    { field: 'email', headerName: 'EMAIL', width: 300,headerAlign:'center',align:'center'},
+    { field: 'sitename', headerName: 'SITE', width: 120,headerAlign:'center',align:'center'},
     { field: 'contact', headerName: 'CONTACT', width: 120,headerAlign:'center',align:'center'},
     { field: 'address', headerName: 'ADDRESS', width: 100,headerAlign:'center',align:'center'},
     { field: 'empType', headerName: 'TYPE', width: 90,headerAlign:'center',align:'center'},
