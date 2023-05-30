@@ -9,9 +9,9 @@ import AddShift from "../../forms/add_shift/AddShift";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Shift Name', width: 150 },
-    { field: 'shift_type_name', headerName: 'Shift Type', width: 150 },
-    { field: 'start', headerName: 'Start Time', width: 150 },
+    { field: 'name', headerName: 'Shift Name', width: 200 },
+    { field: 'shift_type_name', headerName: 'Shift Type', width: 200 },
+    { field: 'start', headerName: 'Start Time', width: 200 },
     { field: 'end', headerName: 'End Time', width: 150 },
 ];
 
