@@ -12,7 +12,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
     // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
-    { field: 'fullname', headerName: 'EMPLOYEE', width: 150,headerAlign:'center',align:'center'},
+    { field: 'fullname', headerName: 'EMPLOYEE', width: 180,headerAlign:'center',align:'center'},
     // { field: 'user_name', headerName: 'User Name', width: 150 },
     { field: 'from_date', headerName: 'FROM', width: 150,headerAlign:'center',align:'center'},
     { field: 'to_date', headerName: 'TO', width: 150,headerAlign:'center',align:'center'},
