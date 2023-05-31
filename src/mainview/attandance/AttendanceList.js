@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const columns: GridColDef[] = [
 
-  { field: 'id', headerName: 'ID' , width: 70 ,
+  { field: 'id', headerName: 'SERIAL NO' , width: 90 ,
       filterable: false,
       renderCell: (value) => {
         const currentPage = value.row.page;
@@ -15,7 +15,7 @@ const columns: GridColDef[] = [
         return <div>{rowNumber}</div>;
       },
     headerAlign:'center',align:'center'},
-  { field: 'fullname', headerName: 'EMPLOYEE', width: 150,headerAlign:'center',align:'center'},
+  { field: 'fullname', headerName: 'EMPLOYEE', width: 180,headerAlign:'center',align:'center'},
   { field: 'attendance_date', headerName: 'DATE', width: 120,headerAlign:'center',align:'center'},
   { field: 'checkin', headerName: 'CHECKIN', width: 120,headerAlign:'center',align:'center'},
   { field: 'checkout', headerName: 'CHECKOUT', width: 120,headerAlign:'center',align:'center'},
