@@ -30,7 +30,7 @@ const ScheduleList = () => {
       rows: [],
       totalRows: 0,
       rowsPerPageOptions: [5,10,20,50,100],
-      pageSize: 5,
+      pageSize: 10,
       page: 1
     });
     const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
@@ -117,6 +117,7 @@ axios({
             </Box>
             <DataGrid
                 autoHeight
+                density="compact"
                 // rowHeight={50}
                 loading={tableData.loading}
                 rowsPerPageOptions={tableData.rowsPerPageOptions}

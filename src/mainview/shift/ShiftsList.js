@@ -85,7 +85,7 @@ const columns: GridColDef[] = [
                     <AddShift refreshList = { refreshShiftsList } />
                 </CustomizedDialogs>
             </Box>
-            <DataGrid loading={loading} autoHeight rows={shiftsList} columns={columns}/>
+            <DataGrid density="compact" loading={loading} autoHeight rows={shiftsList} columns={columns}/>
         </div>
 
     )

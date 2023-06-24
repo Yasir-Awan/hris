@@ -27,7 +27,7 @@ const columns: GridColDef[] = [
 
 
   const AttendanceList = () => {
-      const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
+      const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 10,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
         { columnField: '', operatorValue: '', value: '' },
       ]});
@@ -93,7 +93,7 @@ const columns: GridColDef[] = [
         <>
           <div style={{ height: 'auto', width: '100%' }}>
               <DataGrid
-                // density="compact"
+                density="compact"
                 autoHeight
                 // rowHeight={50}
                 loading={data.loading}
