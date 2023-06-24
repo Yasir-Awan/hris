@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
     { field: 'contact', headerName: 'CONTACT', width: 120,headerAlign:'center',align:'center'},
     { field: 'address', headerName: 'ADDRESS', width: 100,headerAlign:'center',align:'center'},
     { field: 'empType', headerName: 'TYPE', width: 90,headerAlign:'center',align:'center'},
-    { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
+    // { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
     { field: 'empSec', headerName: 'SECTION', width: 85,headerAlign:'center',align:'center'},
     { field: 'empField', headerName: 'FIELD', width: 155,headerAlign:'center',align:'center'},
     { field: 'empRole', headerName: 'ROLE', width: 170,headerAlign:'center',align:'center'},
@@ -45,9 +45,11 @@ const UserList = () => {
 
 const navigate = useNavigate();
 const [tableData, setTableData] = useState([])
+const [loading,setLoading] = useState(true)
 
   var nietos = [];
   useEffect(() => {
+    setLoading(true)
     axios({
       method: 'get',
       url: 'user_list',
@@ -71,6 +73,7 @@ const [tableData, setTableData] = useState([])
           navigate('/');
         }
         setTableData(nietos);
+        setLoading(false)
       })
       .catch(error => {
         console.log(error);
@@ -90,6 +93,8 @@ const [tableData, setTableData] = useState([])
 
     <DataGrid
     autoHeight
+    density='compact'
+    loading={loading}
     // rowHeight={50}
     rows={tableData} columns={columns} />
   </div>
