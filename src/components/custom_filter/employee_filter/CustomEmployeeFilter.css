@@ -1,0 +1,10 @@
+.custom-textfield .MuiInputBase-root {
+    height: min-content; /* Adjust the height value as desired */
+    margin-right: 8px;
+    /* min-width: fit-content; */
+  }
+
+  .filter-container .MuiInputBase-root{
+    display: flex;
+    align-items: center;
+  }

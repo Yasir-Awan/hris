@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { DataGrid, GridColDef,GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 
@@ -11,7 +11,6 @@ const columns: GridColDef[] = [
         const currentPage = value.row.page;
         const pageSize = value.row.pagesize;
         const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
-        console.log(rowNumber)
         return <div>{rowNumber}</div>;
       },
     headerAlign:'center',align:'center'},
@@ -29,10 +28,13 @@ const columns: GridColDef[] = [
 
   const AttendanceList = () => {
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
-      const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
+      const [filterModel, setFilterModel] = useState({items: [
+        { columnField: '', operatorValue: '', value: '' },
+      ]});
       const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
-      const navigate = useNavigate();
+      // const navigate = useNavigate();
       let attendanceRows = [];
+
 
 
   useEffect(() => {
@@ -111,10 +113,16 @@ const columns: GridColDef[] = [
                 rows={data.rows}
                 columns={columns}
                 // getRowId={getRowId}
-        // pagination
+                // pagination
                 filterMode="server" // enable server-side filtering
                 onFilterModelChange={
-                  (newFilterModel) => setFilterModel(newFilterModel)
+                  (newFilterModel) => {
+                    // Remove any empty filter items
+                    const nonEmptyFilters = newFilterModel.items.filter(
+                      (filter) => filter.columnField && filter.operatorValue && filter.value
+                    );
+                    setFilterModel({ items: nonEmptyFilters });
+                  }
                 } // handle filter changes made by the user
                 filterModel={filterModel} // pass filterModel state to the DataGrid component
                 components={{Toolbar: GridToolbar}}
