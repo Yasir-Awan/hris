@@ -7,9 +7,13 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import UserList from '../users/UserList';
 import AttendanceList from '../attandance/AttendanceList';
+import MonthlySummary from '../monthly_summary/MonthlySummary';
 import ShiftsList from '../shift/ShiftsList';
 import ScheduleList from '../schedule/ScheduleList';
 import LeavesList from '../leaves/LeavesList';
+import CustomEmployeeFilter from '../../components/custom_filter/employee_filter/CustomEmployeeFilter';
+import CustomDayFilter from '../../components/custom_filter/day_filter/CustomDayFilter';
+import { Grid  } from '@mui/material';
 
 const bull = (
   <Box
@@ -86,15 +90,44 @@ export default function BasicCard(props) {
     return(
     <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          <Typography variant="h5" component="div" gutterBottom>
-            Attendance{bull}List
-          </Typography>
+
+
+          <Grid container spacing={0} >
+          <Grid item xs={2} sx={{py:1}} >
+          <Typography variant="h5" component="div" >
+              Attendance{bull}List
+            </Typography>
+          </Grid>
+          <Grid item xs={1.45}></Grid>
+          <Grid item xs={2.55}><CustomEmployeeFilter fieldName='fullname' header='Employee'/></Grid>
+          <Grid item xs={2}><CustomDayFilter /></Grid>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={3}>
+              {/* <Tags fieldName='attendance_date' header='Date'/> */}
+          </Grid>
+          </Grid>
+
           <AttendanceList/>
         </CardContent>
         {/* <CardActions>
           <Button size="small">Learn More</Button>
         </CardActions> */}
       </Card>
+    )
+  }
+  if(props.name === 5){
+    return(
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Monthly{bull}Summary
+                  </Typography>
+                  <MonthlySummary/>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
     )
   }
 }

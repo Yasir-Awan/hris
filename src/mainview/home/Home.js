@@ -20,9 +20,10 @@ const Home = props => {
     2 : "leaves",
     3: "schedules",
     4: "attendance",
-    5: "remarks",
-    6: "teams",
-    7: "projects"
+    5: "monthly_summary",
+    6: "remarks",
+    7: "teams",
+    8: "projects"
   }
   const  indexToTabName = {
       "employees":0,
@@ -30,9 +31,10 @@ const Home = props => {
       "leaves":2,
       "schedules":3,
       "attendance":4,
-      "remarks":5,
-      "teams":6,
-      "projects":7}
+      "monthly_summary":5,
+      "remarks":6,
+      "teams":7,
+      "projects":8}
   const navigate = useNavigate();
   const location = useLocation();
   const [SelectedTab,setSelectedTab] = useState(indexToTabName[page]);
@@ -82,12 +84,13 @@ const Home = props => {
                   <Typography variant='h5' component='div'>
                 HR IS
               </Typography>
-              <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '15%', marginRight: 'auto' }}>
+              <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '9%', marginRight: 'auto' }}>
                 <Tab label="Employees"/>
                 <Tab label="Shifts"/>
                 <Tab label="Leaves"/>
                 <Tab label="Schedules"/>
                 <Tab label="Attendance"/>
+                <Tab label="Monthly Summary"/>
                 <Tab label="Remarks"/>
                 <Tab label="Teams"/>
                 <Tab label="Projects"/>
@@ -103,9 +106,10 @@ const Home = props => {
         {SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
         {SelectedTab === 3 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
         {SelectedTab === 4 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        { SelectedTab === 5 && <Remarks/>}
-        { SelectedTab === 6 && <Teams/>}
-        { SelectedTab === 7 && <Projects/>}
+        {SelectedTab === 5 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+        { SelectedTab === 6 && <Remarks/>}
+        { SelectedTab === 7 && <Teams/>}
+        { SelectedTab === 8 && <Projects/>}
       </>
     )
     }
