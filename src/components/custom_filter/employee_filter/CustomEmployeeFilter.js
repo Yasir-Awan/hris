@@ -4,9 +4,10 @@ import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
+// import ContainerResponsive from 'D:\react projects\hris\src\mainview\container\ContainerResponsive.js../../../mainview/container/ContainerResponsive';
 import './CustomEmployeeFilter.css';
 
-export default function CustomEmployeeFilter() {
+export default function CustomEmployeeFilter(props) {
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [employeesList,setEmployeesList] = useState([]);
 
@@ -39,6 +40,7 @@ export default function CustomEmployeeFilter() {
 
   const handleOnChange = (event, values) => {
     setSelectedEmployees(values);
+    props.onChange(values);
   };
 
   return (

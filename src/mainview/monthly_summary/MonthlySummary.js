@@ -3,14 +3,14 @@ import { DataGrid, GridColDef,GridToolbar } from '@mui/x-data-grid';
 import axios from "axios";
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Employee', width: 200 },
-    { field: 'schedule_from', headerName: 'Schedule From', width: 200 },
-    { field: 'schedule_to', headerName: 'Schedule to', width: 200 },
-    { field: 'required_hrs_normal', headerName: 'Required Hours', width: 200 },
-    { field: 'required_hrs_including_weekends', headerName: 'Required Hours Leave weekend Excluded', width: 200 },
-    { field: 'working_time', headerName: 'Working Time', width: 200 },
-    { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 },
+    { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
+    { field: 'name', headerName: 'Employee', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'schedule_from', headerName: 'Schedule From', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'schedule_to', headerName: 'Schedule to', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'required_hrs_normal', headerName: 'Required Hours', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'required_hrs_including_weekends', headerName: 'Required Hours Leave weekend Excluded', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'working_time', headerName: 'Working Time', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 ,headerAlign:'center',align:'center'},
 ];
 
     const MonthlySummary = () => {

@@ -6,13 +6,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function CustomDayFilter() {
+export default function CustomDayFilter(props) {
   const [filterDay, setFilterDay] = useState(dayjs(''));
 
   const handleDayChange = (newValue) => {
-    console.log(filterDay)
+    // console.log(filterDay)
     const formattedDate = newValue.format('MMM D, YYYY');
     setFilterDay(formattedDate);
+    props.onChange(filterDay)
   };
     console.log(filterDay)
 

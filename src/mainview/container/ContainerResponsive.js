@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-// import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-// import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import UserList from '../users/UserList';
 import AttendanceList from '../attandance/AttendanceList';
@@ -25,6 +23,8 @@ const bull = (
 );
 
 export default function BasicCard(props) {
+
+  const [filterVals, setFilterVals] = React.useState([]);
   console.log(props);
   if(props.name===0){
     return (
@@ -90,8 +90,6 @@ export default function BasicCard(props) {
     return(
     <Card sx={{ minWidth: 275 }}>
         <CardContent>
-
-
           <Grid container spacing={0} >
           <Grid item xs={2} sx={{py:1}} >
           <Typography variant="h5" component="div" >
@@ -99,19 +97,15 @@ export default function BasicCard(props) {
             </Typography>
           </Grid>
           <Grid item xs={1.45}></Grid>
-          <Grid item xs={2.55}><CustomEmployeeFilter fieldName='fullname' header='Employee'/></Grid>
-          <Grid item xs={2}><CustomDayFilter /></Grid>
+          <Grid item xs={2.55}><CustomEmployeeFilter fieldName='fullname' header='Employee' onChange={(values)=>setFilterVals(values)}/></Grid>
+          <Grid item xs={2}><CustomDayFilter onChange={(values)=>setFilterVals(values)}/></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
               {/* <Tags fieldName='attendance_date' header='Date'/> */}
           </Grid>
           </Grid>
-
-          <AttendanceList/>
+          <AttendanceList filterValues={()=>setFilterVals(filterVals)}/>
         </CardContent>
-        {/* <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions> */}
       </Card>
     )
   }
