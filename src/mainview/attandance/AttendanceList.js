@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { DataGrid, GridColDef,GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 
@@ -26,7 +25,8 @@ const columns: GridColDef[] = [
 ];
 
 
-  const AttendanceList = () => {
+  const AttendanceList = (props) => {
+      const [filterVals,setFilterVals] = useState([props.filterValues])
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 10,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
         { columnField: '', operatorValue: '', value: '' },
@@ -40,6 +40,7 @@ const columns: GridColDef[] = [
   useEffect(() => {
       updateData('loading', true);
       console.log('filterModel:', filterModel); // add this line to check filterModel value
+      console.log(filterVals);
       let counter = 1;
       axios({
         method: 'post',

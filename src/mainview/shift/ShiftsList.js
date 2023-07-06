@@ -24,27 +24,6 @@ const columns: GridColDef[] = [
     // let shiftRecords =[];
     useEffect(() => {
         refreshShiftsList();
-            // api call for shifts list START
-            // axios({
-            //     method: 'get',
-            //     url:'shift_list',
-            //     headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
-            // }
-            // })
-            //     .then(function (response) {
-            //         response.data.shift_info.forEach(element => {
-            //             shiftRecords.push({
-            //                                 'id':element.id,
-            //                                 'name':element.shift_name,
-            //                                 'shift_type_name':element.shift_type_name,
-            //                                 'start':element.start,
-            //                                 'end':element.end,
-            //                             })
-            //         });
-            //         setShiftsList(shiftRecords);
-            //         // console.log(shifts);
-            //     })
-            //     .catch(error => {});// api call for shifts list END
     }, []);
 
     const refreshShiftsList = () => {
