@@ -94,7 +94,6 @@ export default function Login() {
     console.log(event.target.name);
     console.log('yasir');
 
-
     const {name,value} = event.target;
 
     setLoginFormData((preValue)=>{

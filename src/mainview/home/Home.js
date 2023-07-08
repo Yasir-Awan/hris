@@ -14,6 +14,8 @@ const Home = props => {
 
   const { page } = useParams();
 
+  console.log(page)
+
   const tabNameToIndex = {
     0 : "employees",
     1 : "shifts",
@@ -50,7 +52,7 @@ const Home = props => {
 
   const theme = useTheme();
   const scheduleData = location.state && location.state.scheduleData;
-  console.log(theme);
+  console.log(scheduleData);
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   console.log(isMatch);
@@ -59,9 +61,9 @@ const Home = props => {
       <>
         {/* Render the ScheduleList component inside the Home component */}
         <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary'>
-                    <Tab key={6} label={'Schedule'} />
-              </Tabs>
-        <ContainerResponsive name={6}></ContainerResponsive>
+                    <Tab key={3} label={'Schedules'} />
+        </Tabs>
+        <ContainerResponsive name={3}></ContainerResponsive>
       </>
     );
   }else{
@@ -102,14 +104,14 @@ const Home = props => {
             </Toolbar>
           </AppBar>
           { SelectedTab === 0 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        { SelectedTab === 1 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        {SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        {SelectedTab === 3 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        {SelectedTab === 4 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        {SelectedTab === 5 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-        { SelectedTab === 6 && <Remarks/>}
-        { SelectedTab === 7 && <Teams/>}
-        { SelectedTab === 8 && <Projects/>}
+          { SelectedTab === 1 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+          { SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+          { SelectedTab === 3 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+          { SelectedTab === 4 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+          { SelectedTab === 5 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+          { SelectedTab === 6 && <Remarks/>}
+          { SelectedTab === 7 && <Teams/>}
+          { SelectedTab === 8 && <Projects/>}
       </>
     )
     }

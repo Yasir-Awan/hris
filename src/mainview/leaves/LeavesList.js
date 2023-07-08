@@ -39,7 +39,6 @@ const columns: GridColDef[] = [
     var userRecords = [];
 
   useEffect(() => {
-      setShowDialog(false)
       refreshUsersList()
           refreshLeavesList()
   }, []);
@@ -66,6 +65,7 @@ const columns: GridColDef[] = [
   }
 
   const refreshLeavesList = () => {
+    setShowDialog(false)
     updateData('loading', true);
     axios({
       method: 'get',
