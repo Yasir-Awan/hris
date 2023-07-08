@@ -35,14 +35,14 @@ function AddLeave( props ) {
                                                     position:'top-right',
                                                     autoClose:1000,
                                                     onClose: () => {
-                                                      props.refreshList();
+                                                        props.refreshList();
                                                      //navigate('/home/leaves'); // Redirect to Schedule component
                                                       //window.location.reload(); // Refresh the page
                                                     }
                                                 });
                     }
                     else{
-                                    toast.success('not on leave', {
+                                    toast.success('leave not added', {
                                         position:'top-right',
                                         autoClose:1000,
                                         onClose: () => navigate('/home')
@@ -69,57 +69,53 @@ function AddLeave( props ) {
     }
 
     const handleStartTimeChange = (time) => {
-    const date = new Date(time);
-    const datetimeStr = date.toLocaleString('en-US', { hour12: false });
-    // const datetimeStr = "4/18/2023, 19:30:00";
-    const dateStr = datetimeStr.split(", ")[0];
-    const timeStr = datetimeStr.split(", ")[1]; // split the string by comma and get the second part
-    const timeParts = timeStr.split(":");
-    const dateParts = dateStr.split("/");
-    const reArrangedDate = dateParts[2]+'-'+dateParts[0].padStart(2, '0')+'-'+dateParts[1].padStart(2, '0')
-    const reArrangedDateTime = reArrangedDate+' '+timeStr
-    console.log(reArrangedDateTime)
-    const start = new Date();
-    start.setHours(parseInt(timeParts[0]));
-    start.setMinutes(parseInt(timeParts[1]));
-    start.setSeconds(parseInt(timeParts[2]));
-    console.log(timeStr); // output: "19:30:00"
-    console.log(start)
+        const date = new Date(time);
 
-    setAddLeaveFormData((preValue) => {
-        return {
-        ...preValue,
-        leave_start: reArrangedDateTime
-        };
-    });
-    }
+        // Adjust for time zone offset
+        const offset = date.getTimezoneOffset();
+        const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
 
-    const handleEndTimeChange = (time) => {
-        console.log(time)
-    const date = new Date(time);
-    const datetimeStr = date.toLocaleString('en-US', { hour12: false });
-    // const datetimeStr = "4/18/2023, 19:30:00";
-    console.log(datetimeStr)
-    const dateStr = datetimeStr.split(", ")[0];
-    const timeStr = datetimeStr.split(", ")[1]; // split the string by comma and get the second part
-    const timeParts = timeStr.split(":");
-    const dateParts = dateStr.split("/");
-    const reArrangedDate = dateParts[2]+'-'+dateParts[0].padStart(2, '0')+'-'+dateParts[1].padStart(2, '0')
-    const reArrangedDateTime = reArrangedDate+' '+timeStr
-    console.log(reArrangedDateTime)
-    const end = new Date();
-    end.setHours(parseInt(timeParts[0]));
-    end.setMinutes(parseInt(timeParts[1]));
-    end.setSeconds(parseInt(timeParts[2]));
-    console.log(timeStr); // output: "19:30:00"
-    console.log(end)
-    setAddLeaveFormData((preValue) => {
-        return {
-        ...preValue,
-        leave_end: reArrangedDateTime
+        const year = adjustedDate.getUTCFullYear();
+        const month = adjustedDate.getUTCMonth() + 1;
+        const day = adjustedDate.getUTCDate();
+        const hours = adjustedDate.getUTCHours();
+        const minutes = adjustedDate.getUTCMinutes();
+        const seconds = adjustedDate.getUTCSeconds();
+
+        const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        setAddLeaveFormData((preValue) => {
+            return {
+            ...preValue,
+            leave_start: reArrangedDateTime,
+            };
+        });
         };
-    });
-    }
+
+        const handleEndTimeChange = (time) => {
+        const date = new Date(time);
+
+        // Adjust for time zone offset
+        const offset = date.getTimezoneOffset();
+        const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
+
+        const year = adjustedDate.getUTCFullYear();
+        const month = adjustedDate.getUTCMonth() + 1;
+        const day = adjustedDate.getUTCDate();
+        const hours = adjustedDate.getUTCHours();
+        const minutes = adjustedDate.getUTCMinutes();
+        const seconds = adjustedDate.getUTCSeconds();
+
+        const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        setAddLeaveFormData((preValue) => {
+            return {
+            ...preValue,
+            leave_end: reArrangedDateTime,
+            };
+        });
+    };
+
 
     return (
     <>
@@ -136,14 +132,14 @@ function AddLeave( props ) {
                                         multiple: false
                                       }}>
                                         {
-                                          props.employees.map((user,index) => (
+                                        props.employees.map((user,index) => (
                                             <MenuItem key={user.id} value={user.id}>
                                             {user.uname}
-                                          </MenuItem>
-                                          ))
+                                            </MenuItem>
+                                            ))
                                         }
                                     </TextField>
-                                  </Grid>) : (<div></div>)
+                                </Grid>) : (<div></div>)
                                 }
                 <Grid xs={12} item sx={{ mt: 2 }}>
                     <TextField label="Select leave type" name='leave_type' onChange={inputEvent} select value={AddLeaveFormData.leave_type} variant="outlined" sx={{ width: "100%" }} required
@@ -159,6 +155,7 @@ function AddLeave( props ) {
                     <Stack spacing={2} sx={{mt:2}}>
                         <DateTimePicker
                                 label="Leave Start"
+                                name='leave_start'
                                 value={AddLeaveFormData.leave_start}
                                 onChange={(handleStartTimeChange)}
                                 variant='outlined'
@@ -169,6 +166,7 @@ function AddLeave( props ) {
 
                         <DateTimePicker
                                 label="Leave End"
+                                name='leave_end'
                                 value={AddLeaveFormData.leave_end}
                                 onChange={handleEndTimeChange}
                                 variant='outlined'
