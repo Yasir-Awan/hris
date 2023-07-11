@@ -5,6 +5,7 @@ import { Grid, TextField, Button, Card, CardContent, MenuItem,Stack } from '@mui
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 
@@ -12,6 +13,7 @@ function AddLeave( props ) {
     console.log(props.employees)
     const navigate = useNavigate();
     const [AddLeaveFormData, setAddLeaveFormData] = useState({ emp_id: '', leave_type: '', leave_start: null, leave_end: null,leave_reason:'' });
+    const [isShortLeave, setIsShortLeave] = useState(false);
     const formSubmit = (event) => {
     event.preventDefault();
     console.log(AddLeaveFormData);
@@ -53,11 +55,19 @@ function AddLeave( props ) {
             .catch(error => console.error(error));
     }
 
+
+
     const inputEvent = (event) => {
     console.log(event.target.value);
     console.log(event.target.name);
 
     const { name, value } = event.target;
+
+    if (name==='leave_type' && value ==='1'){
+        setIsShortLeave(true)
+    }else{
+        setIsShortLeave(false)
+    }
 
     setAddLeaveFormData((preValue) => {
         console.log(preValue);
@@ -93,27 +103,73 @@ function AddLeave( props ) {
         };
 
         const handleEndTimeChange = (time) => {
-        const date = new Date(time);
+            const date = new Date(time);
 
-        // Adjust for time zone offset
-        const offset = date.getTimezoneOffset();
-        const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
+            // Adjust for time zone offset
+            const offset = date.getTimezoneOffset();
+            const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
 
-        const year = adjustedDate.getUTCFullYear();
-        const month = adjustedDate.getUTCMonth() + 1;
-        const day = adjustedDate.getUTCDate();
-        const hours = adjustedDate.getUTCHours();
-        const minutes = adjustedDate.getUTCMinutes();
-        const seconds = adjustedDate.getUTCSeconds();
+            const year = adjustedDate.getUTCFullYear();
+            const month = adjustedDate.getUTCMonth() + 1;
+            const day = adjustedDate.getUTCDate();
+            const hours = adjustedDate.getUTCHours();
+            const minutes = adjustedDate.getUTCMinutes();
+            const seconds = adjustedDate.getUTCSeconds();
 
-        const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-        setAddLeaveFormData((preValue) => {
-            return {
-            ...preValue,
-            leave_end: reArrangedDateTime,
-            };
-        });
+            setAddLeaveFormData((preValue) => {
+                return {
+                ...preValue,
+                leave_end: reArrangedDateTime,
+                };
+            });
+    };
+
+    const handleStartDateChange = (time) => {
+                const date = new Date(time);
+                // Adjust for time zone offset
+                const offset = date.getTimezoneOffset();
+                const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
+
+                const year = adjustedDate.getUTCFullYear();
+                const month = adjustedDate.getUTCMonth() + 1;
+                const day = adjustedDate.getUTCDate();
+                const hours = adjustedDate.getUTCHours();
+                const minutes = adjustedDate.getUTCMinutes();
+                const seconds = adjustedDate.getUTCSeconds();
+
+                const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                setAddLeaveFormData((preValue) => {
+                    return {
+                    ...preValue,
+                    leave_start: reArrangedDateTime,
+                    };
+                });
+        };
+
+        const handleEndDateChange = (time) => {
+            const date = new Date(time);
+            // Adjust for time zone offset
+            const offset = date.getTimezoneOffset();
+            const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
+
+            const year = adjustedDate.getUTCFullYear();
+            const month = adjustedDate.getUTCMonth() + 1;
+            const day = adjustedDate.getUTCDate();
+            const hours = adjustedDate.getUTCHours();
+            const minutes = adjustedDate.getUTCMinutes();
+            const seconds = adjustedDate.getUTCSeconds();
+
+            const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            setAddLeaveFormData((preValue) => {
+                return {
+                ...preValue,
+                leave_end: reArrangedDateTime,
+                };
+            });
     };
 
 
@@ -128,9 +184,9 @@ function AddLeave( props ) {
                 {props.employees.length > 0 ? (
                                 <Grid xs={12} item sx={{ mt: 2}}>
                                     <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
-                                      SelectProps={{
+                                    SelectProps={{
                                         multiple: false
-                                      }}>
+                                    }}>
                                         {
                                         props.employees.map((user,index) => (
                                             <MenuItem key={user.id} value={user.id}>
@@ -152,6 +208,7 @@ function AddLeave( props ) {
                     </TextField>
                 </Grid>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {isShortLeave ? (
                     <Stack spacing={2} sx={{mt:2}}>
                         <DateTimePicker
                                 label="Leave Start"
@@ -174,8 +231,34 @@ function AddLeave( props ) {
                                 required
                                 renderInput={(params) => <TextField {...params} />}
                                 />
-
                     </Stack>
+                ) : (
+                    <Stack spacing={2} sx={{mt:2}}>
+                        <DatePicker
+                                label="Leave Start"
+                                name='leave_start'
+                                value={AddLeaveFormData.leave_start}
+                                onChange={(handleStartDateChange)}
+                                variant='outlined'
+                                sx={{ width: "100%" }}
+                                renderInput={(params) => <TextField {...params} required/>}
+                                inputFormat="YYYY-MM-DD"
+                                outputFormat="YYYY-MM-DD"
+                                />
+
+                                <DatePicker
+                                    label="Leave End"
+                                    name="leave_end"
+                                    value={AddLeaveFormData.leave_end}
+                                    onChange={handleEndDateChange}
+                                    variant='outlined'
+                                    sx={{ width: "100%"}}
+                                    renderInput={(params) => <TextField {...params} required/>}
+                                    inputFormat="YYYY-MM-DD"
+                                    outputFormat="YYYY-MM-DD"
+                                />
+                    </Stack>
+                )}
                 </LocalizationProvider>
                 <Grid xs={12} item sx={{ mt: 2 }}>
                     <TextField label="Reason for leave" name='leave_reason' onChange={inputEvent} value={AddLeaveFormData.leave_reason} variant="outlined" sx={{ width: "100%" }} required

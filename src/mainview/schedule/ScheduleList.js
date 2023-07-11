@@ -10,15 +10,15 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 // import Shift from "../Shift/Shift";
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
+  { field: 'id', headerName: 'Id' ,headerAlign:'center',align:'center'},
     // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
-    { field: 'fullname', headerName: 'EMPLOYEE', width: 180,headerAlign:'center',align:'center'},
+    { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
     // { field: 'user_name', headerName: 'User Name', width: 150 },
-    { field: 'from_date', headerName: 'FROM', width: 150,headerAlign:'center',align:'center'},
-    { field: 'to_date', headerName: 'TO', width: 150,headerAlign:'center',align:'center'},
-    { field: 'shift_name', headerName: 'SHIFT', width: 170,headerAlign:'center',align:'center'},
-    { field: 'shift_start', headerName: 'SHIFT START', width: 150,headerAlign:'center',align:'center'},
-    { field: 'shift_end', headerName: 'SHIFT END', width: 150,headerAlign:'center',align:'center'},
+    { field: 'from_date', headerName: 'From', width: 150,headerAlign:'center',align:'center'},
+    { field: 'to_date', headerName: 'To', width: 150,headerAlign:'center',align:'center'},
+    { field: 'shift_name', headerName: 'Shift', width: 170,headerAlign:'center',align:'center'},
+    { field: 'shift_start', headerName: 'Shift Start', width: 150,headerAlign:'center',align:'center'},
+    { field: 'shift_end', headerName: 'Shift End', width: 150,headerAlign:'center',align:'center'},
     // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
 ];
 const ScheduleList = () => {

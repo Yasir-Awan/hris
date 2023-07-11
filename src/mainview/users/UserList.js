@@ -12,20 +12,20 @@ import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 20,headerAlign:'center',align:'center'},
-    { field: 'uname', headerName: 'EMPLOYEE', width: 200,headerAlign:'center',align:'center'},
-    { field: 'email', headerName: 'EMAIL', width: 300,headerAlign:'center',align:'center'},
-    { field: 'sitename', headerName: 'SITE', width: 120,headerAlign:'center',align:'center'},
-    { field: 'contact', headerName: 'CONTACT', width: 120,headerAlign:'center',align:'center'},
-    { field: 'address', headerName: 'ADDRESS', width: 100,headerAlign:'center',align:'center'},
-    { field: 'empType', headerName: 'TYPE', width: 90,headerAlign:'center',align:'center'},
+    { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center'},
+    { field: 'uname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
+    { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
+    { field: 'sitename', headerName: 'Site', width: 120,headerAlign:'center',align:'center'},
+    { field: 'contact', headerName: 'Contact', width: 120,headerAlign:'center',align:'center'},
+    { field: 'address', headerName: 'Address', width: 100,headerAlign:'center',align:'center'},
+    { field: 'empType', headerName: 'Type', width: 90,headerAlign:'center',align:'center'},
     // { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
-    { field: 'empSec', headerName: 'SECTION', width: 85,headerAlign:'center',align:'center'},
-    { field: 'empField', headerName: 'FIELD', width: 155,headerAlign:'center',align:'center'},
-    { field: 'empRole', headerName: 'ROLE', width: 170,headerAlign:'center',align:'center'},
+    { field: 'empSec', headerName: 'Section', width: 85,headerAlign:'center',align:'center'},
+    { field: 'empField', headerName: 'Field', width: 155,headerAlign:'center',align:'center'},
+    { field: 'empRole', headerName: 'Role', width: 170,headerAlign:'center',align:'center'},
     // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
     // { field: 'status', headerName: 'status', width: 150 },
-    { field: 'action', headerName: 'ACTION', width: 75, renderCell:(value) => {
+    { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
       return (
         <>
         <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />}>
