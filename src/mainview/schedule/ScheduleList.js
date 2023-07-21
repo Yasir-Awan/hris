@@ -10,7 +10,21 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 // import Shift from "../Shift/Shift";
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Id' ,headerAlign:'center',align:'center'},
+  // { field: 'id', headerName: 'Id' ,headerAlign:'center',align:'center'},
+  { field: 'id', headerName: 'Serial No' , width: 90 ,
+        filterable: false,
+        renderCell: (value) => {
+          console.log(value.row.id)
+          console.log(value.api.getRowIndex(value.row.id))
+          console.log(value.row.page)
+          console.log(value.row.pageSize)
+          const currentPage = value.row.page;
+          const pageSize = value.row.pagesize;
+          const rowNumber = ((currentPage - 1) * pageSize) + (value.api.getRowIndex(value.row.id) + 1);
+          console.log(rowNumber)
+          return <div>{rowNumber}</div>;
+        },
+      headerAlign:'center',align:'center'},
     // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
     { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
     // { field: 'user_name', headerName: 'User Name', width: 150 },
@@ -62,6 +76,7 @@ axios({
 
     const refreshSchedulesList = () => {
           setShowDialog(false)
+          let counter = 1;
           // let shiftRecords =[];
           // api call for schedule List START
           axios({
@@ -81,10 +96,13 @@ axios({
               console.log(response.data);
               if(response.data.schedule_rows){
                 response.data.schedule_rows.forEach(element => {
-                    mydata.push({id:element.id,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
+                  // console.log(counter)
+                    mydata.push({id:counter,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
                     from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
-                    shift_start:element.shift_start,shift_end:element.shift_end
+                    shift_start:element.shift_start,shift_end:element.shift_end,page:response.data.page,
+                    pagesize:response.data.pagesize
                   })
+                  counter++;
                 }
                   );
               }
