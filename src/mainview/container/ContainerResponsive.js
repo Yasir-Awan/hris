@@ -114,7 +114,7 @@ export default function BasicCard(props) {
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
                   <Typography variant="h5" component="div" gutterBottom>
-                    Monthly{bull}Summary
+                    Attendance{bull}Summary
                   </Typography>
                   <MonthlySummary/>
                 </CardContent>
