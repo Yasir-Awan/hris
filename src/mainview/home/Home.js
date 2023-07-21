@@ -92,7 +92,7 @@ const Home = props => {
                 <Tab label="Leaves"/>
                 <Tab label="Schedules"/>
                 <Tab label="Attendance"/>
-                <Tab label="Monthly Summary"/>
+                <Tab label="Summary"/>
                 <Tab label="Remarks"/>
                 <Tab label="Teams"/>
                 <Tab label="Projects"/>
