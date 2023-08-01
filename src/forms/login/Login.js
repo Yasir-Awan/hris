@@ -45,6 +45,10 @@ export default function Login() {
   const [loginFormData, setLoginFormData] = React.useState({username:'',password:''});
   const navigate = useNavigate();
   localStorage.setItem('token','');
+  localStorage.setItem('fname','');
+  localStorage.setItem('lname','');
+  localStorage.setItem('bio_id','')
+  localStorage.setItem('role','')
 
   const loginFormSubmit = (event) => {
 
@@ -71,6 +75,10 @@ export default function Login() {
       //  onClose: () => history.push('/')
       //     navigate('/home')
           localStorage.setItem('token', response.data.access_token)
+          localStorage.setItem('fname', response.data.fname)
+          localStorage.setItem('lname', response.data.lname)
+          localStorage.setItem('bio_id', response.data.user_id)
+          localStorage.setItem('role', response.data.role)
         }
       })
       .catch(error => {

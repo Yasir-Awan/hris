@@ -35,8 +35,6 @@ const columns: GridColDef[] = [
       // const navigate = useNavigate();
       let attendanceRows = [];
 
-
-
   useEffect(() => {
       updateData('loading', true);
       console.log('filterModel:', filterModel); // add this line to check filterModel value
@@ -49,7 +47,9 @@ const columns: GridColDef[] = [
         data: {
           pageSize: data.pageSize,
           page: data.page,
-          filters: filterModel // pass filterModel to the server,
+          filters: filterModel, // pass filterModel to the server,
+          role: localStorage.getItem('role'),
+          emp_id: localStorage.getItem('bio_id')
         },
       })
       .then(function (response) {

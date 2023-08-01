@@ -26,52 +26,7 @@ export default function BasicCard(props) {
 
   const [filterVals, setFilterVals] = React.useState([]);
   console.log(props);
-  if(props.name===0){
-    return (
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography variant="h5" component="div" gutterBottom>
-            Employees{bull}List
-          </Typography>
-          <UserList/>
-        </CardContent>
-        {/* <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions> */}
-      </Card>
-    );
-  }
-  if(props.name===1){
-    return (
-          <Card sx={{ minWidth: 275 }}>
-              <CardContent>
-                <Typography variant="h5" component="div" gutterBottom>
-                  Shifts{bull}List
-                </Typography>
-                <ShiftsList/>
-              </CardContent>
-              {/* <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions> */}
-            </Card>
-    );
-  }
-  if(props.name === 2){
-    return (
-            <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <Typography variant="h5" component="div" gutterBottom>
-                    Leaves{bull}List
-                  </Typography>
-                  <LeavesList/>
-                </CardContent>
-                {/* <CardActions>
-                  <Button size="small">Learn More</Button>
-                </CardActions> */}
-              </Card>
-    );
-  }
-  if(props.name === 3){
+  if(props.name === 0){
     return(
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
@@ -86,7 +41,22 @@ export default function BasicCard(props) {
               </Card>
     )
   }
-  if(props.name === 4){
+  if(props.name === 1){
+    return (
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Leaves{bull}List
+                  </Typography>
+                  <LeavesList/>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions> */}
+              </Card>
+    );
+  }
+  if(props.name === 2){
     return(
     <Card sx={{ minWidth: 275 }}>
         <CardContent>
@@ -109,7 +79,7 @@ export default function BasicCard(props) {
       </Card>
     )
   }
-  if(props.name === 5){
+  if(props.name === 3){
     return(
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
@@ -123,5 +93,35 @@ export default function BasicCard(props) {
                 </CardActions> */}
               </Card>
     )
+  }
+  if(props.name===4){
+    return (
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography variant="h5" component="div" gutterBottom>
+            Employees{bull}List
+          </Typography>
+          <UserList/>
+        </CardContent>
+        {/* <CardActions>
+          <Button size="small">Learn More</Button>
+        </CardActions> */}
+      </Card>
+    );
+  }
+  if(props.name===5){
+    return (
+          <Card sx={{ minWidth: 275 }}>
+              <CardContent>
+                <Typography variant="h5" component="div" gutterBottom>
+                  Shifts{bull}List
+                </Typography>
+                <ShiftsList/>
+              </CardContent>
+              {/* <CardActions>
+                <Button size="small">Learn More</Button>
+              </CardActions> */}
+            </Card>
+    );
   }
 }

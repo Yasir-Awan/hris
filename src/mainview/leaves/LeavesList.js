@@ -39,6 +39,7 @@ const columns: GridColDef[] = [
     var userRecords = [];
 
   useEffect(() => {
+    updateData('loading', true);
       refreshUsersList()
           refreshLeavesList()
   }, []);
@@ -66,14 +67,16 @@ const columns: GridColDef[] = [
 
   const refreshLeavesList = () => {
     setShowDialog(false)
-    updateData('loading', true);
+
     axios({
       method: 'get',
-      url: 'leaves_list',
+      url:'leaves_list/'+localStorage.getItem('role')+'/'+localStorage.getItem('bio_id'),
       headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
       data: {
         pageSize: data.pageSize,
         page: data.page,
+        role: localStorage.getItem('role'),
+        emp_id: localStorage.getItem('bio_id')
         // filters: filterModel
         // pass filterModel to the server,
       },
@@ -104,9 +107,9 @@ const columns: GridColDef[] = [
               const rows = leaveRows;
               // updateData("totalRows", response.data.total_rows);
                   setTimeout(() => {
-                    updateData("rows", rows);
-                    updateData("loading", false);
+                    updateData("loading", true);
                   }, 100);
+                  updateData("rows", rows);
             }, 500);
     })
     .catch(error => { console.log(error); })
