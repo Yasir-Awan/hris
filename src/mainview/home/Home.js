@@ -17,33 +17,35 @@ const Home = props => {
   console.log(page)
 
   const tabNameToIndex = {
-    0 : "employees",
-    1 : "shifts",
-    2 : "leaves",
-    3: "schedules",
-    4: "attendance",
-    5: "monthly_summary",
+
+    0: "schedules",
+    1 : "leaves",
+    2: "attendance",
+    3: "monthly_summary",
+    4 : "employees",
+    5 : "shifts",
     6: "remarks",
     7: "teams",
     8: "projects"
   }
   const  indexToTabName = {
-      "employees":0,
-      "shifts":1,
-      "leaves":2,
-      "schedules":3,
-      "attendance":4,
-      "monthly_summary":5,
+      "schedules":0,
+      "leaves":1,
+      "attendance":2,
+      "monthly_summary":3,
+      "employees":4,
+      "shifts":5,
       "remarks":6,
       "teams":7,
       "projects":8}
   const navigate = useNavigate();
   const location = useLocation();
   const [SelectedTab,setSelectedTab] = useState(indexToTabName[page]);
+  // const [UserAdmin,setUserAdmin] = useState(false);
 
-  // if(!page==='undefined'){
-  //   setSelectedTab(indexToTabName[page])
-  // }
+  console.log(localStorage.getItem('role'))
+
+  // console.log(UserAdmin)
 
   const handleChange = (event, newValue) => {
     navigate(`/home/${tabNameToIndex[newValue]}`);
@@ -55,13 +57,43 @@ const Home = props => {
   console.log(scheduleData);
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
+  const ConditionalComponent = ({ role }) => {
+    console.log(role)
+    if (role ==='3') {
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '9%', marginRight: 'auto' }}>
+      <Tab label="Schedules"/>
+      <Tab label="Leaves"/>
+      <Tab label="Attendance"/>
+      <Tab label="Summary"/>
+      <Tab label="Employees"/>
+      <Tab label="Shifts"/>
+      <Tab label="Remarks"/>
+      <Tab label="Teams"/>
+      <Tab label="Projects"/>
+    </Tabs>;
+    } else {
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '25%', marginRight: 'auto' }}>
+      <Tab label="Schedules"/>
+      <Tab label="Leaves"/>
+      <Tab label="Attendance"/>
+      <Tab label="Summary"/>
+      {/* <Tab label="Employees"/>
+      <Tab label="Shifts"/>
+      <Tab label="Remarks"/>
+      <Tab label="Teams"/>
+      <Tab label="Projects"/> */}
+    </Tabs>;
+    }
+  }
+
+  // export default ConditionalComponent;
   console.log(isMatch);
   if (scheduleData) {
     return (
       <>
         {/* Render the ScheduleList component inside the Home component */}
         <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary'>
-                    <Tab key={3} label={'Schedules'} />
+                    <Tab key={0} label={'Schedules'} />
         </Tabs>
         <ContainerResponsive name={3}></ContainerResponsive>
       </>
@@ -86,23 +118,16 @@ const Home = props => {
                   <Typography variant='h5' component='div'>
                 HR IS
               </Typography>
-              <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '9%', marginRight: 'auto' }}>
-                <Tab label="Employees"/>
-                <Tab label="Shifts"/>
-                <Tab label="Leaves"/>
-                <Tab label="Schedules"/>
-                <Tab label="Attendance"/>
-                <Tab label="Summary"/>
-                <Tab label="Remarks"/>
-                <Tab label="Teams"/>
-                <Tab label="Projects"/>
-              </Tabs>
+
+              <ConditionalComponent role={localStorage.getItem('role')}/>
+
               <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button>
                   </>
                 )
               }
             </Toolbar>
           </AppBar>
+
           { SelectedTab === 0 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 1 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}

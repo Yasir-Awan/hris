@@ -35,7 +35,7 @@ const columns: GridColDef[] = [
     { field: 'shift_end', headerName: 'Shift End', width: 150,headerAlign:'center',align:'center'},
     // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
 ];
-const ScheduleList = () => {
+    const ScheduleList = () => {
     const navigate = useNavigate();
     const [showDialog,setShowDialog] = useState(false)
     const [shifts,setShifts] = useState([]);
@@ -59,8 +59,7 @@ const ScheduleList = () => {
 axios({
   method: 'get',
   url:'shift_list',
-  headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
-}
+  headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
 })
   .then(function (response) {
       response.data.shift_info.forEach(element => {
@@ -88,7 +87,9 @@ axios({
             data: {
               pageSize: tableData.pageSize,
               page: tableData.page,
-              filters: filterModel // pass filterModel to the server,
+              filters: filterModel, // pass filterModel to the server,
+              role: localStorage.getItem('role'),
+              emp_id: localStorage.getItem('bio_id')
             },
           }
           )
@@ -125,14 +126,24 @@ axios({
                   // api call for schedule list END
       }
 
+      const ConditionalComponent = ({ role }) => {
+        if (role ==='3') {
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
+                      <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
+                          <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
+                      </CustomizedDialogs>
+                  </Box>
+        } else {
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
+                  </Box>;
+        }
+      }
+
     return (
       <>
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
-            <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
-                <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
-                    <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
-                </CustomizedDialogs>
-            </Box>
+
+            <ConditionalComponent role={localStorage.getItem('role')}/>
             <DataGrid
                 autoHeight
                 density="compact"

@@ -16,7 +16,6 @@ function AddLeave( props ) {
     const [isShortLeave, setIsShortLeave] = useState(false);
     const formSubmit = (event) => {
     event.preventDefault();
-    console.log(AddLeaveFormData);
 
     axios({
                 method: 'post',
@@ -181,7 +180,7 @@ function AddLeave( props ) {
             <CardContent>
             <form onSubmit={formSubmit}>
                 <Grid >
-                {props.employees.length > 0 ? (
+                {localStorage.getItem('role') === '3' ? (
                                 <Grid xs={12} item sx={{ mt: 2}}>
                                     <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
                                     SelectProps={{
@@ -195,7 +194,19 @@ function AddLeave( props ) {
                                             ))
                                         }
                                     </TextField>
-                                </Grid>) : (<div></div>)
+                                </Grid>) : (
+                                            <Grid xs={12} item sx={{ mt: 2}}>
+                                            <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
+                                            SelectProps={{
+                                                multiple: false
+                                            }}>
+                                                {
+                                                    <MenuItem selected key={localStorage.getItem('bio_id')} value={localStorage.getItem('bio_id')}>
+                                                    {localStorage.getItem('fname')+' '+localStorage.getItem('lname')}
+                                                    </MenuItem>
+                                                }
+                                            </TextField>
+                                        </Grid>)
                                 }
                 <Grid xs={12} item sx={{ mt: 2 }}>
                     <TextField label="Select leave type" name='leave_type' onChange={inputEvent} select value={AddLeaveFormData.leave_type} variant="outlined" sx={{ width: "100%" }} required

@@ -25,8 +25,9 @@ const columns: GridColDef[] = [
             setLoading(true)
             axios({
                 method: 'get',
-                url:'monthly_summary',
+                url:'monthly_summary/'+localStorage.getItem('role')+'/'+localStorage.getItem('bio_id'),
                 headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+
             }
             })
                 .then(function (response) {
