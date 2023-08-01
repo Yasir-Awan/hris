@@ -30,7 +30,7 @@ export default function BasicCard(props) {
     return(
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" gutterBottom>
+                  <Typography variant="h5" component="div">
                     Schedules{bull}List
                   </Typography>
                   <ScheduleList/>
@@ -45,7 +45,7 @@ export default function BasicCard(props) {
     return (
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" gutterBottom>
+                  <Typography variant="h5" component="div">
                     Leaves{bull}List
                   </Typography>
                   <LeavesList/>
@@ -56,7 +56,7 @@ export default function BasicCard(props) {
               </Card>
     );
   }
-  if(props.name === 2){
+  if(props.name === 2 && localStorage.getItem('role') === '3'){
     return(
     <Card sx={{ minWidth: 275 }}>
         <CardContent>
@@ -67,7 +67,9 @@ export default function BasicCard(props) {
             </Typography>
           </Grid>
           <Grid item xs={1.45}></Grid>
-          <Grid item xs={2.55}><CustomEmployeeFilter fieldName='fullname' header='Employee' onChange={(values)=>setFilterVals(values)}/></Grid>
+          <Grid item xs={2.55}>
+            <CustomEmployeeFilter fieldName='fullname' header='Employee' onChange={(values)=>setFilterVals(values)}/>
+            </Grid>
           <Grid item xs={2}><CustomDayFilter onChange={(values)=>setFilterVals(values)}/></Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
@@ -79,11 +81,27 @@ export default function BasicCard(props) {
       </Card>
     )
   }
+  if(props.name === 2 && localStorage.getItem('role') !== '3'){
+    return(
+    <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Grid container spacing={0} >
+          <Grid item >
+          <Typography variant="h5" component="div" >
+              Attendance{bull}List
+            </Typography>
+          </Grid>
+          </Grid>
+          <AttendanceList filterValues={()=>setFilterVals(filterVals)}/>
+        </CardContent>
+      </Card>
+    )
+  }
   if(props.name === 3){
     return(
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" gutterBottom>
+                  <Typography variant="h5" component="div">
                     Attendance{bull}Summary
                   </Typography>
                   <MonthlySummary/>
@@ -98,7 +116,7 @@ export default function BasicCard(props) {
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          <Typography variant="h5" component="div" gutterBottom>
+          <Typography variant="h5" component="div">
             Employees{bull}List
           </Typography>
           <UserList/>
@@ -113,7 +131,7 @@ export default function BasicCard(props) {
     return (
           <Card sx={{ minWidth: 275 }}>
               <CardContent>
-                <Typography variant="h5" component="div" gutterBottom>
+                <Typography variant="h5" component="div">
                   Shifts{bull}List
                 </Typography>
                 <ShiftsList/>
