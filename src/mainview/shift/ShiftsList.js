@@ -59,7 +59,7 @@ const columns: GridColDef[] = [
 
     return (
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
-            <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
+            <Box sx={{marginLeft:'97%', position: "absolute",top:'72px',right:'20px'}}>
                 <CustomizedDialogs size='small' title= "Add New Shift" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
                     <AddShift refreshList = { refreshShiftsList } />
                 </CustomizedDialogs>
