@@ -46,13 +46,9 @@ const columns: GridColDef[] = [
                                         'end':element.end,
                                     })
                 });
-
-
-            setLoading(true)
-
-        setShiftsList(shiftRecords);
+                setLoading(true)
+                setShiftsList(shiftRecords)
                 setLoading(false)
-                // console.log(shifts);
             })
             .catch(error => {});// api call for shifts list END
     }
@@ -66,9 +62,7 @@ const columns: GridColDef[] = [
             </Box>
             <DataGrid density="compact" loading={loading} autoHeight rows={shiftsList} columns={columns}/>
         </div>
-
     )
 }
-
 
 export default ShiftsList

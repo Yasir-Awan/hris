@@ -27,7 +27,6 @@ const columns: GridColDef[] = [
                 method: 'get',
                 url:'monthly_summary/'+localStorage.getItem('role')+'/'+localStorage.getItem('bio_id'),
                 headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
-
             }
             })
                 .then(function (response) {
@@ -41,45 +40,13 @@ const columns: GridColDef[] = [
                                             'required_hrs_including_weekends':element.required_hrs_excluding_weekends,
                                             'working_time':element.total_time,
                                             'acceptable_time':element.total_acceptable_time,
-
                                         })
                     });
-                    setMonthlySummary(summaryRecords);
                     setLoading(false)
+                    setMonthlySummary(summaryRecords);
                 })
                 .catch(error => {});// api call for shifts list END
     }, []);
-
-    // const refreshShiftsList = () => {
-    //     setShowDialog(false)
-    //     let shiftRecords =[];
-    //     // api call for shifts list START
-    //     axios({
-    //         method: 'get',
-    //         url:'shift_list',
-    //         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
-    //     }
-    //     })
-    //         .then(function (response) {
-    //             response.data.shift_info.forEach(element => {
-    //                 shiftRecords.push({
-    //                                     'id':element.id,
-    //                                     'name':element.shift_name,
-    //                                     'shift_type_name':element.shift_type_name,
-    //                                     'start':element.start,
-    //                                     'end':element.end,
-    //                                 })
-    //             });
-
-
-    //         setLoading(true)
-
-    //     setShiftsList(shiftRecords);
-    //             setLoading(false)
-    //             // console.log(shifts);
-    //         })
-    //         .catch(error => {});// api call for shifts list END
-    // }
 
     return (
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
@@ -92,9 +59,7 @@ const columns: GridColDef[] = [
                 density='compact'
                 />
         </div>
-
     )
 }
-
 
 export default MonthlySummary

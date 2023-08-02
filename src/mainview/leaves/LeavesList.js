@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
     var userRecords = [];
 
   useEffect(() => {
-    updateData('loading', true);
+    // updateData('loading', true);
       refreshUsersList()
           refreshLeavesList()
   }, []);
@@ -60,7 +60,6 @@ const columns: GridColDef[] = [
                 'empRole':element.role_name,})
                 });
                 setUsers(userRecords);
-
             })
             .catch(error => {});// api call for users list END
   }
@@ -100,22 +99,20 @@ const columns: GridColDef[] = [
                         });
                       });
                     } else {
-                      // navigate('/');
+                      navigate('/');
                     }
 
             setTimeout(() => {
               const rows = leaveRows;
               // updateData("totalRows", response.data.total_rows);
                   setTimeout(() => {
-                    updateData("loading", true);
+                    updateData("loading", false);
                   }, 100);
                   updateData("rows", rows);
-            }, 500);
+            }, 100);
     })
     .catch(error => { console.log(error); })
 }
-
-  console.log(users);
 
     return (
         <>
@@ -129,7 +126,7 @@ const columns: GridColDef[] = [
                 density="compact"
                 autoHeight
                 // rowHeight={50}
-                // loading={data.loading}
+                loading={data.loading}
                 // rowsPerPageOptions={data.rowsPerPageOptions}
                 // pagination
                 // page={data.page-1}

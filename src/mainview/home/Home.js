@@ -8,13 +8,9 @@ import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
 
-// const PAGES = ["Employees","Shifts","Leaves","Schedules","Attendance","Remarks","Teams","Projects"]
-
 const Home = props => {
 
   const { page } = useParams();
-
-  console.log(page)
 
   const tabNameToIndex = {
 
@@ -40,12 +36,7 @@ const Home = props => {
       "projects":8}
   const navigate = useNavigate();
   const location = useLocation();
-  const [SelectedTab,setSelectedTab] = useState(indexToTabName[page]);
-  // const [UserAdmin,setUserAdmin] = useState(false);
-
-  console.log(localStorage.getItem('role'))
-
-  // console.log(UserAdmin)
+  const [SelectedTab,setSelectedTab] = useState(indexToTabName[page])
 
   const handleChange = (event, newValue) => {
     navigate(`/home/${tabNameToIndex[newValue]}`);
@@ -54,11 +45,9 @@ const Home = props => {
 
   const theme = useTheme();
   const scheduleData = location.state && location.state.scheduleData;
-  console.log(scheduleData);
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   const ConditionalComponent = ({ role }) => {
-    console.log(role)
     if (role ==='3') {
       return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '9%', marginRight: 'auto' }}>
       <Tab label="Schedules"/>
@@ -86,8 +75,6 @@ const Home = props => {
     }
   }
 
-  // export default ConditionalComponent;
-  console.log(isMatch);
   if (scheduleData) {
     return (
       <>
