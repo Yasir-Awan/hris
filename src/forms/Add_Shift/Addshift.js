@@ -62,9 +62,6 @@ function AddShift({ refreshList }) {
   }
 
   const inputEvent = (event) => {
-    console.log(event.target.value);
-    console.log(event.target.name);
-
     const { name, value } = event.target;
 
     setAddShiftFormData((preValue) => {
@@ -79,15 +76,12 @@ function AddShift({ refreshList }) {
   const handleStartTimeChange = (time) => {
     const date = new Date(time);
     const datetimeStr = date.toLocaleString('en-US', { hour12: false });
-    // const datetimeStr = "4/18/2023, 19:30:00";
     const timeStr = datetimeStr.split(", ")[1]; // split the string by comma and get the second part
     const timeParts = timeStr.split(":");
     const start = new Date();
     start.setHours(parseInt(timeParts[0]));
     start.setMinutes(parseInt(timeParts[1]));
     start.setSeconds(parseInt(timeParts[2]));
-console.log(timeStr); // output: "19:30:00"
-console.log(start)
 
     setAddShiftFormData((preValue) => {
       return {
@@ -100,15 +94,12 @@ console.log(start)
   const handleEndTimeChange = (time) => {
     const date = new Date(time);
     const datetimeStr = date.toLocaleString('en-US', { hour12: false });
-    // const datetimeStr = "4/18/2023, 19:30:00";
     const timeStr = datetimeStr.split(", ")[1]; // split the string by comma and get the second part
     const timeParts = timeStr.split(":");
     const end = new Date();
     end.setHours(parseInt(timeParts[0]));
     end.setMinutes(parseInt(timeParts[1]));
     end.setSeconds(parseInt(timeParts[2]));
-console.log(timeStr); // output: "19:30:00"
-console.log(end)
     setAddShiftFormData((preValue) => {
       return {
         ...preValue,
@@ -159,7 +150,6 @@ console.log(end)
                                   required
                                   renderInput={(params) => <TextField {...params} />}
                                 />
-
                     </Stack>
                 </LocalizationProvider>
                 <Grid item xs={12} sx={{ mt: 2 }}>

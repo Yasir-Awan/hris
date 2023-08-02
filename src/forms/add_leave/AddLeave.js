@@ -41,8 +41,7 @@ function AddLeave( props ) {
                                                       //window.location.reload(); // Refresh the page
                                                     }
                                                 });
-                    }
-                    else{
+                    }else{
                                     toast.success('leave not added', {
                                         position:'top-right',
                                         autoClose:1000,
@@ -54,32 +53,27 @@ function AddLeave( props ) {
             .catch(error => console.error(error));
     }
 
-
-
     const inputEvent = (event) => {
-    console.log(event.target.value);
-    console.log(event.target.name);
 
-    const { name, value } = event.target;
+        const { name, value } = event.target;
 
-    if (name==='leave_type' && value ==='1'){
-        setIsShortLeave(true)
-    }else{
-        setIsShortLeave(false)
-    }
+        if (name==='leave_type' && value ==='1'){
+            setIsShortLeave(true)
+        }else{
+            setIsShortLeave(false)
+        }
 
-    setAddLeaveFormData((preValue) => {
-        console.log(preValue);
-        return {
-        ...preValue,
-        [name]: value
-        };
-    })
+        setAddLeaveFormData((preValue) => {
+            console.log(preValue);
+            return {
+            ...preValue,
+            [name]: value
+            };
+        })
     }
 
     const handleStartTimeChange = (time) => {
         const date = new Date(time);
-
         // Adjust for time zone offset
         const offset = date.getTimezoneOffset();
         const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
@@ -103,7 +97,6 @@ function AddLeave( props ) {
 
         const handleEndTimeChange = (time) => {
             const date = new Date(time);
-
             // Adjust for time zone offset
             const offset = date.getTimezoneOffset();
             const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
@@ -171,7 +164,6 @@ function AddLeave( props ) {
             });
     };
 
-
     return (
     <>
     <div className="App">
@@ -231,7 +223,6 @@ function AddLeave( props ) {
                                 required
                                 renderInput={(params) => <TextField {...params} />}
                                 />
-
                         <DateTimePicker
                                 label="Leave End"
                                 name='leave_end'
@@ -256,7 +247,6 @@ function AddLeave( props ) {
                                 inputFormat="YYYY-MM-DD"
                                 outputFormat="YYYY-MM-DD"
                                 />
-
                                 <DatePicker
                                     label="Leave End"
                                     name="leave_end"
@@ -276,7 +266,6 @@ function AddLeave( props ) {
                     multiline
                     maxRows={2}
                     />
-
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
                     <Button type="submit" variant="contained" color="primary" sx={{ width: "100%" }} >Add</Button>

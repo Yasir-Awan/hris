@@ -51,7 +51,6 @@ export default function Login() {
 
   const loginFormSubmit = (event) => {
 
-    // alert()
     event.preventDefault();
     console.log(loginFormData);
     axios({
@@ -89,20 +88,14 @@ export default function Login() {
           pauseOnHover: false,
           draggable: true,
           progress: undefined,
-
       });
         console.log(error.response.data.error)
     })
-
   }
 
   const inputEvent = (event) => {
-    console.log(event.target.value);
-    console.log(event.target.name);
-    console.log('yasir');
 
     const {name,value} = event.target;
-
     setLoginFormData((preValue)=>{
       console.log(preValue);
       return {
@@ -117,61 +110,61 @@ export default function Login() {
     <CssVarsProvider>
       <ModeToggle/>
       <form onSubmit={loginFormSubmit}>
-<Sheet
-  sx={{
-    width: 300,
-    mx: 'auto', // margin left & right
-    my: 4, // margin top & botom
-    py: 3, // padding top & bottom
-    px: 2, // padding left & right
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 2,
-    borderRadius: 'sm',
-    boxShadow: 'md',
-  }}
->
+            <Sheet
+              sx={{
+                width: 300,
+                mx: 'auto', // margin left & right
+                my: 4, // margin top & botom
+                py: 3, // padding top & bottom
+                px: 2, // padding left & right
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                borderRadius: 'sm',
+                boxShadow: 'md',
+              }}
+            >
 
-<Typography level="h4" component="h1">
-    Welcome!
-  </Typography>
-  <Typography level="body2">Sign in to continue.</Typography>
+            <Typography level="h4" component="h1">
+                Welcome!
+              </Typography>
+              <Typography level="body2">Sign in to continue.</Typography>
 
-  <TextField
-  // html input attribute
-  name="username"
-  type="email"
-  placeholder="yasirfayyaz@email.com"
-  // pass down to FormLabel as children
-  label="Email"
-  onChange={inputEvent}
-  value={loginFormData.username}
-  required
-/>
-<TextField
-  name="password"
-  type="password"
-  placeholder="password"
-  label="Password"
-  onChange={inputEvent}
-  value={loginFormData.password}
-  required
-/>
+              <TextField
+              // html input attribute
+              name="username"
+              type="email"
+              placeholder="yasirfayyaz@email.com"
+              // pass down to FormLabel as children
+              label="Email"
+              onChange={inputEvent}
+              value={loginFormData.username}
+              required
+            />
+            <TextField
+              name="password"
+              type="password"
+              placeholder="password"
+              label="Password"
+              onChange={inputEvent}
+              value={loginFormData.password}
+              required
+            />
 
 
-<Button type="submit" sx={{ mt: 1 /* margin top */ }} >
-  Log in
-</Button>
-<Typography
-  endDecorator={<Link href="/sign-up">Sign up</Link>}
-  fontSize="sm"
-  sx={{ alignSelf: 'center' }}
->
-  Don't have an account?
-</Typography>
+            <Button type="submit" sx={{ mt: 1 /* margin top */ }} >
+              Log in
+            </Button>
+            <Typography
+              endDecorator={<Link href="/sign-up">Sign up</Link>}
+              fontSize="sm"
+              sx={{ alignSelf: 'center' }}
+            >
+              Don't have an account?
+            </Typography>
 
-</Sheet>
-</form>
+            </Sheet>
+        </form>
     </CssVarsProvider>
     <ToastContainer/>
     </>

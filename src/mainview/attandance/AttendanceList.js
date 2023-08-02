@@ -55,7 +55,6 @@ const columns: GridColDef[] = [
       .then(function (response) {
                       // setTotalRows(response.total_rows);
                       if (response.data.attendance_rows) {
-                        // console.log(response.data);
                         response.data.attendance_rows.forEach((element) => {
                           attendanceRows.push({
                             id: counter,
@@ -84,10 +83,9 @@ const columns: GridColDef[] = [
                       updateData("rows", rows);
                       updateData("loading", false);
                     }, 100);
-              }, 500);
+              }, 200);
       })
       .catch(error => { console.log(error); })
-
   }, [data.page, data.pageSize,filterModel]);
 
     return (

@@ -66,11 +66,8 @@ axios({
           shiftRecords.push({'id':element.id,'name':element.shift_name,})
       });
       setShifts(shiftRecords);
-        console.log(shifts);
-
   })
   .catch(error => {});// api call for shifts list END
-
     }, [tableData.page, tableData.pageSize,filterModel]);
 
     const refreshSchedulesList = () => {
@@ -94,10 +91,8 @@ axios({
           }
           )
             .then(function (response) {
-              console.log(response.data);
               if(response.data.schedule_rows){
                 response.data.schedule_rows.forEach(element => {
-                  // console.log(counter)
                     mydata.push({id:counter,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
                     from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
                     shift_start:element.shift_start,shift_end:element.shift_end,page:response.data.page,
@@ -105,12 +100,11 @@ axios({
                   })
                   counter++;
                 }
-                  );
+                );
               }
               else{
                 navigate('/');
               }
-              // setTableData(mydata);
               setTimeout(() => {
                 const rows = mydata;
                 updateData("totalRows", response.data.total_rows);
@@ -118,7 +112,7 @@ axios({
                       updateData("rows", rows);
                       updateData("loading", false);
                     }, 100);
-              }, 500);
+              }, 100);
             })
             .catch(error => {
               console.log(error);
@@ -142,7 +136,6 @@ axios({
     return (
       <>
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
-
             <ConditionalComponent role={localStorage.getItem('role')}/>
             <DataGrid
                 autoHeight

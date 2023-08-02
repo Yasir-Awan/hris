@@ -85,10 +85,10 @@ function AddSchedule(props) {
         })
         setStartDate(null)
         setViewedMonth(dayjs().month())
-        console.log('yasir the great')
+        // console.log('yasir the great')
         const { name, value } = event.target;
-        console.log(name)
-        console.log(value)
+        // console.log(name)
+        // console.log(value)
                 // api call for Blocked Dates list START
                 axios({
                   method: 'post',
@@ -99,7 +99,6 @@ function AddSchedule(props) {
                   },
                 })
                   .then(function (response) {
-
                     if(response.data.blocked_info.leaveCount > 0 ){
                                 let startDateString = response.data.blocked_info.leaveDates[0].start_date;
                                 let stopDateString = response.data.blocked_info.leaveDates[0].end_date;
@@ -111,7 +110,6 @@ function AddSchedule(props) {
                                 let stopDate = new Date(Date.UTC(stopDateParts[0], stopDateParts[1]-1, stopDateParts[2], stopDateParts[3], stopDateParts[4], stopDateParts[5]));
 
                                 let dateArray = getDates(startDate, stopDate);
-                                console.log(dateArray);
                                 setBlockedLeaveDates(dateArray);
                     }
                     if(response.data.blocked_info.scheduleCount > 0){
@@ -136,12 +134,9 @@ function AddSchedule(props) {
                                   return [...acc, ...curr];
                                 }, []);
                                 setBlockedScheduleDates(mergedArray);
-
                               // api call for Blocked Dates list END
-
                     }
                     setAddScheduleFormData((preValue) => {
-                      // alert(preValue);
                                     return {
                                             ...preValue,
                                             [name]: value
@@ -149,15 +144,6 @@ function AddSchedule(props) {
                     })
                 })
     }
-
-    // const handleOpenDatePicker = () => {
-    //   setOpenDatePicker(true);
-    // };
-
-    // const handleDatePickerAccept = (date) => {
-    //   setSelectedDate(date);
-    //   setOpenDatePicker(false);
-    // };
 
     const handleMonthChange = (date) => {
       // setSelectedDate(date);
@@ -245,7 +231,6 @@ function AddSchedule(props) {
         }
 
     const renderDay = (date, _selectedDate, dayInCurrentMonth, dayComponent) => {
-      console.log('yaisr');
           const isBlockedLeaveDate = blockedLeaveDates.some(
               (blockedDate) => dayjs(blockedDate).isSame(date, "day")
           );
@@ -286,7 +271,6 @@ function AddSchedule(props) {
 
 
     const handleEndDateChange = (date) => {
-      console.log(startDate);
       setEndDate(date);
       const eDate = new Date(date);
       const eDateString = eDate.toLocaleString('en-US', { timeZone: 'Asia/Karachi', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -330,7 +314,6 @@ function AddSchedule(props) {
                                       <CloseIcon color={"red"} height="25px" width="25px" />
                                       {"   "}
                                       <span style={{ marginLeft: 5,fontWeight: "bold", color: "#000" }}>User on leave</span>
-
                                       <span style={{ marginLeft: 50 }}>{humanReadableStartDate} <br /> {bull}{bull} to{bull}{bull} <br /> {humanReadableEndDate}.</span>
                                     </div>
                                   )
@@ -458,7 +441,6 @@ function AddSchedule(props) {
                                             label="Start Date "
                                             open={openDatePicker}
                                             value={startDate ?? addScheduleFormData.from_date ?? null}
-
                                             onMonthChange={(handleMonthChange)}
                                             renderDay={renderDay}
                                             onChange={(handleStartDateChange)}
