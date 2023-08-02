@@ -131,28 +131,6 @@ export default function Login() {
               </Typography>
               <Typography level="body2">Sign in to continue.</Typography>
 
-<<<<<<< HEAD
-  <TextField
-  // html input attribute
-  name="username"
-  type="email"
-  placeholder="yasirfayyaz@email.com"
-  // pass down to FormLabel as children
-  label="Email"
-  onChange={inputEvent}
-  value={loginFormData.username}
-  required
-/>
-<TextField
-  name="password"
-  type="password"
-  placeholder="password"
-  label="Password"
-  onChange={inputEvent}
-  value={loginFormData.password}
-  required
-/>
-=======
               <Input
               // html input attribute
               name="username"
@@ -173,7 +151,6 @@ export default function Login() {
               value={loginFormData.password}
               required
             />
->>>>>>> c640c0aaab55074780be51a95291b817127727d7
 
 
             <Button type="submit" sx={{ mt: 1 /* margin top */ }} >
