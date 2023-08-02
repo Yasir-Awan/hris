@@ -8,17 +8,17 @@ import { Box } from '@mui/material';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
+  { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center'},
   { field: 'name', headerName: 'Name', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'leave_type', headerName: 'Leave Type', width: 150 ,headerAlign:'center',align:'center'},
+  { field: 'leave_type', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
   { field: 'leave_start', headerName: 'Leave Start', width: 200 ,headerAlign:'center',align:'center'},
   { field: 'leave_end', headerName: 'Leave End', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_status', headerName: 'Leave Status', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'weekend_count', headerName: 'WeekEnd', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'saturday_count', headerName: 'Saturday', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'sunday_count', headerName: 'Sunday', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'reason', headerName: 'Reason', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'time', headerName: 'Adding Time', width: 150 ,headerAlign:'center',align:'center'},
+  { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
+  { field: 'weekend_count', headerName: 'WeekEnd', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'saturday_count', headerName: 'Saturday', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'sunday_count', headerName: 'Sunday', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
+  { field: 'time', headerName: 'Adding Time', width: 220 ,headerAlign:'center',align:'center'},
 ];
 
   const LeavesList = () => {
