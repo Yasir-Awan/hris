@@ -3,12 +3,12 @@ import {useNavigate} from 'react-router-dom';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import CustomizedDialogs from '../../components/dialog';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddUser from '../../forms/add_user/AddUser';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import AddUser from '../../forms/add_user/AddUser';
 import EditUser from '../../forms/EditUser';
-import DeleteUser from '../../forms/DeleteUser';
+// import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
 
 const columns: GridColDef[] = [
@@ -30,8 +30,8 @@ const columns: GridColDef[] = [
         <>
         <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />}>
         <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
-         site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
-         consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
+          site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
+          consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
         </CustomizedDialogs>
         {/* <CustomizedDialogs size='small' title="Delete User" icon={<DeleteIcon />}>
           <DeleteUser id={value.id}/>

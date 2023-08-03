@@ -4,22 +4,74 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
 import CustomizedDialogs from '../../components/dialog';
 import AddLeave from '../../forms/add_leave/AddLeave';
-import { Box } from '@mui/material';
+import { Box,Switch,styled} from '@mui/material';
+import { alpha } from '@mui/material';
+import { pink } from '@mui/material/colors';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center'},
-  { field: 'name', headerName: 'Name', width: 150 ,headerAlign:'center',align:'center'},
-  { field: 'leave_type', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
-  { field: 'leave_start', headerName: 'Leave Start', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_end', headerName: 'Leave End', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'weekend_count', headerName: 'WeekEnd', width: 80 ,headerAlign:'center',align:'center'},
-  { field: 'saturday_count', headerName: 'Saturday', width: 80 ,headerAlign:'center',align:'center'},
-  { field: 'sunday_count', headerName: 'Sunday', width: 80 ,headerAlign:'center',align:'center'},
-  { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
-  { field: 'time', headerName: 'Adding Time', width: 220 ,headerAlign:'center',align:'center'},
-];
+const IOSSwitch = styled((props) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: 42,
+  height: 26,
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+    padding: 0,
+    margin: 2,
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      transform: 'translateX(16px)',
+      color: '#fff',
+      '& + .MuiSwitch-track': {
+        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+        opacity: 1,
+        border: 0,
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.5,
+      },
+    },
+    '&.Mui-focusVisible .MuiSwitch-thumb': {
+      color: '#33cf4d',
+      border: '6px solid #fff',
+    },
+    '&.Mui-disabled .MuiSwitch-thumb': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[100]
+          : theme.palette.grey[600],
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxSizing: 'border-box',
+    width: 22,
+    height: 22,
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 26 / 2,
+    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color'], {
+      duration: 500,
+    }),
+  },
+}));
+
+const PinkSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: pink[600],
+    '&:hover': {
+      backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: pink[600],
+  },
+}));
 
   const LeavesList = () => {
       const [data, setData] = useState({
@@ -37,6 +89,9 @@ const columns: GridColDef[] = [
     const navigate = useNavigate();
     let leaveRows = [];
     var userRecords = [];
+
+    // Extract the value of LocalStorage.getItem('role') to a variable
+  const userRole = localStorage.getItem('role');
 
   useEffect(() => {
     // updateData('loading', true);
@@ -95,7 +150,7 @@ const columns: GridColDef[] = [
                           saturday_count: element.saturday_count,
                           sunday_count: element.sunday_count,
                           reason: element.reason,
-                          time: element.readable_add_date
+                          time: element.readable_add_date,
                         });
                       });
                     } else {
@@ -113,6 +168,129 @@ const columns: GridColDef[] = [
     })
     .catch(error => { console.log(error); })
 }
+
+const handleApprovalToggle = (leaveId) => {
+  // Send an API request to update the leave status to "Approved" for the given leaveId.
+  axios({
+    method: 'post',
+    url: 'approve_leave',
+    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+    data: {
+      leave_id : leaveId
+    },
+})
+.then(
+    function (response) {
+      if(response.data.status==='200'){
+                      toast.success('Leave Approved', {
+                                        position:'top-right',
+                                        autoClose:1000,
+                                        onClose: () => {
+                                          // refreshList();
+                                         // navigate('/home/shifts'); // Redirect to Schedule component
+                                          //window.location.reload(); // Refresh the page
+                                      }
+                                    });
+      }
+      else{
+                      toast.success('not on leave', {
+                            position:'top-right',
+                            autoClose:1000,
+                            // onClose: () => navigate('/home')
+                        });
+        }
+    }
+)
+.catch(error => console.error(error));
+  // After successful API response, you can update the state to reflect the change.
+  // For example:
+  const updatedRows = data.rows.map((row) =>
+    row.id === leaveId ? { ...row, leave_status: 'Approved' } : row
+  );
+  setData((prevData) => ({ ...prevData, rows: updatedRows }));
+};
+
+const handleDisapprovalToggle = (leaveId) => {
+  // Send an API request to update the leave status to "Disapproved" for the given leaveId.
+  axios({
+    method: 'post',
+    url: 'disapprove_leave',
+    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+    data: {
+      leave_id : leaveId
+    },
+})
+.then(
+    function (response) {
+      if(response.data.status==='200'){
+                      toast.success('Leave Disapproved', {
+                                        position:'top-right',
+                                        autoClose:1000,
+                                        onClose: () => {
+                                          // refreshList();
+                                         // navigate('/home/shifts'); // Redirect to Schedule component
+                                          //window.location.reload(); // Refresh the page
+                                      }
+                                    });
+      }
+      else{
+                      toast.success('not on leave', {
+                            position:'top-right',
+                            autoClose:1000,
+                            // onClose: () => navigate('/home')
+                        });
+        }
+    }
+)
+.catch(error => console.error(error));
+  // After successful API response, you can update the state to reflect the change.
+  // For example:
+  const updatedRows = data.rows.map((row) =>
+    row.id === leaveId ? { ...row, leave_status: 'Disapproved' } : row
+  );
+  setData((prevData) => ({ ...prevData, rows: updatedRows }));
+};
+
+const columns: GridColDef[] = [
+  { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center'},
+  { field: 'name', headerName: 'Name', width: 150 ,headerAlign:'center',align:'center'},
+  { field: 'leave_type', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
+  { field: 'leave_start', headerName: 'Leave Start', width: 200 ,headerAlign:'center',align:'center'},
+  { field: 'leave_end', headerName: 'Leave End', width: 200 ,headerAlign:'center',align:'center'},
+  { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
+  { field: 'weekend_count', headerName: 'WeekEnd', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'saturday_count', headerName: 'Saturday', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'sunday_count', headerName: 'Sunday', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
+  {
+    field: 'action',
+    headerName: 'Action',
+    width: 200,
+    hide: userRole !== '3',
+    renderCell: (params) => (
+      <>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <IOSSwitch
+          color="primary"
+          checked={params.row.leave_status === 'Approved'}
+          label="iOS style"
+          onChange={() => handleApprovalToggle(params.row.id)}
+        />
+        </Box>
+        <Box>
+        <PinkSwitch
+          color="secondary"
+          checked={params.row.leave_status === 'Disapproved'}
+          onChange={() => handleDisapprovalToggle(params.row.id)}
+        />
+        </Box>
+      </>
+    ),
+    headerAlign: 'center',
+    align: 'center',
+  },
+  { field: 'time', headerName: 'Adding Time',hide: userRole === '3', width: 220 ,headerAlign:'center',align:'center'},
+];
 
     return (
         <>
@@ -152,8 +330,11 @@ const columns: GridColDef[] = [
                 // pass filterModel state to the DataGrid component
               />
           </div>
+          <ToastContainer/>
         </>
       )
+
+
 }
 
 export default LeavesList
