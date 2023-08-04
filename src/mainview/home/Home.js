@@ -1,12 +1,13 @@
 import React,{useState} from 'react'
 import { useNavigate,useLocation,useParams} from 'react-router-dom';
 import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab, Button, useMediaQuery,useTheme } from "@mui/material";
-import ThreePIcon from '@mui/icons-material/ThreeP';
+// import ThreePIcon from '@mui/icons-material/ThreeP';
 import DrawerComp from '../drawer/DrawerComp';
 import ContainerResponsive from '../container/ContainerResponsive';
 import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
+import NhaLogo from '../../assets/icons/nha_logo.png'
 
 const Home = props => {
 
@@ -91,7 +92,8 @@ const Home = props => {
           <AppBar position='static' sx={{background:'#063970'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-                <ThreePIcon/>
+              <img src={NhaLogo} alt="Pic" width="40" height="35"/>
+                {/* <ThreePIcon/> */}
               </IconButton>
               {
                 isMatch ? (
@@ -103,8 +105,8 @@ const Home = props => {
                 (
                   <>
                   <Typography variant='h5' component='div'>
-                HR IS
-              </Typography>
+                    HR IS
+                  </Typography>
 
               <ConditionalComponent role={localStorage.getItem('role')}/>
 
