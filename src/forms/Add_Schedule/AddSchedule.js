@@ -413,7 +413,7 @@ function AddSchedule(props) {
                                       multiple: false
                                     }}>
                                     <MenuItem value="1">1=Single User</MenuItem>
-                                    <MenuItem value="2">2=Group by Role</MenuItem>
+                                    <MenuItem value="2">2=Group by Site</MenuItem>
                                   </TextField>
                                 </Grid>
                                 {usersList.length > 0 ? (

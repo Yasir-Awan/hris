@@ -1,12 +1,13 @@
 import React,{useState} from 'react'
 import { useNavigate,useLocation,useParams} from 'react-router-dom';
-import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab, Button, useMediaQuery,useTheme } from "@mui/material";
+import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab,useMediaQuery,useTheme } from "@mui/material";
 // import ThreePIcon from '@mui/icons-material/ThreeP';
 import DrawerComp from '../drawer/DrawerComp';
 import ContainerResponsive from '../container/ContainerResponsive';
 import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
+import AccountMenu from '../../components/Menu';
 import NhaLogo from '../../assets/icons/nha_logo.png'
 
 const Home = props => {
@@ -109,8 +110,8 @@ const Home = props => {
                   </Typography>
 
               <ConditionalComponent role={localStorage.getItem('role')}/>
-
-              <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button>
+              <AccountMenu/>
+              {/* <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button> */}
                   </>
                 )
               }

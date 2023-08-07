@@ -63,7 +63,7 @@ export default function BasicCard(props) {
           <Grid container spacing={0} >
           <Grid item xs={2} sx={{py:1}} >
           <Typography variant="h5" component="div" >
-              Attendance{bull}List
+              Attendance{bull}Daily
             </Typography>
           </Grid>
           <Grid item xs={1.45}></Grid>
@@ -88,7 +88,7 @@ export default function BasicCard(props) {
           <Grid container spacing={0} >
           <Grid item >
           <Typography variant="h5" component="div" >
-              Attendance{bull}List
+              Attendance{bull}Daily
             </Typography>
           </Grid>
           </Grid>
