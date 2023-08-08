@@ -16,18 +16,31 @@ function AddLeave( props ) {
     const [isShortLeave, setIsShortLeave] = useState(false);
     const formSubmit = (event) => {
     event.preventDefault();
+    let sendingData ;
+    if(localStorage.getItem('role')==='3'){
+        sendingData = {
+            user_bio_id : AddLeaveFormData.emp_id,
+            leave_type: AddLeaveFormData.leave_type,
+            start_date: AddLeaveFormData.leave_start,
+            end_date: AddLeaveFormData.leave_end,
+            leave_reason: AddLeaveFormData.leave_reason
+            }
+    }
+    if(localStorage.getItem('role')!=='3'){
+        sendingData = {
+            user_bio_id : localStorage.getItem('bio_id'),
+            leave_type: AddLeaveFormData.leave_type,
+            start_date: AddLeaveFormData.leave_start,
+            end_date: AddLeaveFormData.leave_end,
+            leave_reason: AddLeaveFormData.leave_reason
+            }
+    }
 
     axios({
                 method: 'post',
                 url: 'add_leave',
                 headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
-                data: {
-                user_bio_id : AddLeaveFormData.emp_id,
-                leave_type: AddLeaveFormData.leave_type,
-                start_date: AddLeaveFormData.leave_start,
-                end_date: AddLeaveFormData.leave_end,
-                leave_reason: AddLeaveFormData.leave_reason
-                },
+                data: sendingData,
             })
             .then(
                 function (response) {
@@ -188,15 +201,13 @@ function AddLeave( props ) {
                                     </TextField>
                                 </Grid>) : (
                                             <Grid xs={12} item sx={{ mt: 2}}>
-                                            <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
-                                            SelectProps={{
-                                                multiple: false
-                                            }}>
-                                                {
+                                            <TextField label={localStorage.getItem('fname')+' '+localStorage.getItem('lname')} name='emp_id' onChange={inputEvent} value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} disabled
+                                            >
+                                                {/* {
                                                     <MenuItem selected key={localStorage.getItem('bio_id')} value={localStorage.getItem('bio_id')}>
                                                     {localStorage.getItem('fname')+' '+localStorage.getItem('lname')}
                                                     </MenuItem>
-                                                }
+                                                } */}
                                             </TextField>
                                         </Grid>)
                                 }
