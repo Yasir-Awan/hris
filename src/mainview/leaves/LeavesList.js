@@ -253,19 +253,19 @@ const handleDisapprovalToggle = (leaveId) => {
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center'},
-  { field: 'name', headerName: 'Name', width: 150 ,headerAlign:'center',align:'center'},
+  { field: 'name', headerName: 'Name', width: 170 ,headerAlign:'center',align:'center'},
   { field: 'leave_type', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
   { field: 'leave_start', headerName: 'Leave Start', width: 200 ,headerAlign:'center',align:'center'},
   { field: 'leave_end', headerName: 'Leave End', width: 200 ,headerAlign:'center',align:'center'},
   { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'weekend_count', headerName: 'WeekEnd', width: 80 ,headerAlign:'center',align:'center'},
-  { field: 'saturday_count', headerName: 'Saturday', width: 80 ,headerAlign:'center',align:'center'},
-  { field: 'sunday_count', headerName: 'Sunday', width: 80 ,headerAlign:'center',align:'center'},
+  { field: 'weekend_count', headerName: 'WeekEnd', width: 75 ,headerAlign:'center',align:'center'},
+  { field: 'saturday_count', headerName: 'Saturday', width: 75 ,headerAlign:'center',align:'center'},
+  { field: 'sunday_count', headerName: 'Sunday', width: 75 ,headerAlign:'center',align:'center'},
   { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
   {
     field: 'action',
     headerName: 'Action',
-    width: 200,
+    width: 175,
     hide: userRole !== '3',
     renderCell: (params) => (
       <>
@@ -333,8 +333,6 @@ const columns: GridColDef[] = [
           <ToastContainer/>
         </>
       )
-
-
 }
 
 export default LeavesList

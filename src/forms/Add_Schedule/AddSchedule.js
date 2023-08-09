@@ -25,9 +25,7 @@ function AddSchedule(props) {
     const [blockedScheduleDates, setBlockedScheduleDates] = useState([]);
     const [startDate, setStartDate] = useState(null);
     const [leaveStartDate, setLeaveStartDate] = useState(null);
-    // const [hoveredDateEmployeeName, setHoveredDateEmployeeName] = useState(null);
     const [EndDate, setEndDate] = useState(null);
-    // const [selectedDate, setSelectedDate] = useState(dayjs());
     const [viewedMonth, setViewedMonth] = useState(dayjs().month()); // initialize with the current month
     const [addScheduleFormData, setAddScheduleFormData] = useState({
                                                                       user_selection:'',user_bio_id: '',

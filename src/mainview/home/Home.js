@@ -51,7 +51,7 @@ const Home = props => {
 
   const ConditionalComponent = ({ role }) => {
     if (role ==='3') {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '9%', marginRight: 'auto' }}>
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>
@@ -63,7 +63,7 @@ const Home = props => {
       <Tab label="Projects"/>
     </Tabs>;
     } else {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: '25%', marginRight: 'auto' }}>
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>

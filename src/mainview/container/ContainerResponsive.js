@@ -68,9 +68,11 @@ export default function BasicCard(props) {
           </Grid>
           <Grid item xs={1.45}></Grid>
           <Grid item xs={2.55}>
-            <CustomEmployeeFilter fieldName='fullname' header='Employee' onChange={(values)=>setFilterVals(values)}/>
+            {/* <CustomEmployeeFilter fieldName='fullname' header='Employee' onChange={(values)=>setFilterVals(values)}/> */}
             </Grid>
-          <Grid item xs={2}><CustomDayFilter onChange={(values)=>setFilterVals(values)}/></Grid>
+          <Grid item xs={2}>
+            {/* <CustomDayFilter onChange={(values)=>setFilterVals(values)}/> */}
+            </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
               {/* <Tags fieldName='attendance_date' header='Date'/> */}
