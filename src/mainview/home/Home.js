@@ -100,7 +100,7 @@ const Home = props => {
                 isMatch ? (
                   <>
                   <Typography sx={{fontSize:'1.5rem', paddingLeft:'10%'}}>HR APP</Typography>
-                  <DrawerComp/>
+                  {/* <DrawerComp/> */}
                   </>
                 ):
                 (
