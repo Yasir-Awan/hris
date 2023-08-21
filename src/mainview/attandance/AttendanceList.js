@@ -14,14 +14,14 @@ const columns: GridColDef[] = [
       },
     headerAlign:'center',align:'center'},
   { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
-  { field: 'attendance_date', headerName: 'Date', width: 120,headerAlign:'center',align:'center'},
+  { field: 'attendance_date', headerName: 'Date', width: 150,headerAlign:'center',align:'center'},
   { field: 'checkin', headerName: 'CheckIn', width: 180,headerAlign:'center',align:'center'},
   { field: 'checkout', headerName: 'CheckOut', width: 180,headerAlign:'center',align:'center'},
   { field: 'time', headerName: 'Total Time', width: 130,headerAlign:'center',align:'center'},
   { field: 'early_sitting', headerName: 'Early', width: 130,headerAlign:'center',align:'center'},
   { field: 'late_sitting', headerName: 'Late', width: 130,headerAlign:'center',align:'center'},
-  { field: 'extra_time', headerName: 'Extra Time', width: 150,headerAlign:'center',align:'center'},
-  { field: 'acceptable_time', headerName: 'Accepted Time', width: 150,headerAlign:'center',align:'center'},
+  { field: 'extra_time', headerName: 'Extra Time', width: 135,headerAlign:'center',align:'center'},
+  { field: 'acceptable_time', headerName: 'Accepted Time', width: 135,headerAlign:'center',align:'center'},
 ];
 
 
