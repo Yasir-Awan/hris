@@ -15,7 +15,7 @@ function App(props) {
     <Routes>
     <Route
         path="/home"
-        element={<Navigate to="/home/employees" replace />}
+        element={<Navigate to="/home/attendance" replace />}
     />
       <Route exact path='/home/:page?' element={<Home {...props}/>} />
       <Route exact path='/' element={<Login/>} />
