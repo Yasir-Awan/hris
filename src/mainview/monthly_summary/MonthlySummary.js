@@ -1,14 +1,14 @@
 import React,{useState, useEffect} from "react";
-import { DataGrid, GridColDef,GridToolbar } from '@mui/x-data-grid';
+import { DataGrid,GridToolbar } from '@mui/x-data-grid';
 import axios from "axios";
 
-const columns: GridColDef[] = [
+const columns = [
     { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
     { field: 'name', headerName: 'Employee', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'schedule_from', headerName: 'Schedule From', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'schedule_to', headerName: 'Schedule to', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'required_hrs_normal', headerName: 'Required Hours', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'required_hrs_including_weekends', headerName: 'Required Hours Leave weekend Excluded', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'schedule_from', headerName: 'Schedule Start', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'schedule_to', headerName: 'Schedule End', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'hq_hrs', headerName: 'HQ Hours', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'site_hrs', headerName: 'Site Hours', width: 200 ,headerAlign:'center',align:'center'},
     { field: 'working_time', headerName: 'Working Time', width: 200 ,headerAlign:'center',align:'center'},
     { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 ,headerAlign:'center',align:'center'},
 ];
@@ -35,10 +35,10 @@ const columns: GridColDef[] = [
                         summaryRecords.push({
                                             'id':element.id,
                                             'name':element.fullname,
-                                            'schedule_from':element.from_date_readable,
-                                            'schedule_to':element.to_date_readable,
-                                            'required_hrs_normal':element.required_hrs_normal,
-                                            'required_hrs_including_weekends':element.required_hrs_excluding_weekends,
+                                            'schedule_from':element.schedule_start_date,
+                                            'schedule_to':element.schedule_end_date,
+                                            'hq_hrs':element.hq_hrs,
+                                            'site_hrs':element.site_hrs,
                                             'working_time':element.total_time,
                                             'acceptable_time':element.total_acceptable_time,
                                         })
