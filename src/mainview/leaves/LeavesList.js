@@ -147,10 +147,11 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
                           leave_end: element.readable_end_date,
                           leave_status: element.leave_status_readable,
                           weekend_count: element.weekend_count,
-                          saturday_count: element.saturday_count,
-                          sunday_count: element.sunday_count,
+                          saturdays: element.saturdays,
+                          sundays: element.sundays,
                           reason: element.reason,
                           time: element.readable_add_date,
+                          key: element.id
                         });
                       });
                     } else {
@@ -193,21 +194,21 @@ const handleApprovalToggle = (leaveId) => {
                                     });
       }
       else{
-                      toast.success('not on leave', {
+                      toast.success('Already Approved Or Disapproved', {
                             position:'top-right',
                             autoClose:1000,
                             // onClose: () => navigate('/home')
                         });
         }
+                                            // After successful API response, you can update the state to reflect the change.
+                                    // For example:
+                                    const updatedRows = data.rows.map((row) =>
+                                    row.id === leaveId ? { ...row, leave_status: 'Approved' } : row
+                                    );
+                                      setData((prevData) => ({ ...prevData, rows: updatedRows }));
     }
 )
 .catch(error => console.error(error));
-  // After successful API response, you can update the state to reflect the change.
-  // For example:
-  const updatedRows = data.rows.map((row) =>
-    row.id === leaveId ? { ...row, leave_status: 'Approved' } : row
-  );
-  setData((prevData) => ({ ...prevData, rows: updatedRows }));
 };
 
 const handleDisapprovalToggle = (leaveId) => {
@@ -234,24 +235,25 @@ const handleDisapprovalToggle = (leaveId) => {
                                     });
       }
       else{
-                      toast.success('not on leave', {
+                      toast.success('something various happened', {
                             position:'top-right',
                             autoClose:1000,
                             // onClose: () => navigate('/home')
                         });
         }
+                  // After successful API response, you can update the state to reflect the change.
+          // For example:
+          const updatedRows = data.rows.map((row) =>
+          row.id === leaveId ? { ...row, leave_status: 'Disapproved' } : row
+        );
+        setData((prevData) => ({ ...prevData, rows: updatedRows }));
     }
 )
 .catch(error => console.error(error));
-  // After successful API response, you can update the state to reflect the change.
-  // For example:
-  const updatedRows = data.rows.map((row) =>
-    row.id === leaveId ? { ...row, leave_status: 'Disapproved' } : row
-  );
-  setData((prevData) => ({ ...prevData, rows: updatedRows }));
+
 };
 
-const columns: GridColDef[] = [
+const columns = [
   { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center'},
   { field: 'name', headerName: 'Name', width: 170 ,headerAlign:'center',align:'center'},
   { field: 'leave_type', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
@@ -259,8 +261,8 @@ const columns: GridColDef[] = [
   { field: 'leave_end', headerName: 'Leave End', width: 200 ,headerAlign:'center',align:'center'},
   { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
   { field: 'weekend_count', headerName: 'WeekEnd', width: 75 ,headerAlign:'center',align:'center'},
-  { field: 'saturday_count', headerName: 'Saturday', width: 75 ,headerAlign:'center',align:'center'},
-  { field: 'sunday_count', headerName: 'Sunday', width: 75 ,headerAlign:'center',align:'center'},
+  { field: 'saturdays', headerName: 'Saturday', width: 75 ,headerAlign:'center',align:'center'},
+  { field: 'sundays', headerName: 'Sunday', width: 75 ,headerAlign:'center',align:'center'},
   { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
   {
     field: 'action',
@@ -297,7 +299,7 @@ const columns: GridColDef[] = [
           <div style={{ height: 'auto', width: '100%' }}>
           <Box sx={{marginLeft:'97%', position: "absolute",top:'72px',right:'20px'}}>
                 <CustomizedDialogs size='small' title= "Add New Leave" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
-                    <AddLeave employees={users} refreshList = { refreshLeavesList }/>
+                    <AddLeave employees={users} refreshList = {refreshLeavesList }/>
                 </CustomizedDialogs>
             </Box>
               <DataGrid

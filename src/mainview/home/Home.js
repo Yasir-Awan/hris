@@ -106,7 +106,7 @@ const Home = props => {
                 (
                   <>
                   <Typography variant='h5' component='div'>
-                    HR IS
+                    HRIS
                   </Typography>
 
               <ConditionalComponent role={localStorage.getItem('role')}/>

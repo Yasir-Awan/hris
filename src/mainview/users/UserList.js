@@ -11,7 +11,7 @@ import EditUser from '../../forms/EditUser';
 // import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
 
-const columns: GridColDef[] = [
+const columns = [
     { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center'},
     { field: 'uname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
     { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},

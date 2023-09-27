@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import axios from "axios";
 import './ScheduleList.css';
 import {useNavigate} from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import AddSchedule from "../../forms/add_schedule/AddSchedule";
 // import Shift from "../Shift/Shift";
 
-const columns: GridColDef[] = [
+const columns = [
   // { field: 'id', headerName: 'Id' ,headerAlign:'center',align:'center'},
   { field: 'id', headerName: 'Serial No' , width: 90 ,
         filterable: false,
@@ -93,7 +93,7 @@ axios({
             .then(function (response) {
               if(response.data.schedule_rows){
                 response.data.schedule_rows.forEach(element => {
-                    mydata.push({id:counter,fullname:element.fname + ' ' + element.lname ,user_name:element.user_name ,
+                    mydata.push({id:counter,fullname:element.fullname ,user_name:element.user_name ,
                     from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
                     shift_start:element.shift_start,shift_end:element.shift_end,page:response.data.page,
                     pagesize:response.data.pagesize
@@ -103,7 +103,7 @@ axios({
                 );
               }
               else{
-                navigate('/');
+                // navigate('/');
               }
               setTimeout(() => {
                 const rows = mydata;

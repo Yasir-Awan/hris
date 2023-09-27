@@ -2,7 +2,11 @@ import React, {useState,} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './AddSchedule.css';
 import axios from 'axios';
-import { Grid, TextField, Button, Card, CardContent, MenuItem,Box} from '@mui/material';
+import { 
+          Grid, TextField, Button, Card,
+          CardContent, MenuItem,Box,Radio,
+          RadioGroup,FormControlLabel,FormLabel,FormControl
+        } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,6 +16,7 @@ import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CloseIcon from '@mui/icons-material/Close';
+import { pink } from '@mui/material/colors';
 
 const bull = (<Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>);
 
@@ -19,7 +24,6 @@ function AddSchedule(props) {
 
     const navigate = useNavigate();
     const [openDatePicker, setOpenDatePicker] = useState(false);
-
     const [usersList,setUserList] = useState([]);
     const [blockedLeaveDates, setBlockedLeaveDates] = useState([]);
     const [blockedScheduleDates, setBlockedScheduleDates] = useState([]);
@@ -32,6 +36,10 @@ function AddSchedule(props) {
                                                                       from_date: null, to_date: null,shift_id:'',
                                                                       leave_status: '',users:usersList
                                                                     });
+    const [publicHolidays, setPublicHolidays] = useState(0);
+    const [publicHolidaysCount, setPublicHolidaysCount] = useState(0);
+    const [publicHolidayReason, setPublicHolidaysReason] = useState(null);
+
     const UserSelection = (event) => {
         // api call for users list START
         axios({
@@ -83,10 +91,7 @@ function AddSchedule(props) {
         })
         setStartDate(null)
         setViewedMonth(dayjs().month())
-        // console.log('yasir the great')
         const { name, value } = event.target;
-        // console.log(name)
-        // console.log(value)
                 // api call for Blocked Dates list START
                 axios({
                   method: 'post',
@@ -97,19 +102,19 @@ function AddSchedule(props) {
                   },
                 })
                   .then(function (response) {
-                    if(response.data.blocked_info.leaveCount > 0 ){
-                                let startDateString = response.data.blocked_info.leaveDates[0].start_date;
-                                let stopDateString = response.data.blocked_info.leaveDates[0].end_date;
+                    // if(response.data.blocked_info.leaveCount > 0 ){
+                    //             let startDateString = response.data.blocked_info.leaveDates[0].start_date;
+                    //             let stopDateString = response.data.blocked_info.leaveDates[0].end_date;
 
-                                let startDateParts = startDateString.split(/[- :]/);
-                                let stopDateParts = stopDateString.split(/[- :]/);
+                    //             let startDateParts = startDateString.split(/[- :]/);
+                    //             let stopDateParts = stopDateString.split(/[- :]/);
 
-                                let startDate = new Date(Date.UTC(startDateParts[0], startDateParts[1]-1, startDateParts[2], startDateParts[3], startDateParts[4], startDateParts[5]));
-                                let stopDate = new Date(Date.UTC(stopDateParts[0], stopDateParts[1]-1, stopDateParts[2], stopDateParts[3], stopDateParts[4], stopDateParts[5]));
+                    //             let startDate = new Date(Date.UTC(startDateParts[0], startDateParts[1]-1, startDateParts[2], startDateParts[3], startDateParts[4], startDateParts[5]));
+                    //             let stopDate = new Date(Date.UTC(stopDateParts[0], stopDateParts[1]-1, stopDateParts[2], stopDateParts[3], stopDateParts[4], stopDateParts[5]));
 
-                                let dateArray = getDates(startDate, stopDate);
-                                setBlockedLeaveDates(dateArray);
-                    }
+                    //             let dateArray = getDates(startDate, stopDate);
+                    //             setBlockedLeaveDates(dateArray);
+                    // }
                     if(response.data.blocked_info.scheduleCount > 0){
                                     let scheduleDates = response.data.blocked_info.scheduleDates;
                                     let shapackArray = scheduleDates.map(schedule => {
@@ -148,6 +153,31 @@ function AddSchedule(props) {
       setViewedMonth(date.month());
     };
 
+    const handlePublicHolidaysCount = (event) => {
+      console.log(event.target.value)
+      const newValue = event.target.value.replace(/[^0-9]/g, '');
+      const limitedValue = Math.min(newValue, 10); // Limit value to 10
+      setPublicHolidaysCount(limitedValue);
+      // setPublicHolidaysCount(newValue)
+    };
+
+    const handlePublicHolidays = (event) => {
+      // const { name,value } = event.target;
+      const newValue = event.target.value.replace(/[^0-9]/g, '');
+      setPublicHolidays(newValue)
+      if(newValue === '0'){
+        alert();
+        setPublicHolidaysCount(0)
+        setPublicHolidaysReason(null)
+      }
+    };
+
+    const HandlePublicHolidayReason = (event) => {
+      // const { name,value } = event.target;
+      const newValue = event.target.value;
+      setPublicHolidaysReason(newValue)
+    };
+
     // const handleDayHover = (employeeName) => {
     //       setHoveredDateEmployeeName(employeeName);
     // };
@@ -160,7 +190,7 @@ function AddSchedule(props) {
               setOpenDatePicker(false)
               const sDate = new Date(date);
               const sDateString = sDate.toLocaleString('en-US', { timeZone: 'Asia/Karachi', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-              // setSelectedDate(date);
+              
               axios({
                       method: 'post',
                       url: 'startdate_leavestatus',
@@ -172,42 +202,40 @@ function AddSchedule(props) {
                     })
                     .then(
                             function (response) {
-                                    if(response.data.status==='200'){
-                                              const sdate = new Date(response.data.rdAbleStart.date);
-                                              const edate = new Date(response.data.rdAbleEnd.date);
-                                              const humanReadableStartDate = sdate.toLocaleDateString();
-                                              const humanReadableEndDate = edate.toLocaleDateString();
-                                              setAddScheduleFormData((preValue) => {
-                                                return {
-                                                          ...preValue,
-                                                          [addScheduleFormData.from_date]: null
-                                                        };
-                                              });
-                                              setStartDate(null);
-                                              // setOpenDatePicker(false)
-                                              toast(
-                                                <div
-                                                  style={{
-                                                    height: "100%",
-                                                    borderLeft: "5px solid yellow",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    paddingLeft: 5
-                                                  }}
-                                                >
-                                                  <CloseIcon color={"red"} height="25px" width="25px" />
-                                                  {"   "}
-                                                  <span style={{ marginLeft: 5,fontWeight: "bold", color: "#000" }}>User on leave</span>
-                                                  <span style={{ marginLeft: 50 }}>{humanReadableStartDate} <br /> {bull}{bull} to{bull}{bull} <br /> {humanReadableEndDate}.</span>
-                                                </div>
-                                              )
-                                              // setSelectedDate(null);
-                                            }
-                                            else{
-                                              // console.log(response.data.startDate_leaveInfo[0].start_date);
+                                    // // if(response.data.status==='200'){
+                                    //           const sdate = new Date(response.data.rdAbleStart.date);
+                                    //           const edate = new Date(response.data.rdAbleEnd.date);
+                                    //           const humanReadableStartDate = sdate.toLocaleDateString();
+                                    //           const humanReadableEndDate = edate.toLocaleDateString();
+                                    //           setAddScheduleFormData((preValue) => {
+                                    //             return {
+                                    //                       ...preValue,
+                                    //                       [addScheduleFormData.from_date]: null
+                                    //                     };
+                                    //           });
+                                    //           setStartDate(null);
+                                    //           // setOpenDatePicker(false)
+                                    //           toast(
+                                    //             <div
+                                    //               style={{
+                                    //                 height: "100%",
+                                    //                 borderLeft: "5px solid yellow",
+                                    //                 display: "flex",
+                                    //                 alignItems: "center",
+                                    //                 paddingLeft: 5
+                                    //               }}
+                                    //             >
+                                    //               <CloseIcon color={"red"} height="25px" width="25px" />
+                                    //               {"   "}
+                                    //               <span style={{ marginLeft: 5,fontWeight: "bold", color: "#000" }}>User on leave</span>
+                                    //               <span style={{ marginLeft: 50 }}>{humanReadableStartDate} <br /> {bull}{bull} to{bull}{bull} <br /> {humanReadableEndDate}.</span>
+                                    //             </div>
+                                    //           )
+                                    //           // setSelectedDate(null);
+                                    //         }
+                                    //         else{
                                               // let leaveStartingDate = new Date(response.data.startDate_leaveInfo[0].start_date);
                                               // leaveStartingDate.setDate(leaveStartingDate.getDate() - 1);
-                                              // console.log(leaveStartingDate);
                                               // setLeaveStartDate(leaveStartingDate)
                                                       setAddScheduleFormData((preValue) => {
                                                             return {
@@ -215,14 +243,14 @@ function AddSchedule(props) {
                                                                       from_date: date
                                                                     };
                                                         });
-                                                      toast.success('not on leave', {
-                                                            position:'top-right',
-                                                            autoClose:1000,
-                                                            // onClose: () => navigate('/home')
-                                                        });
+                                                      // toast.success('not on leave', {
+                                                      //       position:'top-right',
+                                                      //       autoClose:1000,
+                                                      //       // onClose: () => navigate('/home')
+                                                      //   });
                                                         // setSelectedDate(null);
                                                         // setOpenDatePicker(false)
-                                              }
+                                              // }
                             }
                   )
                   .catch(error => console.error(error));
@@ -287,48 +315,48 @@ function AddSchedule(props) {
             })
               .then(
                         function (response) {
-                                if(response.data.status==='200'){
-                                  const sdate = new Date(response.data.rdAbleStart.date);
-                                  const edate = new Date(response.data.rdAbleEnd.date);
-                                  const humanReadableStartDate = sdate.toLocaleDateString();
-                                  const humanReadableEndDate = edate.toLocaleDateString();
-                                  setAddScheduleFormData((preValue) => {
-                                    return {
-                                              ...preValue,
-                                              [addScheduleFormData.to_date]: null
-                                            };
-                                  });
-                                  setEndDate(null);
-                                  toast(
-                                    <div
-                                      style={{
-                                        height: "100%",
-                                        borderLeft: "5px solid yellow",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        paddingLeft: 5
-                                      }}
-                                    >
-                                      <CloseIcon color={"red"} height="25px" width="25px" />
-                                      {"   "}
-                                      <span style={{ marginLeft: 5,fontWeight: "bold", color: "#000" }}>User on leave</span>
-                                      <span style={{ marginLeft: 50 }}>{humanReadableStartDate} <br /> {bull}{bull} to{bull}{bull} <br /> {humanReadableEndDate}.</span>
-                                    </div>
-                                  )
-                                }
-                                else{
+                                // if(response.data.status==='200'){
+                                //   const sdate = new Date(response.data.rdAbleStart.date);
+                                //   const edate = new Date(response.data.rdAbleEnd.date);
+                                //   const humanReadableStartDate = sdate.toLocaleDateString();
+                                //   const humanReadableEndDate = edate.toLocaleDateString();
+                                //   setAddScheduleFormData((preValue) => {
+                                //     return {
+                                //               ...preValue,
+                                //               [addScheduleFormData.to_date]: null
+                                //             };
+                                //   });
+                                //   setEndDate(null);
+                                //   toast(
+                                //     <div
+                                //       style={{
+                                //         height: "100%",
+                                //         borderLeft: "5px solid yellow",
+                                //         display: "flex",
+                                //         alignItems: "center",
+                                //         paddingLeft: 5
+                                //       }}
+                                //     >
+                                //       <CloseIcon color={"red"} height="25px" width="25px" />
+                                //       {"   "}
+                                //       <span style={{ marginLeft: 5,fontWeight: "bold", color: "#000" }}>User on leave</span>
+                                //       <span style={{ marginLeft: 50 }}>{humanReadableStartDate} <br /> {bull}{bull} to{bull}{bull} <br /> {humanReadableEndDate}.</span>
+                                //     </div>
+                                //   )
+                                // }
+                                // else{
                                           setAddScheduleFormData((preValue) => {
                                                 return {
                                                           ...preValue,
                                                           to_date: date
                                                         };
                                             });
-                                          toast.success('not on leave', {
-                                                position:'top-right',
-                                                autoClose:1000,
-                                                // onClose: () => navigate('/home')
-                                            });
-                                  }
+                                          // toast.success('not on leave', {
+                                          //       position:'top-right',
+                                          //       autoClose:1000,
+                                          //       // onClose: () => navigate('/home')
+                                          //   });
+                                  // }
                         }
               )
               .catch(error => console.error(error));
@@ -336,18 +364,11 @@ function AddSchedule(props) {
 
     const formSubmit = (event) => {
         event.preventDefault();
-        // if (addScheduleFormData.from_date===null) {
-        //   alert("Please select a start date");
-        //   return;
-        // }
-        // if (addScheduleFormData.to_date===null) {
-        //   alert("Please select a End date");
-        //   return;
-        // }
         const sDate = new Date(addScheduleFormData.from_date);
         const sDateString = sDate.toLocaleString('en-US', { timeZone: 'Asia/Karachi', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const eDate = new Date(addScheduleFormData.to_date);
         const eDateString = eDate.toLocaleString('en-US', { timeZone: 'Asia/Karachi', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        console.log(sDateString+' '+eDateString); 
         setAddScheduleFormData((preValue) => {
           return {
                     ...preValue,
@@ -369,7 +390,9 @@ function AddSchedule(props) {
                   user_id: addScheduleFormData.user_bio_id,
                   from_date: sDateString,
                   to_date: eDateString,
-                  shift_id: addScheduleFormData.shift_id
+                  shift_id: addScheduleFormData.shift_id,
+                  p_h_c: publicHolidaysCount,
+                  p_h_r: publicHolidayReason
                 },
         })
         .then(
@@ -380,8 +403,6 @@ function AddSchedule(props) {
                                                     autoClose:1000,
                                                     onClose: () => {
                                                       props.refreshList();
-                                                      // navigate('/home/schedules'); // Redirect to Schedule component
-                                                      // window.location.reload(); // Refresh the page
                                                   }
                                                 });
                   }
@@ -469,7 +490,45 @@ function AddSchedule(props) {
                                             />
                                 </Stack>
                             </LocalizationProvider>
-                            <Grid xs={12} item sx={{ mt: 2 }}>
+                            <Grid xs={12} item>
+                            <FormControl>
+                              <FormLabel id="demo-controlled-radio-buttons-group" sx={{mt:1.5}}>Public Holidays</FormLabel>
+                              <RadioGroup
+                                row
+                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                name="controlled-radio-buttons-group"
+                                value={publicHolidays}
+                                onChange={handlePublicHolidays}
+                              >
+                                <FormControlLabel value="1" control={<Radio required/>} label="Yes" />
+                                <FormControlLabel value="0" control={<Radio required sx={{
+                                      color: pink[800],
+                                      '&.Mui-checked': {
+                                        color: pink[600],
+                                      },
+                                    }} />} label="No" />
+                              </RadioGroup>
+                            </FormControl>
+                            </Grid>
+
+                            {publicHolidays > 0 ? (
+                                <Grid xs={12} item sx={{ mt: 2}}>
+          
+                                    <TextField label="Holidays Count" name='public_holiday_count' onChange={handlePublicHolidaysCount}
+                                      value={publicHolidaysCount} variant="outlined" sx={{ width: "100%" }} required inputProps={{
+                                        max: 10, // Set the maximum value
+                                      }} >
+                                    </TextField>
+                                    <Grid xs={12} item sx={{ mt: 2 }}>
+                                          <TextField label="Reason for Public Holiday" name='p_h_reason' onChange={HandlePublicHolidayReason} value={publicHolidayReason} variant="outlined" sx={{ width: "100%" }} required
+                                          multiline
+                                          maxRows={2}
+                                          />
+                                      </Grid>
+                                </Grid>) : (<div></div>)
+                                }
+
+                            <Grid xs={12} item sx={{ mt: 1 }}>
                             {
                                   <TextField
                                     label="Choose Shift"
