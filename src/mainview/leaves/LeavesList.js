@@ -155,7 +155,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
                         });
                       });
                     } else {
-                      navigate('/');
+                      // navigate('/');
                     }
 
             setTimeout(() => {
