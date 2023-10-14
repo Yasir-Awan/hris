@@ -18,7 +18,7 @@ const columns = [
   {
     field: 'attendance_date',
     headerName: 'Date',
-    width: 150,
+    width: 180,
     headerAlign: 'center',
     align: 'center',
     renderCell: (value) => {
@@ -33,25 +33,33 @@ const columns = [
   },
   { field: 'checkin', headerName: 'CheckIn', width: 180,headerAlign:'center',align:'center',
   renderCell: (value) => {
+    console.log('Shift Type:', value.row.shift_type);
     if(value.value!==null){
       const inputDateTime = value.value; // Get the date and time string from your data
       const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
 
-      // Define options for formatting
-      const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false, // Use 24-hour format
-      };
-
-      // Format the date and time as a human-readable string
-      const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
-
-      return <div>{formattedDateTime}</div>;
+      if (value.row.shift_type === '1') {
+         // If shift_type is 1, render only the time part
+        const timeString = dateValue.getHours().toString().padStart(2, '0') + ':' +
+                            dateValue.getMinutes().toString().padStart(2, '0') + ':' +
+                            dateValue.getSeconds().toString().padStart(2, '0');
+                return <div>{timeString}</div>;
+      } else {
+        // If shift_type is 2, render both date and time
+        // Define options for formatting
+                const options = {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false, // Use 24-hour format
+                };
+                // Format the date and time as a human-readable string
+                const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+                return <div>{formattedDateTime}</div>;
+      }
     }
   },
 },
@@ -61,28 +69,35 @@ const columns = [
           const inputDateTime = value.value; // Get the date and time string from your data
           const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
 
-          // Define options for formatting
-          const options = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false, // Use 24-hour format
-          };
-
-          // Format the date and time as a human-readable string
-          const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
-
-          return <div>{formattedDateTime}</div>;
+          if (value.row.shift_type === '1') {
+            // If shift_type is 1, render only the time part
+            const timeString = dateValue.getHours().toString().padStart(2, '0') + ':' +
+                              dateValue.getMinutes().toString().padStart(2, '0') + ':' +
+                              dateValue.getSeconds().toString().padStart(2, '0');
+                  return <div>{timeString}</div>;
+        } else {
+           // If shift_type is 2, render both date and time
+           // Define options for formatting
+                  const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                     hour12: false, // Use 24-hour format
+                  };
+                   // Format the date and time as a human-readable string
+                  const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+                  return <div>{formattedDateTime}</div>;
+        }
         }
   },
 },
   { field: 'time', headerName: 'Total Time', width: 130,headerAlign:'center',align:'center'},
   { field: 'early_sitting', headerName: 'Early', width: 130,headerAlign:'center',align:'center'},
   { field: 'late_sitting', headerName: 'Late', width: 130,headerAlign:'center',align:'center'},
-  { field: 'extra_time', headerName: 'Extra Time', width: 135,headerAlign:'center',align:'center'},
+  { field: 'extra_time', headerName: 'Extra', width: 135,headerAlign:'center',align:'center'},
   { field: 'acceptable_time', headerName: 'Accepted Time', width: 135,headerAlign:'center',align:'center'},
 ];
 
@@ -122,6 +137,7 @@ const columns = [
                             id: counter,
                             fullname: element.fullname,
                             attendance_date: element.attendance_date,
+                            shift_type: element.shift_type,
                             checkin: element.checkin,
                             checkout: element.checkout,
                             time: element.time,
