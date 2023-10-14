@@ -12,14 +12,14 @@ import {useNavigate} from 'react-router-dom';
 const bull = (<Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>);
 
 function AddLeave( props ) {
-    console.log(props.employees)
+    console.log(props)
     const navigate = useNavigate();
     const [AddLeaveFormData, setAddLeaveFormData] = useState({ emp_id: '', leave_type: '', leave_start: null, leave_end: null,leave_reason:'' });
     const [isShortLeave, setIsShortLeave] = useState(false);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [startTime, setStartTime] = useState(null);
-    const [endTime, setEndTime] = useState(null);
+    // const [startTime, setStartTime] = useState(null);
+    // const [endTime, setEndTime] = useState(null);
     const formSubmit = (event) => {
     event.preventDefault();
     let sendingData ;
@@ -104,7 +104,7 @@ function AddLeave( props ) {
 
         const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-        setStartTime(reArrangedDateTime);
+        // setStartTime(reArrangedDateTime);
 
                 axios({
                         method: 'post',
@@ -123,7 +123,7 @@ function AddLeave( props ) {
                                             const humanReadableStartDate = leaveStart.toLocaleDateString();
                                             const humanReadableEndDate = leaveEnd.toLocaleDateString();
                                             setAddLeaveFormData({ ...AddLeaveFormData, leave_start: null });
-                                            setStartTime(null);
+                                            // setStartTime(null);
                                               // setOpenDatePicker(false)
                                             toast(
                                                 <div
@@ -187,7 +187,7 @@ function AddLeave( props ) {
 
             const reArrangedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-            setEndTime(reArrangedDateTime);
+            // setEndTime(reArrangedDateTime);
 
                 axios({
                         method: 'post',
@@ -206,7 +206,7 @@ function AddLeave( props ) {
                                             const humanReadableStartDate = leaveStart.toLocaleDateString();
                                             const humanReadableEndDate = leaveEnd.toLocaleDateString();
                                             setAddLeaveFormData({ ...AddLeaveFormData, leave_end: null });
-                                            setEndTime(null);
+                                            // setEndTime(null);
                                               // setOpenDatePicker(false)
                                             toast(
                                                 <div
@@ -459,9 +459,9 @@ function AddLeave( props ) {
                     SelectProps={{
                         multiple: false
                     }}>
-                    <MenuItem value="1">1=Short Leave</MenuItem>
-                    <MenuItem value="2">2=Casual Leave</MenuItem>
-                    <MenuItem value="3">3=Medical Leave</MenuItem>
+                    <MenuItem value="1">Short Leave</MenuItem>
+                    <MenuItem value="2">Casual Leave</MenuItem>
+                    <MenuItem value="3">Medical Leave</MenuItem>
                     </TextField>
                 </Grid>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

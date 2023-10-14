@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
 import CustomizedDialogs from '../../components/dialog';
 import AddLeave from '../../forms/add_leave/AddLeave';
@@ -79,15 +79,14 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
         rows: [],
         // totalRows: 0,
         // rowsPerPageOptions: [5,10,20,50,100],
-        // pageSize: 10,
-        // page: 1
+        pageSize: 10,
+        page: 1
       });
     // const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
     const [users,setUsers] = useState([]);
     const [showDialog,setShowDialog] = useState(false)
     const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
     const navigate = useNavigate();
-    let leaveRows = [];
     var userRecords = [];
 
     // Extract the value of LocalStorage.getItem('role') to a variable
@@ -97,7 +96,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
     // updateData('loading', true);
       refreshUsersList()
           refreshLeavesList()
-  }, []);
+  }, [data.page,data.pageSize]);
 
   const refreshUsersList = () => {
           // api call for users list START
@@ -121,6 +120,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
 
   const refreshLeavesList = () => {
     setShowDialog(false)
+    let leaveRows = [];
 
     axios({
       method: 'get',
@@ -138,20 +138,21 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
     .then(function (response) {
                     // setTotalRows(response.total_rows);
                     if (response.data.leave_info) {
-                      response.data.leave_info.forEach((element) => {
+                      response.data.leave_info.map((element,index) => {
                         leaveRows.push({
                           id: element.id,
                           name: element.full_name,
                           leave_type: element.leave_type_readable,
                           leave_start: element.readable_start_date,
                           leave_end: element.readable_end_date,
+                          leave_add: element.add_date,
                           leave_status: element.leave_status_readable,
                           weekend_count: element.weekend_count,
                           saturdays: element.saturdays,
                           sundays: element.sundays,
                           reason: element.reason,
                           time: element.readable_add_date,
-                          key: element.id
+                          key: index
                         });
                       });
                     } else {
@@ -187,7 +188,6 @@ const handleApprovalToggle = (leaveId) => {
                                         position:'top-right',
                                         autoClose:1000,
                                         onClose: () => {
-                                          // refreshList();
                                          // navigate('/home/shifts'); // Redirect to Schedule component
                                           //window.location.reload(); // Refresh the page
                                       }
@@ -228,7 +228,6 @@ const handleDisapprovalToggle = (leaveId) => {
                                         position:'top-right',
                                         autoClose:1000,
                                         onClose: () => {
-                                          // refreshList();
                                          // navigate('/home/shifts'); // Redirect to Schedule component
                                           //window.location.reload(); // Refresh the page
                                       }
@@ -259,10 +258,31 @@ const columns = [
   { field: 'leave_type', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
   { field: 'leave_start', headerName: 'Leave Start', width: 200 ,headerAlign:'center',align:'center'},
   { field: 'leave_end', headerName: 'Leave End', width: 200 ,headerAlign:'center',align:'center'},
+  { field: 'leave_add', headerName: 'Leave Add', width: 200 ,headerAlign:'center',align:'center',
+  renderCell: (value) => {
+    const inputDateTime = value.value; // Get the date and time string from your data
+    const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
+
+    // Define options for formatting
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, // Use 24-hour format
+    };
+
+    // Format the date and time as a human-readable string
+    const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+
+    return <div>{formattedDateTime}</div>;
+  }},
   { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'weekend_count', headerName: 'WeekEnd', width: 75 ,headerAlign:'center',align:'center'},
-  { field: 'saturdays', headerName: 'Saturday', width: 75 ,headerAlign:'center',align:'center'},
-  { field: 'sundays', headerName: 'Sunday', width: 75 ,headerAlign:'center',align:'center'},
+  { field: 'weekend_count', headerName: 'WeekEnd', width: 100 ,headerAlign:'center',align:'center'},
+  { field: 'saturdays', headerName: 'Saturday', width: 100 ,headerAlign:'center',align:'center'},
+  { field: 'sundays', headerName: 'Sunday', width: 100 ,headerAlign:'center',align:'center'},
   { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
   {
     field: 'action',

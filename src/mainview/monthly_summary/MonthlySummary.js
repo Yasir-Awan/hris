@@ -5,8 +5,20 @@ import axios from "axios";
 const columns = [
     { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center'},
     { field: 'name', headerName: 'Employee', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'schedule_from', headerName: 'Schedule Start', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'schedule_to', headerName: 'Schedule End', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'schedule_from', headerName: 'Schedule Start', width: 200 ,headerAlign:'center',align:'center',
+    renderCell: (value) => {
+        const dateValue = new Date(value.value); // Parse the date string into a Date object
+        const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+        return <div>{formattedDate}</div>;
+      },
+    },
+    { field: 'schedule_to', headerName: 'Schedule End', width: 200 ,headerAlign:'center',align:'center',
+    renderCell: (value) => {
+        const dateValue = new Date(value.value); // Parse the date string into a Date object
+        const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+        return <div>{formattedDate}</div>;
+      },
+    },
     { field: 'hq_hrs', headerName: 'HQ Hours', width: 200 ,headerAlign:'center',align:'center'},
     { field: 'site_hrs', headerName: 'Site Hours', width: 200 ,headerAlign:'center',align:'center'},
     { field: 'working_time', headerName: 'Working Time', width: 200 ,headerAlign:'center',align:'center'},
@@ -22,6 +34,7 @@ const columns = [
 
     useEffect(() => {
         let summaryRecords = []
+        let counter = 1;
             // api call for shifts list START
             setLoading(true)
             axios({
@@ -41,7 +54,8 @@ const columns = [
                                             'site_hrs':element.site_hrs,
                                             'working_time':element.total_time,
                                             'acceptable_time':element.total_acceptable_time,
-                                        })
+                                        });
+                                        counter++;
                     });
                     setLoading(false)
                     setMonthlySummary(summaryRecords);

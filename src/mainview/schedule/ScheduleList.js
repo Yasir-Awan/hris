@@ -49,7 +49,7 @@ const columns = [
     });
     const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
     const updateData = (k, v) => setTableData((prev) => ({ ...prev, [k]: v }));
-    var mydata =[];
+    
     var shiftRecords = [];
     useEffect(() => {
       updateData('loading', true);
@@ -71,6 +71,7 @@ axios({
     }, [tableData.page, tableData.pageSize,filterModel]);
 
     const refreshSchedulesList = () => {
+          let mydata =[];
           setShowDialog(false)
           let counter = 1;
           // let shiftRecords =[];

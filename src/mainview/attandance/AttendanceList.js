@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid, GridColDef,GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 
-const columns: GridColDef[] = [
+const columns = [
 
   { field: 'id', headerName: 'Serial No' , width: 90 ,
       filterable: false,
@@ -14,9 +14,71 @@ const columns: GridColDef[] = [
       },
     headerAlign:'center',align:'center'},
   { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
-  { field: 'attendance_date', headerName: 'Date', width: 150,headerAlign:'center',align:'center'},
-  { field: 'checkin', headerName: 'CheckIn', width: 180,headerAlign:'center',align:'center'},
-  { field: 'checkout', headerName: 'CheckOut', width: 180,headerAlign:'center',align:'center'},
+  // { field: 'attendance_date', headerName: 'Date', width: 150,headerAlign:'center',align:'center'},
+  {
+    field: 'attendance_date',
+    headerName: 'Date',
+    width: 150,
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: (value) => {
+      if(value.value !== null){
+        const dateValue = new Date(value.value); // Parse the date string into a Date object
+        const formattedDate = dateValue.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' })
+        return <div>{formattedDate}</div>;
+      }else{
+        return <div></div>;
+      }
+    },
+  },
+  { field: 'checkin', headerName: 'CheckIn', width: 180,headerAlign:'center',align:'center',
+  renderCell: (value) => {
+    if(value.value!==null){
+      const inputDateTime = value.value; // Get the date and time string from your data
+      const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
+
+      // Define options for formatting
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false, // Use 24-hour format
+      };
+
+      // Format the date and time as a human-readable string
+      const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+
+      return <div>{formattedDateTime}</div>;
+    }
+  },
+},
+  { field: 'checkout', headerName: 'CheckOut', width: 180,headerAlign:'center',align:'center',
+  renderCell: (value) => {
+        if(value.value !== null){
+          const inputDateTime = value.value; // Get the date and time string from your data
+          const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
+
+          // Define options for formatting
+          const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false, // Use 24-hour format
+          };
+
+          // Format the date and time as a human-readable string
+          const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+
+          return <div>{formattedDateTime}</div>;
+        }
+  },
+},
   { field: 'time', headerName: 'Total Time', width: 130,headerAlign:'center',align:'center'},
   { field: 'early_sitting', headerName: 'Early', width: 130,headerAlign:'center',align:'center'},
   { field: 'late_sitting', headerName: 'Late', width: 130,headerAlign:'center',align:'center'},
