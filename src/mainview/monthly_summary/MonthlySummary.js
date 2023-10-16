@@ -10,16 +10,25 @@ const columns = [
         const dateValue = new Date(value.value); // Parse the date string into a Date object
         const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
         return <div>{formattedDate}</div>;
-      },
+        },
     },
     { field: 'schedule_to', headerName: 'Schedule End', width: 200 ,headerAlign:'center',align:'center',
     renderCell: (value) => {
         const dateValue = new Date(value.value); // Parse the date string into a Date object
         const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
         return <div>{formattedDate}</div>;
-      },
+        },
     },
-    { field: 'hq_hrs', headerName: 'HQ Hours', width: 200 ,headerAlign:'center',align:'center'},
+    { field: 'hq_hrs', headerName: 'HQ Hours', width: 200 ,headerAlign:'center',align:'center',
+    renderCell: (value) => {    
+            if (value.row.shift_type === '2' || value.row.shift_type === '3') {
+             // If shift_type is 1, render only the time part
+                    return <div>{value.row.total_hrs}</div>;
+            } else {
+            return <div>{value.row.hq_hrs}</div>;
+            }
+        },
+    },
     { field: 'site_hrs', headerName: 'Site Hours', width: 200 ,headerAlign:'center',align:'center'},
     { field: 'working_time', headerName: 'Working Time', width: 200 ,headerAlign:'center',align:'center'},
     { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 ,headerAlign:'center',align:'center'},
@@ -50,6 +59,8 @@ const columns = [
                                             'name':element.fullname,
                                             'schedule_from':element.schedule_start_date,
                                             'schedule_to':element.schedule_end_date,
+                                            'shift_type':element.shift_type,
+                                            'total_hrs':element.total_hrs,
                                             'hq_hrs':element.hq_hrs,
                                             'site_hrs':element.site_hrs,
                                             'working_time':element.total_time,
