@@ -280,9 +280,9 @@ const columns = [
     return <div>{formattedDateTime}</div>;
   }},
   { field: 'leave_status', headerName: 'Leave Status', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'weekend_count', headerName: 'WeekEnd', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'saturdays', headerName: 'Saturday', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'sundays', headerName: 'Sunday', width: 100 ,headerAlign:'center',align:'center'},
+  // { field: 'weekend_count', headerName: 'WeekEnd', width: 100 ,headerAlign:'center',align:'center'},
+  // { field: 'saturdays', headerName: 'Saturday', width: 100 ,headerAlign:'center',align:'center'},
+  // { field: 'sundays', headerName: 'Sunday', width: 100 ,headerAlign:'center',align:'center'},
   { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
   {
     field: 'action',
