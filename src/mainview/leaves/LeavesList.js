@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
 import CustomizedDialogs from '../../components/dialog';
 import AddLeave from '../../forms/add_leave/AddLeave';
 import { Box,Switch,styled} from '@mui/material';
-import { alpha } from '@mui/material';
-import { pink } from '@mui/material/colors';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
+))(({ theme, leaveStatus }) => ({
   width: 42,
   height: 26,
   padding: 0,
@@ -24,26 +22,52 @@ const IOSSwitch = styled((props) => (
       transform: 'translateX(16px)',
       color: '#fff',
       '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+        backgroundColor:
+          leaveStatus === 'Approved'
+            ? 'green'
+            : leaveStatus === 'Disapproved'
+            ? 'red'
+            : theme.palette.mode === 'dark'
+            ? '#2ECA45'
+            : '#65C466',
         opacity: 1,
         border: 0,
       },
       '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
+        opacity:
+          leaveStatus === 'Pending'
+            ? theme.palette.mode === 'light'
+              ? 0.7
+              : 0.3
+            : 0.5,
       },
     },
     '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
+      color:
+        leaveStatus === 'Approved'
+          ? 'green'
+          : leaveStatus === 'Disapproved'
+          ? 'red'
+          : '#33cf4d',
       border: '6px solid #fff',
     },
     '&.Mui-disabled .MuiSwitch-thumb': {
       color:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
+        leaveStatus === 'Pending'
+          ? theme.palette.mode === 'light'
+            ? theme.palette.grey[300] // Grey color for pending
+            : theme.palette.grey[700]
+          : leaveStatus === 'Approved'
+          ? 'green'
+          : 'red',
     },
     '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+      opacity:
+        leaveStatus === 'Pending'
+          ? theme.palette.mode === 'light'
+            ? 0.7
+            : 0.3
+          : 0.5,
     },
   },
   '& .MuiSwitch-thumb': {
@@ -53,23 +77,18 @@ const IOSSwitch = styled((props) => (
   },
   '& .MuiSwitch-track': {
     borderRadius: 26 / 2,
-    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+    backgroundColor:
+      leaveStatus === 'Approved'
+        ? 'green'
+        : leaveStatus === 'Disapproved'
+        ? 'red'
+        : theme.palette.mode === 'light'
+        ? '#E9E9EA'
+        : '#39393D',
     opacity: 1,
     transition: theme.transitions.create(['background-color'], {
       duration: 500,
     }),
-  },
-}));
-
-const PinkSwitch = styled(Switch)(({ theme }) => ({
-  '& .MuiSwitch-switchBase.Mui-checked': {
-    color: pink[600],
-    '&:hover': {
-      backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
-    },
-  },
-  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-    backgroundColor: pink[600],
   },
 }));
 
@@ -86,7 +105,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
     const [users,setUsers] = useState([]);
     const [showDialog,setShowDialog] = useState(false)
     const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     var userRecords = [];
 
     // Extract the value of LocalStorage.getItem('role') to a variable
@@ -138,7 +157,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
     .then(function (response) {
                     // setTotalRows(response.total_rows);
                     if (response.data.leave_info) {
-                      response.data.leave_info.map((element,index) => {
+                      response.data.leave_info.forEach((element,index) => {
                         leaveRows.push({
                           id: element.id,
                           name: element.full_name,
@@ -171,85 +190,49 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
     .catch(error => { console.log(error); })
 }
 
-const handleApprovalToggle = (leaveId) => {
-  // Send an API request to update the leave status to "Approved" for the given leaveId.
+const handleToggleLeaveApproval = (leaveId, currentStatus) => {
+  // Determine the new status based on the current status
+  let newStatus;
+  if (currentStatus === 'Pending') {
+    newStatus = 'Approved';
+  } else if (currentStatus === 'Approved') {
+    newStatus = 'Disapproved';
+  } else if (currentStatus === 'Disapproved') {
+    newStatus = 'Approved';
+  }
+
+  // Send an API request to update the leave status
   axios({
     method: 'post',
-    url: 'approve_leave',
+    url: newStatus === 'Approved' ? 'approve_leave' : 'disapprove_leave',
     headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
     data: {
-      leave_id : leaveId
+      leave_id: leaveId,
     },
-})
-.then(
-    function (response) {
-      if(response.data.status==='200'){
-                      toast.success('Leave Approved', {
-                                        position:'top-right',
-                                        autoClose:1000,
-                                        onClose: () => {
-                                         // navigate('/home/shifts'); // Redirect to Schedule component
-                                          //window.location.reload(); // Refresh the page
-                                      }
-                                    });
+  })
+    .then(function (response) {
+      if (response.data.status === '200') {
+        toast.success(`Leave ${newStatus}`, {
+          position: 'top-right',
+          autoClose: 1000,
+          onClose: () => {
+            // Handle any redirection or page refresh if needed
+          },
+        });
+      } else {
+        toast.error('Failed to update leave status', {
+          position: 'top-right',
+          autoClose: 1000,
+        });
       }
-      else{
-                      toast.success('Already Approved Or Disapproved', {
-                            position:'top-right',
-                            autoClose:1000,
-                            // onClose: () => navigate('/home')
-                        });
-        }
-                                            // After successful API response, you can update the state to reflect the change.
-                                    // For example:
-                                    const updatedRows = data.rows.map((row) =>
-                                    row.id === leaveId ? { ...row, leave_status: 'Approved' } : row
-                                    );
-                                      setData((prevData) => ({ ...prevData, rows: updatedRows }));
-    }
-)
-.catch(error => console.error(error));
-};
 
-const handleDisapprovalToggle = (leaveId) => {
-  // Send an API request to update the leave status to "Disapproved" for the given leaveId.
-  axios({
-    method: 'post',
-    url: 'disapprove_leave',
-    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
-    data: {
-      leave_id : leaveId
-    },
-})
-.then(
-    function (response) {
-      if(response.data.status==='200'){
-                      toast.success('Leave Disapproved', {
-                                        position:'top-right',
-                                        autoClose:1000,
-                                        onClose: () => {
-                                         // navigate('/home/shifts'); // Redirect to Schedule component
-                                          //window.location.reload(); // Refresh the page
-                                      }
-                                    });
-      }
-      else{
-                      toast.success('something various happened', {
-                            position:'top-right',
-                            autoClose:1000,
-                            // onClose: () => navigate('/home')
-                        });
-        }
-                  // After successful API response, you can update the state to reflect the change.
-          // For example:
-          const updatedRows = data.rows.map((row) =>
-          row.id === leaveId ? { ...row, leave_status: 'Disapproved' } : row
-        );
-        setData((prevData) => ({ ...prevData, rows: updatedRows }));
-    }
-)
-.catch(error => console.error(error));
-
+      // After a successful API response, update the state to reflect the change.
+      const updatedRows = data.rows.map((row) =>
+        row.id === leaveId ? { ...row, leave_status: newStatus } : row
+      );
+      setData((prevData) => ({ ...prevData, rows: updatedRows }));
+    })
+    .catch((error) => console.error(error));
 };
 
 const columns = [
@@ -295,15 +278,8 @@ const columns = [
         <IOSSwitch
           color="primary"
           checked={params.row.leave_status === 'Approved'}
-          label="iOS style"
-          onChange={() => handleApprovalToggle(params.row.id)}
-        />
-        </Box>
-        <Box>
-        <PinkSwitch
-          color="secondary"
-          checked={params.row.leave_status === 'Disapproved'}
-          onChange={() => handleDisapprovalToggle(params.row.id)}
+          onChange={() => handleToggleLeaveApproval(params.row.id, params.row.leave_status)}
+          leaveStatus={params.row.leave_status}
         />
         </Box>
       </>
