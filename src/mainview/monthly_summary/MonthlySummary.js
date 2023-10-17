@@ -21,12 +21,12 @@ const columns = [
     },
     { field: 'hq_hrs', headerName: 'HQ Hours', width: 200 ,headerAlign:'center',align:'center',
     renderCell: (value) => {    
-            if (value.row.shift_type === '2' || value.row.shift_type === '3') {
-             // If shift_type is 1, render only the time part
-                    return <div>{value.row.total_hrs}</div>;
-            } else {
+            // if (value.row.shift_type === '2' || value.row.shift_type === '3') {
+            //  // If shift_type is 1, render only the time part
+            //         return <div>{value.row.total_hrs}</div>;
+            // } else {
             return <div>{value.row.hq_hrs}</div>;
-            }
+            // }
         },
     },
     { field: 'site_hrs', headerName: 'Site Hours', width: 200 ,headerAlign:'center',align:'center'},
