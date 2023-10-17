@@ -14,7 +14,6 @@ const columns = [
       },
     headerAlign:'center',align:'center'},
   { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
-  // { field: 'attendance_date', headerName: 'Date', width: 150,headerAlign:'center',align:'center'},
   {
     field: 'attendance_date',
     headerName: 'Date',
@@ -103,7 +102,7 @@ const columns = [
 
 
   const AttendanceList = (props) => {
-      const [filterVals,setFilterVals] = useState([props.filterValues])
+      // const [filterVals,setFilterVals] = useState([props.filterValues])
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 10,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
         { columnField: '', operatorValue: '', value: '' },
@@ -115,7 +114,7 @@ const columns = [
   useEffect(() => {
       updateData('loading', true);
       console.log('filterModel:', filterModel); // add this line to check filterModel value
-      console.log(filterVals);
+      // console.log(filterVals);
       let counter = 1;
       axios({
         method: 'post',
