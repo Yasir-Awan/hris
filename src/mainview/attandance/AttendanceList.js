@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const columns = [
 
-  { field: 'id', headerName: 'Serial No' , width: 90 ,
+  { field: 'id', headerName: 'Serial No' , width: 80 ,
       filterable: false,
       renderCell: (value) => {
         const currentPage = value.row.page;
@@ -31,7 +31,7 @@ const columns = [
       }
     },
   },
-  { field: 'checkin', headerName: 'CheckIn', width: 180,headerAlign:'center',align:'center',
+  { field: 'checkin', headerName: 'CheckIn', width: 200,headerAlign:'center',align:'center',
   renderCell: (value) => {
     console.log('Shift Type:', value.row.shift_type);
     if(value.value!==null){
@@ -63,7 +63,7 @@ const columns = [
     }
   },
 },
-  { field: 'checkout', headerName: 'CheckOut', width: 180,headerAlign:'center',align:'center',
+  { field: 'checkout', headerName: 'CheckOut', width: 200,headerAlign:'center',align:'center',
   renderCell: (value) => {
         if(value.value !== null){
           const inputDateTime = value.value; // Get the date and time string from your data
