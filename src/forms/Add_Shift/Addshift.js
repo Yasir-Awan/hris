@@ -124,8 +124,10 @@ function AddShift({ refreshList }) {
                     SelectProps={{
                       multiple: false
                     }}>
-                    <MenuItem value="1">1=Standard</MenuItem>
-                    <MenuItem value="2">2=Custom</MenuItem>
+                    <MenuItem value="1">Standard</MenuItem>
+                    <MenuItem value="3">Custom Day</MenuItem>
+                    <MenuItem value="2">Custom Night</MenuItem>
+
                   </TextField>
                 </Grid>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
