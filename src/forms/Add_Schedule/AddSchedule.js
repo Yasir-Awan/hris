@@ -223,7 +223,7 @@ function AddSchedule(props) {
                     .then(function (response) {
                           let siteEmployeesRecord = [];
                               response.data.site_employees.forEach(element => {
-                              siteEmployeesRecord.push({'id':element.bio_ref_id,'name':element.fname + ' ' + element.lname ,})
+                              siteEmployeesRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
                             });
                             setFilteredUsersList(siteEmployeesRecord);
                         })
