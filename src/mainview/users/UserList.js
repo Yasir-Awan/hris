@@ -1,87 +1,119 @@
 import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid} from '@mui/x-data-grid';
 import { Box } from '@mui/material';
-import CustomizedDialogs from '../../components/dialog';
+// import CustomizedDialogs from '../../components/dialog';
 // import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+// import EditIcon from '@mui/icons-material/Edit';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddUser from '../../forms/add_user/AddUser';
-import EditUser from '../../forms/EditUser';
+// import EditUser from '../../forms/EditUser';
 // import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
 
 const columns = [
-    { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center'},
-    { field: 'uname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
+    { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center',
+      filterable: false,
+      renderCell: (value) => {
+        const currentPage = value.row.page;
+        const pageSize = value.row.pagesize;
+        const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
+        return <div>{rowNumber}</div>;
+      },
+    },
+    { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
     { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
-    { field: 'sitename', headerName: 'Site', width: 120,headerAlign:'center',align:'center'},
-    { field: 'contact', headerName: 'Contact', width: 120,headerAlign:'center',align:'center'},
-    { field: 'address', headerName: 'Address', width: 100,headerAlign:'center',align:'center'},
-    { field: 'empType', headerName: 'Type', width: 90,headerAlign:'center',align:'center'},
+    { field: 'site_name', headerName: 'Site', width: 180,headerAlign:'center',align:'center'},
+    { field: 'contact', headerName: 'Contact', width: 180,headerAlign:'center',align:'center'},
+    { field: 'address', headerName: 'Address', width: 200,headerAlign:'center',align:'center'},
+    { field: 'type_of_employee', headerName: 'Type', width: 120,headerAlign:'center',align:'center'},
     // { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
-    { field: 'empSec', headerName: 'Section', width: 85,headerAlign:'center',align:'center'},
-    { field: 'empField', headerName: 'Field', width: 155,headerAlign:'center',align:'center'},
-    { field: 'empRole', headerName: 'Role', width: 170,headerAlign:'center',align:'center'},
+    { field: 'section_name', headerName: 'Section', width: 180,headerAlign:'center',align:'center'},
+    { field: 'field_name', headerName: 'Field', width: 180,headerAlign:'center',align:'center'},
+    { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center'},
     // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
     // { field: 'status', headerName: 'status', width: 150 },
-    { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
-      return (
-        <>
-        <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />}>
-        <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
-          site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
-          consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
-        </CustomizedDialogs>
-        {/* <CustomizedDialogs size='small' title="Delete User" icon={<DeleteIcon />}>
-          <DeleteUser id={value.id}/>
-        </CustomizedDialogs> */}
-        </>
-      );
-    },  headerAlign:'center',align:'center'}
+    // { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
+    //   return (
+    //     <>
+    //     <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />}>
+    //     <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
+    //       site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
+    //       consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
+    //     </CustomizedDialogs>
+    //     </>
+    //   );
+    // },  headerAlign:'center',align:'center'}
 ];
 
 const UserList = () => {
 
 const navigate = useNavigate();
-const [tableData, setTableData] = useState([])
-const [loading,setLoading] = useState(true)
 
-  var nietos = [];
+const [data, setData] = useState({
+  loading: true,
+  rows: [],
+  totalRows: 0,
+  rowsPerPageOptions: [5,10,20,50,100],
+  pageSize: 10,
+  page: 1
+});
+const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
+// const [users,setUsers] = useState([]);
+// const [showDialog,setShowDialog] = useState(false)
+const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
+
   useEffect(() => {
-    setLoading(true)
+
+    let counter = 1;
+    let epmloyeeRecords = [];
+    // setLoading(true)
     axios({
-      method: 'get',
+      method: 'post',
       url: 'user_list',
-      headers: {
-        'Authorization': 'Bearer '+localStorage.getItem('token'),
-      }
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+      data: {
+        pageSize: data.pageSize,
+        page: data.page,
+        filters: filterModel, // pass filterModel to the server,
+        role: localStorage.getItem('role'),
+        emp_id: localStorage.getItem('bio_id')
+      },
     }
     )
       .then(function (response) {
         console.log(response.data);
-        if(response.data.user_info){
-          response.data.user_info.forEach(element => {
-              nietos.push({'id':element.id,'uname':element.fname + ' ' + element.lname , 'email':element.email,
-              'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
-            'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
-          'empRole':element.role_name,})
+        if(response.data.employees_rows){
+          response.data.employees_rows.forEach(element => {
+              epmloyeeRecords.push({'id':counter,'fullname':element.fullname , 'email':element.email,
+              'password':element.password, 'site_name':element.site_name, 'contact':element.contact, 'address':element.address,
+              'type_of_employee':element.type_of_employee, 'consultant':element.consultant, 'section_name':element.section_name,'field_name':element.field_name,
+              'role_name':element.role_name,
+          page:response.data.page,
+          pagesize:response.data.pagesize,
+        });
+          counter++;
           }
             );
         }
         else{
-          navigate('/');
+          // navigate('/');
         }
-        setTableData(nietos);
-        setLoading(false)
+        setTimeout(() => {
+          const rows = epmloyeeRecords;
+          updateData("totalRows", response.data.total_rows);
+              setTimeout(() => {
+                updateData("loading", false);
+              }, 100);
+              updateData("rows", rows);
+        }, 100);
       })
       .catch(error => {
         console.log(error);
           })
 
-    },[])
+    },[data.page,data.pageSize,filterModel])
 
-    console.log(tableData)
     return (
     <>
   <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
@@ -92,11 +124,33 @@ const [loading,setLoading] = useState(true)
     </Box>
 
     <DataGrid
-    autoHeight
-    density='compact'
-    loading={loading}
-    // rowHeight={50}
-    rows={tableData} columns={columns} />
+        density="compact"
+        autoHeight
+        // rowHeight={50}
+        loading={data.loading}
+        rowsPerPageOptions={data.rowsPerPageOptions}
+        pagination
+        page={data.page-1}
+        pageSize={data.pageSize}
+        paginationMode="server"
+        onPageChange={(newpage) => {
+          updateData("page", newpage+1);
+        }}
+        onPageSizeChange={(newPageSize) => {
+          updateData("page", 1);
+          updateData("pageSize", newPageSize);
+        }}
+        rowCount={data.totalRows}
+        rows={data.rows}
+        columns={columns}
+        filterMode="server"
+        // enable server-side filtering
+        onFilterModelChange={
+          (newFilterModel) => setFilterModel(newFilterModel)
+        }
+        //  handle filter changes made by the user
+        filterModel={filterModel}
+     />
   </div>
     </>
   )

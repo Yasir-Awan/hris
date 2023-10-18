@@ -127,7 +127,7 @@ const IOSSwitch = styled((props) => (
           })
             .then(function (response) {
                 response.data.user_info.forEach(element => {
-                    userRecords.push({'id':element.bio_ref_id,'uname':element.fname + ' ' + element.lname , 'email':element.email,
+                    userRecords.push({'id':element.bio_ref_id,'fullname':element.fullname , 'email':element.email,
                     'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
                   'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
                 'empRole':element.role_name,})
@@ -243,13 +243,9 @@ const columns = [
   { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center',
   filterable: false,
   renderCell: (value) => {
-    
     const currentPage = value.row.page;
     const pageSize = value.row.pagesize;
     const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
-    console.log(currentPage)
-    console.log(pageSize)
-    console.log(rowNumber)
     return <div>{rowNumber}</div>;
   },
   },
@@ -334,13 +330,13 @@ const columns = [
                 rowCount={data.totalRows}
                 rows={data.rows}
                 columns={columns}
-                // filterMode="client"
+                filterMode="server"
                 // enable server-side filtering
-                // onFilterModelChange={
-                //   (newFilterModel) => setFilterModel(newFilterModel)
-                // }
+                onFilterModelChange={
+                  (newFilterModel) => setFilterModel(newFilterModel)
+                }
                 //  handle filter changes made by the user
-                // filterModel={filterModel}
+                filterModel={filterModel}
                 // pass filterModel state to the DataGrid component
               />
           </div>
