@@ -93,13 +93,13 @@ function AddSchedule(props) {
                 // api call for users list START
                 axios({
                         method: 'get',
-                        url:'user_list',
+                        url:'employees_list_for_filters',
                         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
                       })
                     .then(function (response) {
                           let usersRecord = [];
                               response.data.user_info.forEach(element => {
-                              usersRecord.push({'id':element.bio_ref_id,'name':element.fname + ' ' + element.lname ,})
+                              usersRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
                             });
                             setUserList(usersRecord);
                         })
@@ -437,6 +437,7 @@ function AddSchedule(props) {
         })
         .then(
                 function (response) {
+                  console.log(response.data)
                   if(response.data.status==='200'){
                                   toast.success('Schedule Added', {
                                                     position:'top-right',
