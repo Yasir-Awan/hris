@@ -2,7 +2,7 @@ import React,{useState, useEffect} from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import axios from "axios";
 import './ScheduleList.css';
-import {useNavigate} from 'react-router-dom';
+// import {useNavigate} from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CustomizedDialogs from '../../components/dialog';
 import { Box } from '@mui/material';
@@ -30,13 +30,13 @@ const columns = [
     // { field: 'user_name', headerName: 'User Name', width: 150 },
     { field: 'from_date', headerName: 'From', width: 150,headerAlign:'center',align:'center'},
     { field: 'to_date', headerName: 'To', width: 150,headerAlign:'center',align:'center'},
-    { field: 'shift_name', headerName: 'Shift', width: 170,headerAlign:'center',align:'center'},
+    { field: 'shift_name', headerName: 'Shift', width: 180,headerAlign:'center',align:'center'},
     { field: 'shift_start', headerName: 'Shift Start', width: 150,headerAlign:'center',align:'center'},
     { field: 'shift_end', headerName: 'Shift End', width: 150,headerAlign:'center',align:'center'},
     // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
 ];
     const ScheduleList = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [showDialog,setShowDialog] = useState(false)
     const [shifts,setShifts] = useState([]);
     const [tableData, setTableData] = useState({
