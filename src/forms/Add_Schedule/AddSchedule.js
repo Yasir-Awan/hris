@@ -97,6 +97,7 @@ function AddSchedule(props) {
                         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
                       })
                     .then(function (response) {
+                      console.log(response.data)
                           let usersRecord = [];
                               response.data.user_info.forEach(element => {
                               usersRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
@@ -221,6 +222,7 @@ function AddSchedule(props) {
                         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
                       })
                     .then(function (response) {
+                      console.log(response.data)
                           let siteEmployeesRecord = [];
                               response.data.site_employees.forEach(element => {
                               siteEmployeesRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
@@ -276,7 +278,7 @@ function AddSchedule(props) {
             .then(function (response) {
                   let siteEmployeesRecord = [];
                       response.data.site_role_employees.forEach(element => {
-                      siteEmployeesRecord.push({'id':element.bio_ref_id,'name':element.fname + ' ' + element.lname ,})
+                      siteEmployeesRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
                     });
                     setFilteredUsersList(siteEmployeesRecord)
                 })
