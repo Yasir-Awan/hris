@@ -2,55 +2,13 @@ import React,{useState, useEffect} from "react";
 import { DataGrid,GridToolbar } from '@mui/x-data-grid';
 import axios from "axios";
 
-const columns = [
-    { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center',
-    filterable: false,
-    renderCell: (value) => {
-        const currentPage = value.row.page;
-        const pageSize = value.row.pagesize;
-        const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
-        return <div>{rowNumber}</div>;
-    },
-    },
-    { field: 'fullname', headerName: 'Employee', width: 200 ,headerAlign:'center',align:'center'},
-    { field: 'schedule_from', headerName: 'Schedule Start', width: 200 ,headerAlign:'center',align:'center',
-    filterable: false,
-    renderCell: (value) => {
-        const dateValue = new Date(value.value); // Parse the date string into a Date object
-        const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-        return <div>{formattedDate}</div>;
-        },
-    },
-    { field: 'schedule_to', headerName: 'Schedule End', width: 200 ,headerAlign:'center',align:'center',
-    filterable: false,
-    renderCell: (value) => {
-        const dateValue = new Date(value.value); // Parse the date string into a Date object
-        const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-        return <div>{formattedDate}</div>;
-        },
-    },
-    { field: 'hq_hrs', headerName: 'HQ Hours', width: 200 ,headerAlign:'center',align:'center',
-    filterable: false,
-    renderCell: (value) => {    
-            // if (value.row.shift_type === '2' || value.row.shift_type === '3') {
-            //  // If shift_type is 1, render only the time part
-            //         return <div>{value.row.total_hrs}</div>;
-            // } else {
-            return <div>{value.row.hq_hrs}</div>;
-            // }
-        },
-    },
-    { field: 'site_hrs', headerName: 'Site Hours', width: 200 ,headerAlign:'center',align:'center',filterable: false,},
-    { field: 'working_time', headerName: 'Working Time', width: 200 ,headerAlign:'center',align:'center',filterable: false,},
-    { field: 'acceptable_time', headerName: 'Acceptable Time', width: 150 ,headerAlign:'center',align:'center',filterable: false,},
-];
-
     const MonthlySummary = () => {
         const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 10,page: 1});
         const [filterModel, setFilterModel] = useState({items: [
           { columnField: '', operatorValue: '', value: '' },
         ]});
         const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
+        const userRole = localStorage.getItem('role');
 
     useEffect(() => {
         let summaryRecords = []
@@ -75,6 +33,8 @@ const columns = [
                         summaryRecords.push({
                                             id:counter,
                                             fullname:element.fullname,
+                                            site:element.site_name,
+                                            role:element.role_name,
                                             schedule_from:element.schedule_start_date,
                                             schedule_to:element.schedule_end_date,
                                             shift_type:element.shift_type,
@@ -99,6 +59,51 @@ const columns = [
                 })
                 .catch(error => {});// api call for summary list END
     }, [data.page, data.pageSize,filterModel]);
+
+    const columns = [
+        { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center',width:80,
+        filterable: false,
+        renderCell: (value) => {
+            const currentPage = value.row.page;
+            const pageSize = value.row.pagesize;
+            const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
+            return <div>{rowNumber}</div>;
+        },
+        },
+        { field: 'fullname', headerName: 'Employee', width: 180 ,headerAlign:'center',align:'center'},
+        { field: 'site', headerName: 'Site', width: 130,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
+        { field: 'role', headerName: 'Role', width: 175,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
+        { field: 'schedule_from', headerName: 'Schedule Start', width: 180 ,headerAlign:'center',align:'center',
+        filterable: false,
+        renderCell: (value) => {
+            const dateValue = new Date(value.value); // Parse the date string into a Date object
+            const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            return <div>{formattedDate}</div>;
+            },
+        },
+        { field: 'schedule_to', headerName: 'Schedule End', width: 180 ,headerAlign:'center',align:'center',
+        filterable: false,
+        renderCell: (value) => {
+            const dateValue = new Date(value.value); // Parse the date string into a Date object
+            const formattedDate = dateValue.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            return <div>{formattedDate}</div>;
+            },
+        },
+        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135 ,headerAlign:'center',align:'center',
+        filterable: false,
+        renderCell: (value) => {    
+                // if (value.row.shift_type === '2' || value.row.shift_type === '3') {
+                //  // If shift_type is 1, render only the time part
+                //         return <div>{value.row.total_hrs}</div>;
+                // } else {
+                return <div>{value.row.hq_hrs}</div>;
+                // }
+            },
+        },
+        { field: 'site_hrs', headerName: 'Site Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
+        { field: 'working_time', headerName: 'Working Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
+        { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
+    ];
 
     return (
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>

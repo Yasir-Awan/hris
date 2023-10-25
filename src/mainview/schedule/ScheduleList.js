@@ -9,32 +9,7 @@ import { Box } from '@mui/material';
 import AddSchedule from "../../forms/add_schedule/AddSchedule";
 // import Shift from "../Shift/Shift";
 
-const columns = [
-  // { field: 'id', headerName: 'Id' ,headerAlign:'center',align:'center'},
-  { field: 'id', headerName: 'Serial No' , width: 90 ,
-        filterable: false,
-        renderCell: (value) => {
-          console.log(value.row.id)
-          console.log(value.api.getRowIndex(value.row.id))
-          console.log(value.row.page)
-          console.log(value.row.pageSize)
-          const currentPage = value.row.page;
-          const pageSize = value.row.pagesize;
-          const rowNumber = ((currentPage - 1) * pageSize) + (value.api.getRowIndex(value.row.id) + 1);
-          console.log(rowNumber)
-          return <div>{rowNumber}</div>;
-        },
-      headerAlign:'center',align:'center'},
-    // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
-    { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
-    // { field: 'user_name', headerName: 'User Name', width: 150 },
-    { field: 'from_date', headerName: 'From', width: 150,headerAlign:'center',align:'center'},
-    { field: 'to_date', headerName: 'To', width: 150,headerAlign:'center',align:'center'},
-    { field: 'shift_name', headerName: 'Shift', width: 180,headerAlign:'center',align:'center'},
-    { field: 'shift_start', headerName: 'Shift Start', width: 150,headerAlign:'center',align:'center'},
-    { field: 'shift_end', headerName: 'Shift End', width: 150,headerAlign:'center',align:'center'},
-    // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
-];
+
     const ScheduleList = () => {
     // const navigate = useNavigate();
     const [showDialog,setShowDialog] = useState(false)
@@ -49,6 +24,7 @@ const columns = [
     });
     const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
     const updateData = (k, v) => setTableData((prev) => ({ ...prev, [k]: v }));
+    const userRole = localStorage.getItem('role');
     
     var shiftRecords = [];
     useEffect(() => {
@@ -94,7 +70,7 @@ axios({
             .then(function (response) {
               if(response.data.schedule_rows){
                 response.data.schedule_rows.forEach(element => {
-                    mydata.push({id:counter,fullname:element.fullname ,user_name:element.user_name ,
+                    mydata.push({id:counter,fullname:element.fullname,site:element.site_name,role:element.role_name,
                     from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
                     shift_start:element.shift_start,shift_end:element.shift_end,page:response.data.page,
                     pagesize:response.data.pagesize
@@ -133,6 +109,34 @@ axios({
                   </Box>;
         }
       }
+
+      const columns = [
+        // { field: 'id', headerName: 'Id' ,headerAlign:'center',align:'center'},
+        { field: 'id', headerName: 'Serial No' , width: 90 ,
+              filterable: false,
+              renderCell: (value) => {
+                console.log(value.row.id)
+                console.log(value.api.getRowIndex(value.row.id))
+                console.log(value.row.page)
+                console.log(value.row.pageSize)
+                const currentPage = value.row.page;
+                const pageSize = value.row.pagesize;
+                const rowNumber = ((currentPage - 1) * pageSize) + (value.api.getRowIndex(value.row.id) + 1);
+                console.log(rowNumber)
+                return <div>{rowNumber}</div>;
+              },
+            headerAlign:'center',align:'center'},
+          // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
+          { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
+          { field: 'site', headerName: 'Site', width: 150,hide: userRole !== '3',headerAlign:'center',align:'center'},
+          { field: 'role', headerName: 'Role', width: 180,hide: userRole !== '3',headerAlign:'center',align:'center'},
+          { field: 'from_date', headerName: 'Schedule Start', width: 160,headerAlign:'center',align:'center'},
+          { field: 'to_date', headerName: 'Schedule End', width: 160,headerAlign:'center',align:'center'},
+          { field: 'shift_name', headerName: 'Shift', width: 220,headerAlign:'center',align:'center'},
+          { field: 'shift_start', headerName: 'Shift Start', width: 140,headerAlign:'center',align:'center'},
+          { field: 'shift_end', headerName: 'Shift End', width: 140,headerAlign:'center',align:'center'},
+          // { field: 'leave_status', headerName: 'Leave Status', width: 150 },
+      ];
 
     return (
       <>
