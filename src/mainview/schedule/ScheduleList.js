@@ -70,7 +70,7 @@ axios({
             .then(function (response) {
               if(response.data.schedule_rows){
                 response.data.schedule_rows.forEach(element => {
-                    mydata.push({id:counter,fullname:element.fullname,site:element.site_name,role:element.role_name,
+                    mydata.push({id:counter,fullname:element.fullname,site_name:element.site_name,role_name:element.role_name,
                     from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
                     shift_start:element.shift_start,shift_end:element.shift_end,page:response.data.page,
                     pagesize:response.data.pagesize
@@ -128,8 +128,8 @@ axios({
             headerAlign:'center',align:'center'},
           // { field: 'user_bio_id', headerName: 'User Bio ID', width: 150 },
           { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
-          { field: 'site', headerName: 'Site', width: 150,hide: userRole !== '3',headerAlign:'center',align:'center'},
-          { field: 'role', headerName: 'Role', width: 180,hide: userRole !== '3',headerAlign:'center',align:'center'},
+          { field: 'site_name', headerName: 'Site', width: 150,headerAlign:'center',align:'center'},
+          { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center'},
           { field: 'from_date', headerName: 'Schedule Start', width: 160,headerAlign:'center',align:'center'},
           { field: 'to_date', headerName: 'Schedule End', width: 160,headerAlign:'center',align:'center'},
           { field: 'shift_name', headerName: 'Shift', width: 220,headerAlign:'center',align:'center'},

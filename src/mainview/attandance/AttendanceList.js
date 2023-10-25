@@ -37,8 +37,8 @@ import axios from 'axios';
                           attendanceRows.push({
                             id: counter,
                             fullname: element.fullname,
-                            site: element.site_name,
-                            role: element.role_name,
+                            site_name: element.site_name,
+                            role_name: element.role_name,
                             attendance_date: element.attendance_date,
                             shift_type: element.shift_type,
                             checkin: element.checkin,
@@ -81,8 +81,8 @@ import axios from 'axios';
         },
       headerAlign:'center',align:'center'},
     { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
-    { field: 'site', headerName: 'Site', width: 150,hide: userRole !== '3', headerAlign:'center',align:'center'},
-    { field: 'role', headerName: 'Role', width: 180,hide: userRole !== '3',headerAlign:'center',align:'center'},
+    { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '3', headerAlign:'center',align:'center'},
+    { field: 'role_name', headerName: 'Role', width: 180,hide: userRole !== '3',headerAlign:'center',align:'center'},
     {
       field: 'attendance_date',
       headerName: 'Date',

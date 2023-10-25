@@ -33,8 +33,8 @@ import axios from "axios";
                         summaryRecords.push({
                                             id:counter,
                                             fullname:element.fullname,
-                                            site:element.site_name,
-                                            role:element.role_name,
+                                            site_name:element.site_name,
+                                            role_name:element.role_name,
                                             schedule_from:element.schedule_start_date,
                                             schedule_to:element.schedule_end_date,
                                             shift_type:element.shift_type,
@@ -71,8 +71,8 @@ import axios from "axios";
         },
         },
         { field: 'fullname', headerName: 'Employee', width: 180 ,headerAlign:'center',align:'center'},
-        { field: 'site', headerName: 'Site', width: 130,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
-        { field: 'role', headerName: 'Role', width: 175,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
+        { field: 'site_name', headerName: 'Site', width: 130,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
+        { field: 'role_name', headerName: 'Role', width: 175,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
         { field: 'schedule_from', headerName: 'Schedule Start', width: 180 ,headerAlign:'center',align:'center',
         filterable: false,
         renderCell: (value) => {
