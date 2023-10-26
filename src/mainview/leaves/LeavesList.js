@@ -121,7 +121,7 @@ const IOSSwitch = styled((props) => (
           // api call for users list START
           axios({
             method: 'get',
-            url:'user_list',
+            url:'employees_list_for_filters',
             headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
           }
           })

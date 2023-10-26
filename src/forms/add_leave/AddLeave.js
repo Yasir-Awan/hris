@@ -12,7 +12,7 @@ import {useNavigate} from 'react-router-dom';
 const bull = (<Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>);
 
 function AddLeave( props ) {
-    console.log(props)
+    console.log(props.employees)
     const navigate = useNavigate();
     const [AddLeaveFormData, setAddLeaveFormData] = useState({ emp_id: '', leave_type: '', leave_start: null, leave_end: null,leave_reason:'' });
     const [isShortLeave, setIsShortLeave] = useState(false);
@@ -427,7 +427,8 @@ function AddLeave( props ) {
         <Card style={{ width: "auto", margin: "auto" }}>
             <CardContent>
             <form onSubmit={formSubmit}>
-                <Grid >
+            {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item> */}
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 {localStorage.getItem('role') === '3' ? (
                                 <Grid xs={12} item sx={{ mt: 2}}>
                                     <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
@@ -436,8 +437,8 @@ function AddLeave( props ) {
                                     }}>
                                         {
                                         props.employees.map((user,index) => (
-                                            <MenuItem key={user.id} value={user.id}>
-                                            {user.uname}
+                                            <MenuItem key={index} value={user.id}>
+                                            {user.fullname}
                                             </MenuItem>
                                             ))
                                         }
@@ -454,7 +455,7 @@ function AddLeave( props ) {
                                             </TextField>
                                         </Grid>)
                                 }
-                <Grid xs={12} item sx={{ mt: 2 }}>
+                <Grid xs={12} item sx={{ mt: 2 , mb:2}}>
                     <TextField label="Select leave type" name='leave_type' onChange={inputEvent} select value={AddLeaveFormData.leave_type} variant="outlined" sx={{ width: "100%" }} required
                     SelectProps={{
                         multiple: false
@@ -464,9 +465,11 @@ function AddLeave( props ) {
                     <MenuItem value="3">Medical Leave</MenuItem>
                     </TextField>
                 </Grid>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {isShortLeave ? (
-                    <Stack spacing={2} sx={{mt:2}}>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 0, sm: 2, md: 3 }} item>
+                    <Grid xs={6} item>
                         <DateTimePicker
                                 label="Leave Start"
                                 name='leave_start'
@@ -477,19 +480,23 @@ function AddLeave( props ) {
                                 required
                                 renderInput={(params) => <TextField {...params} />}
                                 />
+                                </Grid>
+                        <Grid xs={6} item>
                         <DateTimePicker
                                 label="Leave End"
                                 name='leave_end'
                                 value={AddLeaveFormData.leave_end}
                                 onChange={handleEndTimeChange}
                                 variant='outlined'
-                                sx={{ width: "150%"}}
+                                sx={{ width: "100%"}}
                                 required
                                 renderInput={(params) => <TextField {...params} />}
                                 />
-                    </Stack>
+                    </Grid>
+                    </Grid>
                 ) : (
-                    <Stack spacing={2} sx={{mt:2}}>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item>
+                    <Grid xs={6} item>
                         <DatePicker
                                 label="Leave Start"
                                 name='leave_start'
@@ -502,6 +509,8 @@ function AddLeave( props ) {
                                 inputFormat="YYYY-MM-DD"
                                 outputFormat="YYYY-MM-DD"
                                 />
+                                </Grid>
+                            <Grid xs={6} item>
                                 <DatePicker
                                     label="Leave End"
                                     name="leave_end"
@@ -513,9 +522,11 @@ function AddLeave( props ) {
                                     inputFormat="YYYY-MM-DD"
                                     outputFormat="YYYY-MM-DD"
                                 />
-                    </Stack>
+                                </Grid>
+                    </Grid>
                 )}
                 </LocalizationProvider>
+                </Grid>
                 <Grid xs={12} item sx={{ mt: 2 }}>
                     <TextField label="Reason for leave" name='leave_reason' onChange={inputEvent} value={AddLeaveFormData.leave_reason} variant="outlined" sx={{ width: "100%" }} required
                     multiline
