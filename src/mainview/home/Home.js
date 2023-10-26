@@ -93,7 +93,7 @@ const Home = props => {
           <AppBar position='static' sx={{background:'#063970'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-              <img src={NhaLogo} alt="Pic" width="40" height="35"/>
+              <img src={NhaLogo} alt="Pic" width="65" height="45"/>
                 {/* <ThreePIcon/> */}
               </IconButton>
               {
