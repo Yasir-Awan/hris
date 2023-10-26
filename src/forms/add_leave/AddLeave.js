@@ -424,7 +424,7 @@ function AddLeave( props ) {
     <>
     <div className="App">
         <Grid>
-        <Card style={{ maxWidth: 450, padding: "0px 0px", margin: "0 auto" }}>
+        <Card style={{ width: "auto", margin: "auto" }}>
             <CardContent>
             <form onSubmit={formSubmit}>
                 <Grid >
