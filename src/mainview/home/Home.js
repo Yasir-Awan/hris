@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import { useNavigate,useLocation,useParams} from 'react-router-dom';
 import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab,useMediaQuery,useTheme } from "@mui/material";
 // import ThreePIcon from '@mui/icons-material/ThreeP';
-import DrawerComp from '../drawer/DrawerComp';
+// import DrawerComp from '../drawer/DrawerComp';
 import ContainerResponsive from '../container/ContainerResponsive';
 import Remarks from '../remarks/Remarks';
 import Teams from '../teams/Teams';
@@ -105,7 +105,7 @@ const Home = props => {
                 ):
                 (
                   <>
-                  <Typography variant='h5' component='div'>
+                  <Typography variant='h4' component='div'>
                     HRIS
                   </Typography>
 
