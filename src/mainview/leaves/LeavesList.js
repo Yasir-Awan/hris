@@ -249,11 +249,11 @@ const columns = [
     return <div>{rowNumber}</div>;
   },
   },
-  { field: 'full_name', headerName: 'Name', width: 170 ,headerAlign:'center',align:'center'},
-  { field: 'leave_type_readable', headerName: 'Leave Type', width: 90 ,headerAlign:'center',align:'center'},
+  { field: 'full_name', headerName: 'Name', width: 200 ,headerAlign:'center',align:'center'},
+  { field: 'leave_type_readable', headerName: 'Leave Type', width: 120 ,headerAlign:'center',align:'center'},
   { field: 'leave_start', headerName: 'Start', width: 200 ,headerAlign:'center',align:'center'},
   { field: 'leave_end', headerName: 'End', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_add', headerName: 'Add', width: 200 ,headerAlign:'center',align:'center',
+  { field: 'leave_add', headerName: 'Add',hide: userRole !== '3', width: 200 ,headerAlign:'center',align:'center',
   renderCell: (value) => {
     const inputDateTime = value.value; // Get the date and time string from your data
     const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
@@ -274,7 +274,7 @@ const columns = [
 
     return <div>{formattedDateTime}</div>;
   }},
-  { field: 'leave_status', headerName: 'status', width: 100 ,headerAlign:'center',align:'center'},
+  { field: 'leave_status', headerName: 'status', width: 110 ,headerAlign:'center',align:'center'},
   // { field: 'weekend_count', headerName: 'WeekEnd', width: 100 ,headerAlign:'center',align:'center'},
   // { field: 'saturdays', headerName: 'Saturday', width: 100 ,headerAlign:'center',align:'center'},
   // { field: 'sundays', headerName: 'Sunday', width: 100 ,headerAlign:'center',align:'center'},
