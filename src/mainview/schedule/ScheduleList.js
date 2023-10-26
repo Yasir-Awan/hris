@@ -99,7 +99,7 @@ axios({
 
       const ConditionalComponent = ({ role }) => {
         if (role ==='3') {
-          return <Box sx={{marginLeft:'97%', position: "absolute",top:'72px',right:'20px'}}>
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'78px',right:'20px'}}>
                       <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
                           <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
                       </CustomizedDialogs>
