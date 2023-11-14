@@ -105,7 +105,7 @@ const Home = props => {
                 ):
                 (
                   <>
-                  <Typography variant='h4' component='div'>
+                  <Typography variant='h5' component='div'>
                     HRIS
                   </Typography>
 
