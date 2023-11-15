@@ -9,7 +9,9 @@ import axios from 'axios';
         { columnField: '', operatorValue: '', value: '' },
       ]});
       const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
+      // Extract the value of LocalStorage.getItem('role') to a variable
       const userRole = localStorage.getItem('role');
+      
       // const navigate = useNavigate();
       let attendanceRows = [];
 

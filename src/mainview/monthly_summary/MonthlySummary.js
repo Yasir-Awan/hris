@@ -9,6 +9,7 @@ import axios from "axios";
         ]});
         const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
         const userRole = localStorage.getItem('role');
+        const userSite = localStorage.getItem('site');
 
     useEffect(() => {
         let summaryRecords = []
@@ -89,7 +90,7 @@ import axios from "axios";
             return <div>{formattedDate}</div>;
             },
         },
-        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135 ,headerAlign:'center',align:'center',
+        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135, hide: (userSite !== '12' && userRole !== '3') ,headerAlign:'center',align:'center',
         filterable: false,
         renderCell: (value) => {    
                 // if (value.row.shift_type === '2' || value.row.shift_type === '3') {
@@ -100,7 +101,7 @@ import axios from "axios";
                 // }
             },
         },
-        { field: 'site_hrs', headerName: 'Site Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
+        { field: 'site_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,headerAlign:'center',align:'center',filterable: false,},
         { field: 'working_time', headerName: 'Working Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
         { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
     ];
@@ -108,34 +109,34 @@ import axios from "axios";
     return (
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
             <DataGrid
-                 density="compact"
-                 autoHeight
+                density="compact"
+                autoHeight
                  // rowHeight={50}
-                 loading={data.loading}
-                 rowsPerPageOptions={data.rowsPerPageOptions}
-                 pagination
-                 page={data.page-1}
-                 pageSize={data.pageSize}
-                 paginationMode="server"
-                 onPageChange={(newpage) => {
-                   updateData("page", newpage+1);
-                 }}
-                 onPageSizeChange={(newPageSize) => {
-                   updateData("page", 1);
-                   updateData("pageSize", newPageSize);
-                 }}
-                 rowCount={data.totalRows}
-                 rows={data.rows}
-                 columns={columns}
+                loading={data.loading}
+                rowsPerPageOptions={data.rowsPerPageOptions}
+                pagination
+                page={data.page-1}
+                pageSize={data.pageSize}
+                paginationMode="server"
+                onPageChange={(newpage) => {
+                updateData("page", newpage+1);
+                }}
+                onPageSizeChange={(newPageSize) => {
+                updateData("page", 1);
+                updateData("pageSize", newPageSize);
+                }}
+                rowCount={data.totalRows}
+                rows={data.rows}
+                columns={columns}
                  // getRowId={getRowId}
                  // pagination
                  filterMode="server" // enable server-side filtering
-                 onFilterModelChange={
+                onFilterModelChange={
                     (newFilterModel) => setFilterModel(newFilterModel)
-                  } 
+                } 
                  // handle filter changes made by the user
                  filterModel={filterModel} // pass filterModel state to the DataGrid component
-                 components={{Toolbar: GridToolbar}}
+                components={{Toolbar: GridToolbar}}
                 />
         </div>
     )
