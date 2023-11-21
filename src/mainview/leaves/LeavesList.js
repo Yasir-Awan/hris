@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
 import CustomizedDialogs from '../../components/dialog';
 import AddLeave from '../../forms/add_leave/AddLeave';
+import EditIcon from '@mui/icons-material/Edit';
+import EditLeave from '../../forms/edit_leave/EditLeave';
+// import DeleteUser from '../../forms/DeleteUser';
 import { Box,Switch,styled} from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import {IconButton} from '@mui/material';
 
+// Styling part of toogle button  which is used for approval and disapproval of leaves START
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme, leavestatus }) => ({
@@ -91,253 +95,272 @@ const IOSSwitch = styled((props) => (
     }),
   },
 }));
+//END Styling part of toogle button  which is used for approval and disapproval of leaves
 
   const LeavesList = () => {
-      const [data, setData] = useState({
-        loading: true,
-        rows: [],
-        totalRows: 0,
-        rowsPerPageOptions: [5,10,20,50,100],
-        pageSize: 10,
-        page: 1
-      });
-    const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
-    const [users,setUsers] = useState([]);
-    const [showDialog,setShowDialog] = useState(false)
-    const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
-    // const navigate = useNavigate();
-    var userRecords = [];
+      const [data, setData] = useState({loading: true, rows: [], totalRows: 0, rowsPerPageOptions: [5,10,20,50,100], pageSize: 10, page: 1 });
+      const [dialogMode, setDialogMode] = useState('add'); // 'add' or 'edit'
+      const [leaveId,setLeaveId] = useState(null);
+      const [editData,setEditData] = useState({emp_name:null, emp_id:null, leave_id:leaveId, leave_type:null,leave_start:null,leave_end:null,leave_reason:null});
+      const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
+      const [users,setUsers] = useState([]);
+      const [showDialog,setShowDialog] = useState(false)
+      const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
+      var userRecords = [];
+      // Extract the value of LocalStorage.getItem('role') to a variable
+      const userRole = localStorage.getItem('role');
 
-    // Extract the value of LocalStorage.getItem('role') to a variable
-  const userRole = localStorage.getItem('role');
+          useEffect(() => {
+            // updateData('loading', true);
+              refreshUsersList()
+              refreshLeavesList()
+          }, [data.page,data.pageSize,filterModel]);
 
-  useEffect(() => {
-    // updateData('loading', true);
-      refreshUsersList()
-          refreshLeavesList()
-  }, [data.page,data.pageSize,filterModel]);
-
-  const refreshUsersList = () => {
-          // api call for users list START
-          axios({
-            method: 'get',
-            url:'employees_list_for_filters',
-            headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+          const refreshUsersList = () => {
+                  // api call for users list START
+                        axios({
+                          method: 'get',
+                          url:'employees_list_for_filters',
+                          headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+                        }
+                        })
+                          .then(function (response) {
+                              response.data.user_info.forEach(element => {
+                                  userRecords.push({'id':element.bio_ref_id,'fullname':element.fullname , 'email':element.email,
+                                  'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
+                                'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
+                              'empRole':element.role_name,})
+                              });
+                              setUsers(userRecords);
+                          })
+                          .catch(error => {});// api call for users list END
           }
-          })
-            .then(function (response) {
-                response.data.user_info.forEach(element => {
-                    userRecords.push({'id':element.bio_ref_id,'fullname':element.fullname , 'email':element.email,
-                    'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
-                  'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
-                'empRole':element.role_name,})
-                });
-                setUsers(userRecords);
-            })
-            .catch(error => {});// api call for users list END
-  }
 
-  const refreshLeavesList = () => {
-    setShowDialog(false)
-    let counter = 1;
-    let leaveRows = [];
+          const refreshLeavesList = () => {
+            setShowDialog(false)
+            setDialogMode('add');
+            let counter = 1;
+            let leaveRows = [];
 
-    axios({
-      method: 'post',
-      url:'leaves_list',
-      headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
-      data: {
-        pageSize: data.pageSize,
-        page: data.page,
-        filters: filterModel, // pass filterModel to the server,
-        role: localStorage.getItem('role'),
-        emp_id: localStorage.getItem('bio_id')
-      },
-    })
-    .then(function (response) {
-                    // setTotalRows(response.total_rows);
-                    if (response.data.leave_rows) {
-                      response.data.leave_rows.forEach((element,index) => {
-                        leaveRows.push({
-                          id: counter,
-                          full_name: element.full_name,
-                          leave_type_readable: element.leave_type_readable,
-                          leave_start: element.readable_start_date,
-                          leave_end: element.readable_end_date,
-                          leave_add: element.add_date,
-                          leave_status: element.leave_status_readable,
-                          weekend_count: element.weekend_count,
-                          saturdays: element.saturdays,
-                          sundays: element.sundays,
-                          reason: element.reason,
-                          time: element.readable_add_date,
-                          page:response.data.page,
-                          pagesize:response.data.pagesize,
-                          leave_id:element.id,
-                          key: index
-                        });
-                        counter++;
-                      });
-                    } else {
-                      // navigate('/');
-                    }
+                  axios({
+                    method: 'post',
+                    url:'leaves_list',
+                    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                    data: {
+                      pageSize: data.pageSize,
+                      page: data.page,
+                      filters: filterModel, // pass filterModel to the server,
+                      role: localStorage.getItem('role'),
+                      emp_id: localStorage.getItem('bio_id')
+                    },
+                  })
+                  .then(function (response) {
+                                  console.log(response.data.leave_rows);
+                                  if (response.data.leave_rows) {
+                                    response.data.leave_rows.forEach((element,index) => {
+                                      leaveRows.push({
+                                        id: counter,
+                                        bio_id: element.bio_id,
+                                        leave_id: element.id,
+                                        full_name: element.full_name,
+                                        leave_type: element.leave_type,
+                                        leave_type_readable: element.leave_type_readable,
+                                        leave_start: element.readable_start_date,
+                                        leave_end: element.readable_end_date,
+                                        leave_add: element.add_date,
+                                        status:element.status,
+                                        leave_status: element.leave_status_readable,
+                                        weekend_count: element.weekend_count,
+                                        saturdays: element.saturdays,
+                                        sundays: element.sundays,
+                                        reason: element.reason,
+                                        time: element.readable_add_date,
+                                        page:response.data.page,
+                                        pagesize:response.data.pagesize,
+                                        key: index
+                                      });
+                                      counter++;
+                                    });
+                                  } else {
+                                    // navigate('/');
+                                  }
 
-            setTimeout(() => {
-              const rows = leaveRows;
-              updateData("totalRows", response.data.total_rows);
-                  setTimeout(() => {
-                    updateData("loading", false);
-                  }, 100);
-                  updateData("rows", rows);
-            }, 100);
-    })
-    .catch(error => { console.log(error); })
-}
-
-const handleToggleLeaveApproval = (leaveId, currentStatus,rowId) => {
-  // Determine the new status based on the current status
-  let newStatus;
-  if (currentStatus === 'Pending') {
-    newStatus = 'Approved';
-  } else if (currentStatus === 'Approved') {
-    newStatus = 'Disapproved';
-  } else if (currentStatus === 'Disapproved') {
-    newStatus = 'Approved';
-  }
-
-  // Send an API request to update the leave status
-  axios({
-    method: 'post',
-    url: newStatus === 'Approved' ? 'approve_leave' : 'disapprove_leave',
-    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
-    data: {
-      leave_id: leaveId,
-    },
-  })
-    .then(function (response) {
-      if (response.data.status === '200') {
-        toast.success(`Leave ${newStatus}`, {
-          position: 'top-right',
-          autoClose: 1000,
-          onClose: () => {
-            // Handle any redirection or page refresh if needed
-          },
-        });
-      } else {
-        toast.error('Failed to update leave status', {
-          position: 'top-right',
-          autoClose: 1000,
-        });
+                          setTimeout(() => {const rows = leaveRows;updateData("totalRows", response.data.total_rows);
+                                setTimeout(() => {updateData("loading", false);}, 100);
+                                updateData("rows", rows);
+                          }, 100);
+                  })
+                  .catch(error => { console.log(error); })
       }
 
-      // After a successful API response, update the state to reflect the change.
-      const updatedRows = data.rows.map((row) =>
-        row.id === rowId ? { ...row, leave_status: newStatus } : row
-      );
-      setData((prevData) => ({ ...prevData, rows: updatedRows }));
-    })
-    .catch((error) => console.error(error));
-};
+      const handleToggleLeaveApproval = (leaveId, currentStatus,rowId) => {
+        // Determine the new status based on the current status
+        let newStatus;
+        if (currentStatus === 'Pending') {
+          newStatus = 'Approved';
+        } else if (currentStatus === 'Approved') {
+          newStatus = 'Disapproved';
+        } else if (currentStatus === 'Disapproved') {
+          newStatus = 'Approved';
+        }
+              // Send an API request to update the leave status
+              axios({
+                method: 'post',
+                url: newStatus === 'Approved' ? 'approve_leave' : 'disapprove_leave',
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                data: {
+                  leave_id: leaveId,
+                },
+              })
+                .then(function (response) {
+                  if (response.data.status === '200') {
+                    toast.success(`Leave ${newStatus}`, {
+                      position: 'top-right',
+                      autoClose: 1000,
+                      onClose: () => {
+                        // Handle any redirection or page refresh if needed
+                      },
+                    });
+                  } else {
+                    toast.error('Failed to update leave status', {
+                      position: 'top-right',
+                      autoClose: 1000,
+                    });
+                  }
+                  // After a successful API response, update the state to reflect the change.
+                  const updatedRows = data.rows.map((row) =>
+                    row.id === rowId ? { ...row, leave_status: newStatus } : row
+                  );
+                  setData((prevData) => ({ ...prevData, rows: updatedRows }));
+                })
+                .catch((error) => console.error(error));
+        };
 
-const columns = [
-  { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center',
-  filterable: false,
-  renderCell: (value) => {
-    const currentPage = value.row.page;
-    const pageSize = value.row.pagesize;
-    const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
-    return <div>{rowNumber}</div>;
-  },
-  },
-  { field: 'full_name', headerName: 'Name', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_type_readable', headerName: 'Leave Type', width: 120 ,headerAlign:'center',align:'center'},
-  { field: 'leave_start', headerName: 'Start', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_end', headerName: 'End', width: 200 ,headerAlign:'center',align:'center'},
-  { field: 'leave_add', headerName: 'Add',hide: userRole !== '3', width: 200 ,headerAlign:'center',align:'center',
-  renderCell: (value) => {
-    const inputDateTime = value.value; // Get the date and time string from your data
-    const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
+        // Function to handle the edit leave button click
+        const handleEditButtonClick = (leaveId,empId,empName,leaveType,leaveStart,leaveEnd,leaveStatus,leaveReason) => {
+          // console.log(leaveType)
+          // Fetch leave details based on leaveId
+          // Set the leave details in the form for editing
+          setLeaveId(leaveId);
+           // Replace the values with the ones you want to set
+          const updatedEditData = {
+            emp_name: empName,
+            emp_id: empId,
+            leave_id: leaveId,
+            leave_type: leaveType,
+            leave_start: leaveStart,
+            leave_end: leaveEnd,
+            leave_status:leaveStatus,
+            leave_reason: leaveReason
+          };
 
-    // Define options for formatting
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false, // Use 24-hour format
-    };
+          // Set the updated values
+          setEditData(updatedEditData);
+          setDialogMode('edit');
+          setShowDialog(true);
+        };
 
-    // Format the date and time as a human-readable string
-    const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
-
-    return <div>{formattedDateTime}</div>;
-  }},
-  { field: 'leave_status', headerName: 'status', width: 110 ,headerAlign:'center',align:'center'},
-  // { field: 'weekend_count', headerName: 'WeekEnd', width: 100 ,headerAlign:'center',align:'center'},
-  // { field: 'saturdays', headerName: 'Saturday', width: 100 ,headerAlign:'center',align:'center'},
-  // { field: 'sundays', headerName: 'Sunday', width: 100 ,headerAlign:'center',align:'center'},
-  { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
-  {
-    field: 'action',
-    headerName: 'Action',
-    width: 175,
-    hide: userRole !== '3',
-    renderCell: (params) => (
-      <>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <IOSSwitch
-          color="primary"
-          checked={params.row.leave_status === 'Approved'}
-          onChange={() => handleToggleLeaveApproval(params.row.leave_id, params.row.leave_status,params.row.id)}
-          leavestatus={params.row.leave_status}
-        />
-        </Box>
-      </>
-    ),
-    headerAlign: 'center',
-    align: 'center',
-  },
-  { field: 'time', headerName: 'Adding Time',hide: userRole === '3', width: 220 ,headerAlign:'center',align:'center'},
-];
+        const columns = [
+                          { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center',filterable: false,
+                            renderCell: (value) => {
+                              const currentPage = value.row.page;
+                              const pageSize = value.row.pagesize;
+                              const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
+                              return <div>{rowNumber}</div>;
+                            },
+                          },
+                          { field: 'full_name', headerName: 'Name', width: 200 ,headerAlign:'center',align:'center'},
+                          { field: 'leave_type_readable', headerName: 'Leave Type', width: 120 ,headerAlign:'center',align:'center'},
+                          { field: 'leave_start', headerName: 'Start', width: 200 ,headerAlign:'center',align:'center'},
+                          { field: 'leave_end', headerName: 'End', width: 200 ,headerAlign:'center',align:'center'},
+                          { field: 'leave_add', headerName: 'Add',hide: userRole !== '3', width: 200 ,headerAlign:'center',align:'center',
+                              renderCell: (value) => {
+                                const inputDateTime = value.value; // Get the date and time string from your data
+                                const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
+                                // Define options for formatting
+                                const options = {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                  second: '2-digit',
+                                  hour12: false, // Use 24-hour format
+                                };
+                                // Format the date and time as a human-readable string
+                                const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+                                return <div>{formattedDateTime}</div>;
+                              }
+                          },
+                          { field: 'leave_status', headerName: 'Status', width: 110 ,headerAlign:'center',align:'center'},
+                          { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
+                          { field: 'action', headerName: 'Approval', width: 175, hide: userRole !== '3',headerAlign: 'center', align: 'center',
+                            renderCell: (params) => (
+                              <>
+                              <Box display="flex" justifyContent="space-between" alignItems="center">
+                                <IOSSwitch
+                                  color="primary"
+                                  checked={params.row.leave_status === 'Approved'}
+                                  onChange={() => handleToggleLeaveApproval(params.row.leave_id, params.row.leave_status,params.row.id)}
+                                  leavestatus={params.row.leave_status}
+                                />
+                                </Box>
+                              </>
+                            ),
+                          },
+                          { field: 'time', headerName: 'Adding Time',hide: userRole === '3', width: 220 ,headerAlign:'center',align:'center'},
+                          { field: 'buttons', headerName: 'Action', width: 150, headerAlign:'center',align:'center',
+                            renderCell: (params) => (<IconButton onClick={() => handleEditButtonClick(params.row.leave_id,params.row.bio_id,
+                            params.row.full_name,params.row.leave_type,params.row.leave_start,params.row.leave_end,params.row.status,params.row.reason)}>
+                                <EditIcon />
+                              </IconButton>),
+                          },
+        ];
 
     return (
         <>
           <div style={{ height: 'auto', width: '100%' }}>
-          <Box sx={{marginLeft:'97%', position: "absolute",top:'78px',right:'20px'}}>
-                <CustomizedDialogs size='small' title= "Add New Leave" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
-                    <AddLeave employees={users} refreshList = {refreshLeavesList }/>
-                </CustomizedDialogs>
-            </Box>
+              <Box sx={{marginLeft:'97%', position: "absolute",top:'78px',right:'20px'}}>
+                    {/* <CustomizedDialogs size='small' title= "Add New Leave" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
+                        <AddLeave employees={users} refreshList = {refreshLeavesList }/>
+                    </CustomizedDialogs> */}
+                    <CustomizedDialogs
+                      size="small"
+                      title={dialogMode === 'add' ? "Add New Leave" : "Edit Leave"}
+                      icon={<AddIcon />}
+                      showDialog={showDialog}
+                      setShowDialog={(v) => setShowDialog(v)}
+                      refreshList={refreshLeavesList}
+                    >
+                      {dialogMode === 'add' ? (
+                        <AddLeave employees={users} refreshList={refreshLeavesList} />
+                      ) : (
+                        <EditLeave EditData={editData} refreshList={refreshLeavesList} />
+                      )}
+                    </CustomizedDialogs>
+              </Box>
               <DataGrid
                 density="compact"
                 autoHeight
-                // rowHeight={50}
                 loading={data.loading}
                 rowsPerPageOptions={data.rowsPerPageOptions}
                 pagination
                 page={data.page-1}
                 pageSize={data.pageSize}
                 paginationMode="server"
-                onPageChange={(newpage) => {
-                  updateData("page", newpage+1);
-                }}
-                onPageSizeChange={(newPageSize) => {
-                  updateData("page", 1);
-                  updateData("pageSize", newPageSize);
-                }}
+                onPageChange={(newpage) => { updateData("page", newpage+1); }}
+                onPageSizeChange={(newPageSize) => { updateData("page", 1); updateData("pageSize", newPageSize); }}
                 rowCount={data.totalRows}
                 rows={data.rows}
                 columns={columns}
-                filterMode="server"
                 // enable server-side filtering
+                filterMode="server"
+                //  handle filter changes made by the user
                 onFilterModelChange={
                   (newFilterModel) => setFilterModel(newFilterModel)
                 }
-                //  handle filter changes made by the user
-                filterModel={filterModel}
                 // pass filterModel state to the DataGrid component
+                filterModel={filterModel}
               />
           </div>
           <ToastContainer/>

@@ -46,7 +46,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs({ children, title, icon, showDialog, setShowDialog }) {
+export default function CustomizedDialogs({ children, title, icon, showDialog, setShowDialog, refreshList }) {
   // const [open, setOpen] = React.useState(showDialog);
 
   const handleClickOpen = () => {
@@ -54,6 +54,9 @@ export default function CustomizedDialogs({ children, title, icon, showDialog, s
   };
 
   const handleClose = () => {
+        if(title === 'Edit Leave'){
+          refreshList()
+        }
     setShowDialog(false);
   };
 

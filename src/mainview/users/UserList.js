@@ -2,54 +2,19 @@ import React,{useEffect,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { DataGrid} from '@mui/x-data-grid';
 import { Box } from '@mui/material';
-// import CustomizedDialogs from '../../components/dialog';
+import CustomizedDialogs from '../../components/dialog';
 // import AddIcon from '@mui/icons-material/Add';
-// import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddUser from '../../forms/add_user/AddUser';
-// import EditUser from '../../forms/EditUser';
+import EditUser from '../../forms/EditUser';
 // import DeleteUser from '../../forms/DeleteUser';
 import axios from 'axios';
-
-const columns = [
-    { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center',
-      filterable: false,
-      renderCell: (value) => {
-        const currentPage = value.row.page;
-        const pageSize = value.row.pagesize;
-        const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
-        return <div>{rowNumber}</div>;
-      },
-    },
-    { field: 'fullname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
-    { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center'},
-    { field: 'site_name', headerName: 'Site', width: 180,headerAlign:'center',align:'center'},
-    { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
-    { field: 'contact', headerName: 'Contact', width: 180,headerAlign:'center',align:'center'},
-    // { field: 'address', headerName: 'Address', width: 200,headerAlign:'center',align:'center'},
-    // { field: 'type_of_employee', headerName: 'Type', width: 120,headerAlign:'center',align:'center'},
-    // { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
-    { field: 'section_name', headerName: 'Section', width: 180,headerAlign:'center',align:'center'},
-    { field: 'field_name', headerName: 'Field', width: 180,headerAlign:'center',align:'center'},
-    // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
-    // { field: 'status', headerName: 'status', width: 150 },
-    // { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
-    //   return (
-    //     <>
-    //     <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />}>
-    //     <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
-    //       site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
-    //       consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
-    //     </CustomizedDialogs>
-    //     </>
-    //   );
-    // },  headerAlign:'center',align:'center'}
-];
 
 const UserList = () => {
 
 const navigate = useNavigate();
-
+const [showDialog,setShowDialog] = useState(false)
 const [data, setData] = useState({
   loading: true,
   rows: [],
@@ -113,6 +78,42 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
           })
 
     },[data.page,data.pageSize,filterModel])
+
+
+    const columns = [
+      { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center',
+        filterable: false,
+        renderCell: (value) => {
+          const currentPage = value.row.page;
+          const pageSize = value.row.pagesize;
+          const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
+          return <div>{rowNumber}</div>;
+        },
+      },
+      { field: 'fullname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
+      { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center'},
+      { field: 'site_name', headerName: 'Site', width: 180,headerAlign:'center',align:'center'},
+      { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
+      { field: 'contact', headerName: 'Contact', width: 180,headerAlign:'center',align:'center'},
+      // { field: 'address', headerName: 'Address', width: 200,headerAlign:'center',align:'center'},
+      // { field: 'type_of_employee', headerName: 'Type', width: 120,headerAlign:'center',align:'center'},
+      // { field: 'consultant', headerName: 'CONSULTANT', width: 190,headerAlign:'center',align:'center'},
+      { field: 'section_name', headerName: 'Section', width: 180,headerAlign:'center',align:'center'},
+      { field: 'field_name', headerName: 'Field', width: 180,headerAlign:'center',align:'center'},
+      // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
+      // { field: 'status', headerName: 'status', width: 150 },
+      { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
+        return (
+          <>
+          <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
+          <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
+            site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
+            consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
+          </CustomizedDialogs>
+          </>
+        );
+      },  headerAlign:'center',align:'center'}
+  ];
 
     return (
     <>
