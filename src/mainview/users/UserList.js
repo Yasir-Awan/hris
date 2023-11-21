@@ -101,18 +101,18 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
       { field: 'section_name', headerName: 'Section', width: 180,headerAlign:'center',align:'center'},
       { field: 'field_name', headerName: 'Field', width: 180,headerAlign:'center',align:'center'},
       // { field: 'empTeam', headerName: 'EmpolyeeTeam', width: 150 },
-      // { field: 'status', headerName: 'status', width: 150 },
-      { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
-        return (
-          <>
-          <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
-          <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
-            site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
-            consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
-          </CustomizedDialogs>
-          </>
-        );
-      },  headerAlign:'center',align:'center'}
+      // // { field: 'status', headerName: 'status', width: 150 },
+      // { field: 'action', headerName: 'Action', width: 75, renderCell:(value) => {
+      //   return (
+      //     <>
+      //     <CustomizedDialogs size='small' title="Edit User" icon={<EditIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
+      //     <EditUser uname={value.row.uname} email={value.row.email} password={value.row.password}
+      //       site={value.row.site} contact={value.row.contact} address={value.row.address} empType={value.row.empType}
+      //       consultant={value.row.consultant} empSec={value.row.empSec} empField={value.row.empField} empRole={value.row.empRole}/>
+      //     </CustomizedDialogs>
+      //     </>
+      //   );
+      // },  headerAlign:'center',align:'center'}
   ];
 
     return (
