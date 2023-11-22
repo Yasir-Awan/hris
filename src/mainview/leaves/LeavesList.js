@@ -4,8 +4,10 @@ import AddIcon from '@mui/icons-material/Add'
 import CustomizedDialogs from '../../components/dialog';
 import AddLeave from '../../forms/add_leave/AddLeave';
 import EditIcon from '@mui/icons-material/Edit';
+import  DeleteIcon  from '@mui/icons-material/Delete';
 import EditLeave from '../../forms/edit_leave/EditLeave';
 // import DeleteUser from '../../forms/DeleteUser';
+import DeleteLeave from '../../forms/delete_leave/DeleteLeave';
 import { Box,Switch,styled} from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
@@ -102,6 +104,7 @@ const IOSSwitch = styled((props) => (
       const [dialogMode, setDialogMode] = useState('add'); // 'add' or 'edit'
       const [leaveId,setLeaveId] = useState(null);
       const [editData,setEditData] = useState({emp_name:null, emp_id:null, leave_id:leaveId, leave_type:null,leave_start:null,leave_end:null,leave_reason:null});
+      const [deleteData,setDeleteData] = useState({emp_name:null, emp_id:null, leave_id:leaveId, leave_type:null,leave_start:null,leave_end:null,leave_reason:null});
       const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
       const [users,setUsers] = useState([]);
       const [showDialog,setShowDialog] = useState(false)
@@ -238,8 +241,6 @@ const IOSSwitch = styled((props) => (
 
         // Function to handle the edit leave button click
         const handleEditButtonClick = (leaveId,empId,empName,leaveType,leaveStart,leaveEnd,leaveStatus,leaveReason) => {
-          // console.log(leaveType)
-          // Fetch leave details based on leaveId
           // Set the leave details in the form for editing
           setLeaveId(leaveId);
            // Replace the values with the ones you want to set
@@ -257,6 +258,26 @@ const IOSSwitch = styled((props) => (
           // Set the updated values
           setEditData(updatedEditData);
           setDialogMode('edit');
+          setShowDialog(true);
+        };
+
+        const handleDeleteButtonClick = (leaveId,empId,empName,leaveType,leaveStart,leaveEnd,leaveStatus,leaveReason) => {
+          // Set the leave details in the form for editing
+          setLeaveId(leaveId);
+          const updatedDeleteData = {
+            emp_name: empName,
+            emp_id: empId,
+            leave_id: leaveId,
+            leave_type: leaveType,
+            leave_start: leaveStart,
+            leave_end: leaveEnd,
+            leave_status:leaveStatus,
+            leave_reason: leaveReason
+          };
+
+          // Set the updated values
+          setDeleteData(updatedDeleteData);
+          setDialogMode('delete');
           setShowDialog(true);
         };
 
@@ -310,10 +331,18 @@ const IOSSwitch = styled((props) => (
                           },
                           { field: 'time', headerName: 'Adding Time',hide: userRole === '3', width: 220 ,headerAlign:'center',align:'center'},
                           { field: 'buttons', headerName: 'Action', width: 150, headerAlign:'center',align:'center',
-                            renderCell: (params) => (<IconButton onClick={() => handleEditButtonClick(params.row.leave_id,params.row.bio_id,
+                            renderCell: (params) => (
+                              <>
+                            <IconButton onClick={() => handleEditButtonClick(params.row.leave_id,params.row.bio_id,
                             params.row.full_name,params.row.leave_type,params.row.leave_start,params.row.leave_end,params.row.status,params.row.reason)}>
                                 <EditIcon />
-                              </IconButton>),
+                              </IconButton>
+                              <IconButton onClick={() => handleDeleteButtonClick(params.row.leave_id,params.row.bio_id,
+                            params.row.full_name,params.row.leave_type,params.row.leave_start,params.row.leave_end,params.row.status,params.row.reason)}>
+                                    <DeleteIcon />
+                                  </IconButton>
+                                  </>
+                              ),
                           },
         ];
 
@@ -326,16 +355,24 @@ const IOSSwitch = styled((props) => (
                     </CustomizedDialogs> */}
                     <CustomizedDialogs
                       size="small"
-                      title={dialogMode === 'add' ? "Add New Leave" : "Edit Leave"}
+                      title={
+                        dialogMode === 'add'
+                          ? 'Add New Leave'
+                          : dialogMode === 'edit'
+                          ? 'Edit Leave'
+                          : 'Sure to delete this leave!'
+                      }
                       icon={<AddIcon />}
                       showDialog={showDialog}
                       setShowDialog={(v) => setShowDialog(v)}
                       refreshList={refreshLeavesList}
                     >
-                      {dialogMode === 'add' ? (
+                    {dialogMode === 'add' ? (
                         <AddLeave employees={users} refreshList={refreshLeavesList} />
-                      ) : (
+                      ) : dialogMode === 'edit' ? (
                         <EditLeave EditData={editData} refreshList={refreshLeavesList} />
+                      ) : (
+                        <DeleteLeave DeleteData={deleteData} refreshList={refreshLeavesList} />
                       )}
                     </CustomizedDialogs>
               </Box>

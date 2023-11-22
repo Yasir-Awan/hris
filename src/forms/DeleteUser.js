@@ -10,7 +10,6 @@ function DeleteUser(props){
         <Button onClick={deleterow}>confirm</Button>
         <Button onClick={closepopup}>cancel</Button>
     </div>
-
   );
 }
 
