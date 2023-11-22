@@ -40,7 +40,7 @@ function DeleteLeave(props){
                 .then(
                     function (response) {
                         if(response.data.status==='200'){
-                                        toast.success('Leave Updated', {
+                                        toast.success('Leave Deleted', {
                                                         position:'top-right',
                                                         autoClose:1000,
                                                         onClose: () => {
