@@ -5,13 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 
 function DeleteLeave(props){
-    // const id = props.DeleteData;
     const navigate = useNavigate();
     const deleterow = () => {
-        // console.log(id);
-        // alert(id)
-        // console.log(props.DeleteData)
-
         let sendingData ;
         if(localStorage.getItem('role')==='3'){
             sendingData = {
@@ -23,7 +18,6 @@ function DeleteLeave(props){
                 leave_status: props.DeleteData.leave_status,
                 leave_reason: props.DeleteData.leave_reason
                 }
-                console.log(sendingData)
         }
         if(localStorage.getItem('role')!=='3'){
             sendingData = {
