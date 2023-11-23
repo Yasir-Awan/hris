@@ -16,8 +16,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { pink } from '@mui/material/colors';
 
-// const bull = (<Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>);
-
 function AddSchedule(props) {
     const navigate = useNavigate();
     const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -68,10 +66,10 @@ function AddSchedule(props) {
   };
 
   // Fetch filteredUsersList when selectedSite or selectedRole changes
-  useEffect(() => {
-    console.log('selectedUsers has changed:', selectedUsers);
-    // Your API calls for filteredUsersList based on selectedSite and selectedRole
-  }, [selectedSite, selectedRole,selectedUsers]);
+  // useEffect(() => {
+  //   console.log('selectedUsers has changed:', selectedUsers);
+  //    // Your API calls for filteredUsersList based on selectedSite and selectedRole
+  // }, [selectedSite, selectedRole,selectedUsers]);
 
     const OptionSelection = (event) => {
       const { name, value } = event.target;
@@ -97,7 +95,6 @@ function AddSchedule(props) {
                         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
                       })
                     .then(function (response) {
-                      console.log(response.data)
                           let usersRecord = [];
                               response.data.user_info.forEach(element => {
                               usersRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
@@ -222,7 +219,6 @@ function AddSchedule(props) {
                         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
                       })
                     .then(function (response) {
-                      console.log(response.data)
                           let siteEmployeesRecord = [];
                               response.data.site_employees.forEach(element => {
                               siteEmployeesRecord.push({'id':element.bio_ref_id,'name':element.fullname ,})
@@ -263,8 +259,6 @@ function AddSchedule(props) {
               setSelectedUsers([])
               setFilteredUsersList([])
               setSelectedRole(value)
-              console.log(name)
-              console.log(value)
               // api call for site_users list START
               axios({
                 method: 'get',
@@ -314,7 +308,6 @@ function AddSchedule(props) {
               setOpenDatePicker(false)
               const sDate = new Date(date);
               const sDateString = sDate.toLocaleString('en-US', { timeZone: 'Asia/Karachi', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-              
               axios({
                       method: 'post',
                       url: 'startdate_leavestatus',
@@ -361,7 +354,6 @@ function AddSchedule(props) {
               today={dayjs().isSame(date, "day")}
               onClick={() => handleStartDateChange(date)}
               onDaySelect={() => setStartDate(date)}
-              // onMouseEnter={() => handleDayHover(employeeNames)}
               className={`${isBlockedLeaveDate ? 'blocked-leave-date' : ''} ${
                 isBlockedScheduleDate ? 'blocked-schedule-date' : ''
               }`}
@@ -567,7 +559,6 @@ function AddSchedule(props) {
                                             onOpen={() => setOpenDatePicker(true)}
                                             onClose={() => setOpenDatePicker(false)}
                                             minDate={dayjs().month(3).startOf('month')}
-                                            // disablePast={true}
                                           />
                                           </Grid>
                                   <Grid xs={6} item>

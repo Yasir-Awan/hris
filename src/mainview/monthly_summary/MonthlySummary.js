@@ -53,10 +53,10 @@ import axios from "axios";
                         const rows = summaryRecords;
                         updateData("totalRows", response.data.total_rows);
                             setTimeout(() => {
-                              updateData("rows", rows);
-                              updateData("loading", false);
+                            updateData("rows", rows);
+                            updateData("loading", false);
                             }, 100);
-                      }, 200);
+                    }, 200);
                 })
                 .catch(error => {});// api call for summary list END
     }, [data.page, data.pageSize,filterModel]);
@@ -92,14 +92,7 @@ import axios from "axios";
         },
         { field: 'hq_hrs', headerName: 'HQ Hours', width: 135, hide: (userSite !== '12' && userRole !== '3') ,headerAlign:'center',align:'center',
         filterable: false,
-        renderCell: (value) => {    
-                // if (value.row.shift_type === '2' || value.row.shift_type === '3') {
-                //  // If shift_type is 1, render only the time part
-                //         return <div>{value.row.total_hrs}</div>;
-                // } else {
-                return <div>{value.row.hq_hrs}</div>;
-                // }
-            },
+        renderCell: (value) => { return <div>{value.row.hq_hrs}</div>; },
         },
         { field: 'site_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,headerAlign:'center',align:'center',filterable: false,},
         { field: 'working_time', headerName: 'Working Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
@@ -111,7 +104,6 @@ import axios from "axios";
             <DataGrid
                 density="compact"
                 autoHeight
-                 // rowHeight={50}
                 loading={data.loading}
                 rowsPerPageOptions={data.rowsPerPageOptions}
                 pagination
@@ -128,8 +120,6 @@ import axios from "axios";
                 rowCount={data.totalRows}
                 rows={data.rows}
                 columns={columns}
-                 // getRowId={getRowId}
-                 // pagination
                  filterMode="server" // enable server-side filtering
                 onFilterModelChange={
                     (newFilterModel) => setFilterModel(newFilterModel)

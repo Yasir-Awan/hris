@@ -9,8 +9,8 @@ import MonthlySummary from '../monthly_summary/MonthlySummary';
 import ShiftsList from '../shift/ShiftsList';
 import ScheduleList from '../schedule/ScheduleList';
 import LeavesList from '../leaves/LeavesList';
-import CustomEmployeeFilter from '../../components/custom_filter/employee_filter/CustomEmployeeFilter';
-import CustomDayFilter from '../../components/custom_filter/day_filter/CustomDayFilter';
+// import CustomEmployeeFilter from '../../components/custom_filter/employee_filter/CustomEmployeeFilter';
+// import CustomDayFilter from '../../components/custom_filter/day_filter/CustomDayFilter';
 import { Grid  } from '@mui/material';
 
 const bull = (
@@ -25,7 +25,6 @@ const bull = (
 export default function BasicCard(props) {
 
   const [filterVals, setFilterVals] = React.useState([]);
-  console.log(props);
   if(props.name === 0){
     return(
             <Card sx={{ minWidth: 275 }}>

@@ -3,7 +3,6 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 
   const AttendanceList = (props) => {
-      // const [filterVals,setFilterVals] = useState([props.filterValues])
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 10,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
         { columnField: '', operatorValue: '', value: '' },
@@ -11,14 +10,11 @@ import axios from 'axios';
       const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
       // Extract the value of LocalStorage.getItem('role') to a variable
       const userRole = localStorage.getItem('role');
-      
-      // const navigate = useNavigate();
       let attendanceRows = [];
 
   useEffect(() => {
       updateData('loading', true);
       console.log('filterModel:', filterModel); // add this line to check filterModel value
-      // console.log(filterVals);
       let counter = 1;
       axios({
         method: 'post',
@@ -33,7 +29,6 @@ import axios from 'axios';
         },
       })
       .then(function (response) {
-                      // setTotalRows(response.total_rows);
                       if (response.data.attendance_rows) {
                         response.data.attendance_rows.forEach((element) => {
                           attendanceRows.push({
@@ -55,9 +50,7 @@ import axios from 'axios';
                           });
                           counter++;
                         });
-                      } else {
-                        // navigate('/');
-                      }
+                      } else {}
 
               setTimeout(() => {
                 const rows = attendanceRows;
@@ -167,7 +160,6 @@ import axios from 'axios';
     { field: 'time', headerName: 'Total Time', width: 130,headerAlign:'center',align:'center'},
     { field: 'early_sitting', headerName: 'Early Sitting',hide: userRole === '3', width: 130,headerAlign:'center',align:'center'},
     { field: 'late_sitting', headerName: 'Late Sitting',hide: userRole === '3', width: 130,headerAlign:'center',align:'center'},
-    // { field: 'extra_time', headerName: 'Extra Sitting',hide: userRole === '3', width: 135,headerAlign:'center',align:'center'},
     { field: 'acceptable_time', headerName: 'Accepted Time', width: 135,headerAlign:'center',align:'center'},
   ];
 
@@ -177,7 +169,6 @@ import axios from 'axios';
               <DataGrid
                 density="compact"
                 autoHeight
-                // rowHeight={50}
                 loading={data.loading}
                 rowsPerPageOptions={data.rowsPerPageOptions}
                 pagination
@@ -194,8 +185,6 @@ import axios from 'axios';
                 rowCount={data.totalRows}
                 rows={data.rows}
                 columns={columns}
-                // getRowId={getRowId}
-                // pagination
                 filterMode="server" // enable server-side filtering
                 onFilterModelChange={
                   (newFilterModel) => {

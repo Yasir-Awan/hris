@@ -1,7 +1,6 @@
 import React,{useState, useEffect} from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import axios from "axios";
-// import {useNavigate} from 'react-router-dom';
 // import AddIcon from '@mui/icons-material/Add';
 // import CustomizedDialogs from '../../components/dialog';
 import { Box } from '@mui/material';
@@ -18,13 +17,11 @@ const columns = [
     const ShiftsList = () => {
     const [shiftsList,setShiftsList] = useState([])
     const [loading,setLoading] = useState(true)
-    // const [showDialog,setShowDialog] = useState(false)
     useEffect(() => {
         refreshShiftsList();
     }, []);
 
     const refreshShiftsList = () => {
-        // setShowDialog(false)
         let shiftRecords =[];
         // api call for shifts list START
         axios({

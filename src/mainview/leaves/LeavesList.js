@@ -6,7 +6,6 @@ import AddLeave from '../../forms/add_leave/AddLeave';
 import EditIcon from '@mui/icons-material/Edit';
 import  DeleteIcon  from '@mui/icons-material/Delete';
 import EditLeave from '../../forms/edit_leave/EditLeave';
-// import DeleteUser from '../../forms/DeleteUser';
 import DeleteLeave from '../../forms/delete_leave/DeleteLeave';
 import { Box,Switch,styled} from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
@@ -114,7 +113,6 @@ const IOSSwitch = styled((props) => (
       const userRole = localStorage.getItem('role');
 
           useEffect(() => {
-            // updateData('loading', true);
               refreshUsersList()
               refreshLeavesList()
           }, [data.page,data.pageSize,filterModel]);
@@ -184,9 +182,7 @@ const IOSSwitch = styled((props) => (
                                       });
                                       counter++;
                                     });
-                                  } else {
-                                    // navigate('/');
-                                  }
+                                  } else { }
 
                           setTimeout(() => {const rows = leaveRows;updateData("totalRows", response.data.total_rows);
                                 setTimeout(() => {updateData("loading", false);}, 100);
@@ -254,7 +250,6 @@ const IOSSwitch = styled((props) => (
             leave_status:leaveStatus,
             leave_reason: leaveReason
           };
-
           // Set the updated values
           setEditData(updatedEditData);
           setDialogMode('edit');
@@ -274,7 +269,6 @@ const IOSSwitch = styled((props) => (
             leave_status:leaveStatus,
             leave_reason: leaveReason
           };
-
           // Set the updated values
           setDeleteData(updatedDeleteData);
           setDialogMode('delete');
@@ -350,9 +344,6 @@ const IOSSwitch = styled((props) => (
         <>
           <div style={{ height: 'auto', width: '100%' }}>
               <Box sx={{marginLeft:'97%', position: "absolute",top:'78px',right:'20px'}}>
-                    {/* <CustomizedDialogs size='small' title= "Add New Leave" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
-                        <AddLeave employees={users} refreshList = {refreshLeavesList }/>
-                    </CustomizedDialogs> */}
                     <CustomizedDialogs
                       size="small"
                       title={

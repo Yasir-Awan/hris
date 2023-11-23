@@ -47,8 +47,6 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function CustomizedDialogs({ children, title, icon, showDialog, setShowDialog, refreshList }) {
-  // const [open, setOpen] = React.useState(showDialog);
-
   const handleClickOpen = () => {
     setShowDialog(true);
   };
