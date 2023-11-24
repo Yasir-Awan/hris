@@ -94,7 +94,7 @@ import axios from 'axios';
         }
       },
     },
-    { field: 'checkin', headerName: 'CheckIn', width: 200,headerAlign:'center',align:'center',
+    { field: 'checkin', headerName: 'CheckIn', width: 225,headerAlign:'center',align:'center',
     renderCell: (value) => {
       console.log('Shift Type:', value.row.shift_type);
       if(value.value!==null){
@@ -126,7 +126,7 @@ import axios from 'axios';
       }
     },
   },
-    { field: 'checkout', headerName: 'CheckOut', width: 200,headerAlign:'center',align:'center',
+    { field: 'checkout', headerName: 'CheckOut', width: 225,headerAlign:'center',align:'center',
     renderCell: (value) => {
           if(value.value !== null){
             const inputDateTime = value.value; // Get the date and time string from your data
