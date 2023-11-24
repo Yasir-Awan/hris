@@ -137,7 +137,7 @@ export default function Login() {
               // html input attribute
               name="username"
               type="email"
-              placeholder="yasirfayyaz@email.com"
+              placeholder="email"
               // pass down to FormLabel as children
               label="Email"
               onChange={inputEvent}
