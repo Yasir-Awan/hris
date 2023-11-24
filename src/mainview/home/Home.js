@@ -50,9 +50,16 @@ const Home = props => {
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   const ConditionalComponent = ({ role }) => {
-    const tabBackgroundColor = '#2196f3'; // Set a new background color for the tabs
+    const tabGradientBackground = 'linear-gradient(135deg, #4CAF50, #388E3C)'; // Gradient background for the tabs
     if (role ==='3') {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto', color: 'white', background: tabBackgroundColor, }}>
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
+                sx={{ marginLeft: 'auto',
+                      marginRight: 'auto', 
+                      color: 'white',
+                      background: tabGradientBackground,
+                      borderRadius: '8px', // Add some border-radius for a softer look
+                      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
+                      }}>
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>
@@ -64,7 +71,14 @@ const Home = props => {
       <Tab label="Projects"/>
     </Tabs>;
     } else {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto', color: 'white', background: tabBackgroundColor, }}>
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
+                  sx={{ marginLeft: 'auto',
+                        marginRight: 'auto', 
+                        color: 'white', 
+                        background: tabGradientBackground,
+                        borderRadius: '8px', // Add some border-radius for a softer look
+                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
+                        }}>
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>
@@ -91,7 +105,7 @@ const Home = props => {
   }else{
     return (
       <>
-          <AppBar position='static' sx={{background:'#2196f3'}}>
+          <AppBar position='static' sx={{background:'linear-gradient(135deg, #4CAF50, #388E3C)'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
               <img src={NhaLogo} alt="Pic" width="60" height="46"/>
