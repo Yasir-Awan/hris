@@ -50,8 +50,9 @@ const Home = props => {
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   const ConditionalComponent = ({ role }) => {
+    const tabBackgroundColor = '#2196f3'; // Set a new background color for the tabs
     if (role ==='3') {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto', color: 'white', background: tabBackgroundColor, }}>
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>
@@ -63,7 +64,7 @@ const Home = props => {
       <Tab label="Projects"/>
     </Tabs>;
     } else {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
+      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' sx={{ marginLeft: 'auto', marginRight: 'auto', color: 'white', background: tabBackgroundColor, }}>
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>
@@ -90,10 +91,10 @@ const Home = props => {
   }else{
     return (
       <>
-          <AppBar position='static' sx={{background:'#063970'}}>
+          <AppBar position='static' sx={{background:'#2196f3'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-              <img src={NhaLogo} alt="Pic" width="65" height="45"/>
+              <img src={NhaLogo} alt="Pic" width="60" height="46"/>
                 {/* <ThreePIcon/> */}
               </IconButton>
               {
