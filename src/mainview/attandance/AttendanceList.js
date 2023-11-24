@@ -159,8 +159,8 @@ import axios from 'axios';
   },
     { field: 'time', headerName: 'Total Time', width: 130,headerAlign:'center',align:'center'},
     { field: 'acceptable_time', headerName: 'Accepted Time', width: 135,headerAlign:'center',align:'center'},
-    { field: 'early_sitting', headerName: 'Early Sitting',hide: userRole === '3', width: 130,headerAlign:'center',align:'center'},
-    { field: 'late_sitting', headerName: 'Late Sitting',hide: userRole === '3', width: 130,headerAlign:'center',align:'center'},
+    { field: 'early_sitting', headerName: 'Early Sitting',hide: userRole === '3', width: 135,headerAlign:'center',align:'center'},
+    { field: 'late_sitting', headerName: 'Late Sitting',hide: userRole === '3', width: 135,headerAlign:'center',align:'center'},
   ];
 
     return (
