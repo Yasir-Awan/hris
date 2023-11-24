@@ -99,7 +99,7 @@ const IOSSwitch = styled((props) => (
 //END Styling part of toogle button  which is used for approval and disapproval of leaves
 
   const LeavesList = () => {
-      const [data, setData] = useState({loading: true, rows: [], totalRows: 0, rowsPerPageOptions: [5,10,20,50,100], pageSize: 10, page: 1 });
+      const [data, setData] = useState({loading: true, rows: [], totalRows: 0, rowsPerPageOptions: [5,10,20,50,100], pageSize: 5, page: 1 });
       const [dialogMode, setDialogMode] = useState('add'); // 'add' or 'edit'
       const [leaveId,setLeaveId] = useState(null);
       const [editData,setEditData] = useState({emp_name:null, emp_id:null, leave_id:leaveId, leave_type:null,leave_start:null,leave_end:null,leave_reason:null});
@@ -368,7 +368,7 @@ const IOSSwitch = styled((props) => (
                     </CustomizedDialogs>
               </Box>
               <DataGrid
-                density="compact"
+                density="standard"
                 autoHeight
                 loading={data.loading}
                 rowsPerPageOptions={data.rowsPerPageOptions}

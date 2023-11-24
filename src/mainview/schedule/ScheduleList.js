@@ -15,7 +15,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
       rows: [],
       totalRows: 0,
       rowsPerPageOptions: [5,10,20,50,100],
-      pageSize: 10,
+      pageSize: 5,
       page: 1
     });
     const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
@@ -128,7 +128,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
             <ConditionalComponent role={localStorage.getItem('role')}/>
             <DataGrid
                 autoHeight
-                density="compact"
+                density="standard"
                 loading={tableData.loading}
                 rowsPerPageOptions={tableData.rowsPerPageOptions}
                 pagination

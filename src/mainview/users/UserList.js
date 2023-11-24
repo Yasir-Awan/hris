@@ -9,7 +9,7 @@ const [data, setData] = useState({
   rows: [],
   totalRows: 0,
   rowsPerPageOptions: [5,10,20,50,100],
-  pageSize: 10,
+  pageSize: 5,
   page: 1
 });
 const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
@@ -89,7 +89,7 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
     </Box>
 
     <DataGrid
-        density="compact"
+        density="standard"
         autoHeight
         loading={data.loading}
         rowsPerPageOptions={data.rowsPerPageOptions}

@@ -3,7 +3,7 @@ import { DataGrid,GridToolbar } from '@mui/x-data-grid';
 import axios from "axios";
 
     const MonthlySummary = () => {
-        const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 10,page: 1});
+        const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
         const [filterModel, setFilterModel] = useState({items: [
           { columnField: '', operatorValue: '', value: '' },
         ]});
@@ -102,7 +102,7 @@ import axios from "axios";
     return (
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
             <DataGrid
-                density="compact"
+                density="standard"
                 autoHeight
                 loading={data.loading}
                 rowsPerPageOptions={data.rowsPerPageOptions}
