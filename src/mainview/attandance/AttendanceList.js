@@ -75,7 +75,7 @@ import axios from 'axios';
           return <div>{rowNumber}</div>;
         },
       headerAlign:'center',align:'center'},
-    { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
+    { field: 'fullname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
     { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '3', headerAlign:'center',align:'center'},
     { field: 'role_name', headerName: 'Role', width: 180,hide: userRole !== '3',headerAlign:'center',align:'center'},
     {
