@@ -343,7 +343,7 @@ const IOSSwitch = styled((props) => (
     return (
         <>
           <div style={{ height: 'auto', width: '100%' }}>
-              <Box sx={{marginLeft:'97%', position: "absolute",top:'78px',right:'20px'}}>
+              <Box sx={{marginLeft:'97%', position: "absolute",top:'92px',right:'20px'}}>
                     <CustomizedDialogs
                       size="small"
                       title={
