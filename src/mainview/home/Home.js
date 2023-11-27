@@ -108,7 +108,7 @@ const Home = props => {
           <AppBar position='static' sx={{background:'linear-gradient(135deg, #4CAF50, #388E3C)'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-              <img src={NhaLogo} alt="Pic" width="60" height="60"/>
+              <img src={NhaLogo} alt="Pic" width="70" height="60"/>
                 {/* <ThreePIcon/> */}
               </IconButton>
               {
