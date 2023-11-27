@@ -60,15 +60,15 @@ const Home = props => {
                       borderRadius: '8px', // Add some border-radius for a softer look
                       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
                       }}>
-      <Tab label="Schedules"/>
-      <Tab label="Leaves"/>
-      <Tab label="Attendance"/>
-      <Tab label="Summary"/>
-      <Tab label="Employees"/>
-      <Tab label="Shifts"/>
-      <Tab label="Remarks"/>
-      <Tab label="Teams"/>
-      <Tab label="Projects"/>
+      <Tab label="Schedules" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Leaves" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Attendance" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Summary" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Employees" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Shifts" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Remarks" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Teams" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
+      <Tab label="Projects" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
     </Tabs>;
     } else {
       return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
@@ -120,7 +120,7 @@ const Home = props => {
                 ):
                 (
                   <>
-                  <Typography variant='h5' component='div'>
+                  <Typography variant='h5' component='div' sx={{fontFamily: 'Quicksand, sans-serif',  flexGrow: 0.15, ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
                     HRIS
                   </Typography>
 

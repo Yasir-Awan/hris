@@ -29,7 +29,7 @@ export default function BasicCard(props) {
     return(
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+                  <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
                     Schedules{bull}List
                   </Typography>
                   <ScheduleList/>
@@ -44,7 +44,7 @@ export default function BasicCard(props) {
     return (
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+                  <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
                     Leaves{bull}List
                   </Typography>
                   <LeavesList/>
@@ -61,7 +61,7 @@ export default function BasicCard(props) {
         <CardContent>
           <Grid container spacing={0} >
           <Grid item xs={2} sx={{py:1}} >
-          <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+          <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
               Attendance{bull}Daily
             </Typography>
           </Grid>
@@ -88,7 +88,7 @@ export default function BasicCard(props) {
         <CardContent>
           <Grid container spacing={0} >
           <Grid item >
-          <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+          <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
               Attendance{bull}Daily
             </Typography>
           </Grid>
@@ -102,7 +102,7 @@ export default function BasicCard(props) {
     return(
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
-                  <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+                  <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
                     Attendance{bull}Summary
                   </Typography>
                   <MonthlySummary/>
@@ -117,7 +117,7 @@ export default function BasicCard(props) {
     return (
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+          <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
             Employees{bull}List
           </Typography>
           <UserList/>
@@ -132,7 +132,7 @@ export default function BasicCard(props) {
     return (
           <Card sx={{ minWidth: 275 }}>
               <CardContent>
-                <Typography variant="h5" component="div" sx={{ fontFamily: 'Comic Sans MS', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
+                <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px' }}>
                   Shifts{bull}List
                 </Typography>
                 <ShiftsList/>
