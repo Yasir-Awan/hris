@@ -50,7 +50,7 @@ const Home = props => {
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   const ConditionalComponent = ({ role }) => {
-    const tabGradientBackground = 'linear-gradient(135deg, #4CAF50, #388E3C)'; // Gradient background for the tabs
+    const tabGradientBackground = 'linear-gradient(135deg, #388E3C, #4CAF50)'; // Gradient background for the tabs
     if (role ==='3') {
       return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
                 sx={{ marginLeft: 'auto',
@@ -105,7 +105,7 @@ const Home = props => {
   }else{
     return (
       <>
-          <AppBar position='static' sx={{background:'linear-gradient(135deg, #4CAF50, #388E3C)'}}>
+          <AppBar position='static' sx={{background:'linear-gradient(135deg, #388E3C, #4CAF50)'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
               <img src={NhaLogo} alt="Pic" width="70" height="60"/>
