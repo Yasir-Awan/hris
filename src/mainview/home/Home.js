@@ -108,7 +108,7 @@ const Home = props => {
           <AppBar position='static' sx={{background:'linear-gradient(135deg, #4CAF50, #388E3C)'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-              <img src={NhaLogo} alt="Pic" width="60" height="46"/>
+              <img src={NhaLogo} alt="Pic" width="60" height="60"/>
                 {/* <ThreePIcon/> */}
               </IconButton>
               {
@@ -120,7 +120,7 @@ const Home = props => {
                 ):
                 (
                   <>
-                  <Typography variant='h5' component='div' sx={{fontFamily: 'Quicksand, sans-serif',  flexGrow: 0.15, ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
+                  <Typography variant='h4' component='div' sx={{fontFamily: 'Quicksand, sans-serif',  flexGrow: 0.15, ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
                     HRIS
                   </Typography>
 
