@@ -48,7 +48,7 @@ import './MonthlySummary.css';
                     updateData("totalRows", response.data.total_rows);
                     updateData("rows", rows);
                     updateData("loading", false);
-                }, 200);
+                }, 100);
                 
             } catch (error) {
                 console.error('API Error:', error);
