@@ -57,6 +57,7 @@ import './MonthlySummary.css';
         };
 
     useEffect(() => {
+        updateData('loading', true);
         fetchSummaryData();
     }, [data.page, data.pageSize,filterModel]);
 
