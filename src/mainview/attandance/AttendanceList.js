@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
+import './AttendanceList.css';
 
   const AttendanceList = (props) => {
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
@@ -14,7 +15,6 @@ import axios from 'axios';
 
   useEffect(() => {
       updateData('loading', true);
-      console.log('filterModel:', filterModel); // add this line to check filterModel value
       let counter = 1;
       axios({
         method: 'post',
@@ -61,8 +61,41 @@ import axios from 'axios';
                     }, 100);
               }, 200);
       })
-      .catch(error => { console.log(error); })
+      .catch(error => {
+        console.error(error);// Handle errors or show a user-friendly message
+      });
   }, [data.page, data.pageSize,filterModel]);
+
+  const renderFormattedDateTime = (dateTime, shiftType) => {
+    if (dateTime !== null) {
+      const dateValue = new Date(dateTime);
+
+      if (shiftType === '1') {
+        const timeString = dateValue.getHours().toString().padStart(2, '0') + ':' +
+                            dateValue.getMinutes().toString().padStart(2, '0') + ':' +
+                            dateValue.getSeconds().toString().padStart(2, '0');
+        return <div>{timeString}</div>;
+      } else {
+        const options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+        };
+        const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
+        return <div>{formattedDateTime}</div>;
+      }
+    }
+  };
+
+  // Define a separate styles object
+  const columnStyles = {
+    headerAlign: 'center',
+    align: 'center',
+  };
 
   const columns = [
 
@@ -74,16 +107,16 @@ import axios from 'axios';
           const rowNumber = (currentPage - 1) * pageSize + value.api.getRowIndex(value.row.id) + 1;
           return <div>{rowNumber}</div>;
         },
-      headerAlign:'center',align:'center'},
-    { field: 'fullname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
-    { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '3', headerAlign:'center',align:'center'},
-    { field: 'role_name', headerName: 'Role', width: 180,hide: userRole !== '3',headerAlign:'center',align:'center'},
+        ...columnStyles, // Apply common styles
+      },
+    { field: 'fullname', headerName: 'Employee', width: 200,...columnStyles, },
+    { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '3', ...columnStyles, },
+    { field: 'role_name', headerName: 'Role', width: 180,hide: userRole !== '3',...columnStyles, },
     {
       field: 'attendance_date',
       headerName: 'Date',
       width: 180,
-      headerAlign: 'center',
-      align: 'center',
+      ...columnStyles, // Apply common styles
       renderCell: (value) => {
         if(value.value !== null){
           const dateValue = new Date(value.value); // Parse the date string into a Date object
@@ -94,78 +127,19 @@ import axios from 'axios';
         }
       },
     },
-    { field: 'checkin', headerName: 'CheckIn', width: 225,headerAlign:'center',align:'center',
-    renderCell: (value) => {
-      console.log('Shift Type:', value.row.shift_type);
-      if(value.value!==null){
-        const inputDateTime = value.value; // Get the date and time string from your data
-        const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
-  
-        if (value.row.shift_type === '1') {
-           // If shift_type is 1, render only the time part
-          const timeString = dateValue.getHours().toString().padStart(2, '0') + ':' +
-                              dateValue.getMinutes().toString().padStart(2, '0') + ':' +
-                              dateValue.getSeconds().toString().padStart(2, '0');
-                  return <div>{timeString}</div>;
-        } else {
-          // If shift_type is 2, render both date and time
-          // Define options for formatting
-                  const options = {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false, // Use 24-hour format
-                  };
-                  // Format the date and time as a human-readable string
-                  const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
-                  return <div>{formattedDateTime}</div>;
-        }
-      }
-    },
+    { field: 'checkin', headerName: 'CheckIn', width: 225,...columnStyles,renderCell: (value) => renderFormattedDateTime(value.value, value.row.shift_type)},
+    { field: 'checkout', headerName: 'CheckOut', width: 225,...columnStyles, // Apply common styles
+    renderCell: (value) => renderFormattedDateTime(value.value, value.row.shift_type),
   },
-    { field: 'checkout', headerName: 'CheckOut', width: 225,headerAlign:'center',align:'center',
-    renderCell: (value) => {
-          if(value.value !== null){
-            const inputDateTime = value.value; // Get the date and time string from your data
-            const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
-  
-            if (value.row.shift_type === '1') {
-              // If shift_type is 1, render only the time part
-              const timeString = dateValue.getHours().toString().padStart(2, '0') + ':' +
-                                dateValue.getMinutes().toString().padStart(2, '0') + ':' +
-                                dateValue.getSeconds().toString().padStart(2, '0');
-                    return <div>{timeString}</div>;
-          } else {
-             // If shift_type is 2, render both date and time
-             // Define options for formatting
-                    const options = {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                       hour12: false, // Use 24-hour format
-                    };
-                     // Format the date and time as a human-readable string
-                    const formattedDateTime = dateValue.toLocaleDateString('en-US', options);
-                    return <div>{formattedDateTime}</div>;
-          }
-          }
-    },
-  },
-    { field: 'time', headerName: 'Total Time', width: 130,headerAlign:'center',align:'center'},
-    { field: 'acceptable_time', headerName: 'Accepted Time', width: 135,headerAlign:'center',align:'center'},
-    { field: 'early_sitting', headerName: 'Early Sitting',hide: userRole === '3', width: 135,headerAlign:'center',align:'center'},
-    { field: 'late_sitting', headerName: 'Late Sitting',hide: userRole === '3', width: 135,headerAlign:'center',align:'center'},
+    { field: 'time', headerName: 'Total Time', width: 130,...columnStyles, },
+    { field: 'acceptable_time', headerName: 'Accepted Time', width: 135,...columnStyles, },
+    { field: 'early_sitting', headerName: 'Early Sitting',hide: userRole === '3', width: 135,...columnStyles, },
+    { field: 'late_sitting', headerName: 'Late Sitting',hide: userRole === '3', width: 135,...columnStyles,},
   ];
 
     return (
         <>
-          <div style={{ height: 'auto', width: '100%' }}>
+          <div className="container">
               <DataGrid
                 density="standard"
                 autoHeight
