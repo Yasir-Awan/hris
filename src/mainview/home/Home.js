@@ -120,7 +120,7 @@ const Home = props => {
                 ):
                 (
                   <>
-                  <Typography variant='h4' component='div' sx={{fontFamily: 'Quicksand, sans-serif',  flexGrow: 0.15, ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
+                  <Typography variant='h4' component='div' sx={{fontFamily: 'Quicksand, sans-serif', ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
                     HRIS
                   </Typography>
 
