@@ -1,38 +1,33 @@
 import React,{useState, useEffect} from "react";
 import { DataGrid,GridToolbar } from '@mui/x-data-grid';
 import axios from "axios";
+import './MonthlySummary.css';
 
     const MonthlySummary = () => {
         const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
-        const [filterModel, setFilterModel] = useState({items: [
-          { columnField: '', operatorValue: '', value: '' },
-        ]});
+        const [filterModel, setFilterModel] = useState({items: [{ columnField: '', operatorValue: '', value: '' }, ]});
         const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
         const userRole = localStorage.getItem('role');
         const userSite = localStorage.getItem('site');
 
-    useEffect(() => {
-        let summaryRecords = []
-        let counter = 1;
-            // api call for summary list START
-            axios({
-                method: 'post',
-                url:'monthly_summary',
-                headers: {'Authorization': 'Bearer '+localStorage.getItem('token')},
-                data: {
+        const fetchSummaryData = async () => {
+                    // api call for summary list START
+            try {
+                const response = await axios.post('monthly_summary', {
                     pageSize: data.pageSize,
                     page: data.page,
-                    filters: filterModel, // pass filterModel to the server,
+                    filters: filterModel,
                     role: localStorage.getItem('role'),
-                    emp_id: localStorage.getItem('bio_id')
+                    emp_id: localStorage.getItem('bio_id'),
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
-            
-            })
-                .then(function (response) {
-                    console.log(response.data)
-                    response.data.summary_rows.forEach(element => {
-                        summaryRecords.push({
-                                            id:counter,
+                });
+        
+                const summaryRecords = response.data.summary_rows.map((element, index) => ({
+                                            id:index+1,
                                             fullname:element.fullname,
                                             site_name:element.site_name,
                                             role_name:element.role_name,
@@ -46,24 +41,34 @@ import axios from "axios";
                                             acceptable_time:element.total_acceptable_time,
                                             page:response.data.page,
                                             pagesize:response.data.pagesize,
-                                        });
-                                        counter++;
-                    });
-                    setTimeout(() => {
-                        const rows = summaryRecords;
-                        updateData("totalRows", response.data.total_rows);
-                            setTimeout(() => {
-                            updateData("rows", rows);
-                            updateData("loading", false);
-                            }, 100);
-                    }, 200);
-                })
-                .catch(error => {});// api call for summary list END
+                }));
+        
+                setTimeout(() => {
+                    const rows = summaryRecords;
+                    updateData("totalRows", response.data.total_rows);
+                    updateData("rows", rows);
+                    updateData("loading", false);
+                }, 200);
+                
+            } catch (error) {
+                console.error('API Error:', error);
+            }
+                            // api call for summary list END
+        };
+
+    useEffect(() => {
+        fetchSummaryData();
     }, [data.page, data.pageSize,filterModel]);
 
+    // Define a separate styles object
+        const columnStyles = {
+            headerAlign: 'center',
+            align: 'center',
+        };
+
     const columns = [
-        { field: 'id', headerName: 'ID' ,headerAlign:'center',align:'center',width:80,
-        filterable: false,
+        { field: 'id', headerName: 'ID' ,...columnStyles, // Apply common styles
+        width:80,filterable: false,
         renderCell: (value) => {
             const currentPage = value.row.page;
             const pageSize = value.row.pagesize;
@@ -71,10 +76,10 @@ import axios from "axios";
             return <div>{rowNumber}</div>;
         },
         },
-        { field: 'fullname', headerName: 'Employee', width: 180 ,headerAlign:'center',align:'center'},
-        { field: 'site_name', headerName: 'Site', width: 130,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
-        { field: 'role_name', headerName: 'Role', width: 175,hide: userRole !== '3' ,headerAlign:'center',align:'center'},
-        { field: 'schedule_from', headerName: 'Schedule Start', width: 180 ,headerAlign:'center',align:'center',
+    { field: 'fullname', headerName: 'Employee', width: 180 ,...columnStyles,},
+        { field: 'site_name', headerName: 'Site', width: 130,hide: userRole !== '3' ,...columnStyles,},
+        { field: 'role_name', headerName: 'Role', width: 175,hide: userRole !== '3' ,...columnStyles, },
+        { field: 'schedule_from', headerName: 'Schedule Start', width: 180 ,...columnStyles, // Apply common styles
         filterable: false,
         renderCell: (value) => {
             const dateValue = new Date(value.value); // Parse the date string into a Date object
@@ -82,7 +87,7 @@ import axios from "axios";
             return <div>{formattedDate}</div>;
             },
         },
-        { field: 'schedule_to', headerName: 'Schedule End', width: 180 ,headerAlign:'center',align:'center',
+        { field: 'schedule_to', headerName: 'Schedule End', width: 180 ,...columnStyles, // Apply common styles
         filterable: false,
         renderCell: (value) => {
             const dateValue = new Date(value.value); // Parse the date string into a Date object
@@ -90,17 +95,17 @@ import axios from "axios";
             return <div>{formattedDate}</div>;
             },
         },
-        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135, hide: (userSite !== '12' && userRole !== '3') ,headerAlign:'center',align:'center',
+        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135, hide: (userSite !== '12' && userRole !== '3') ,...columnStyles, // Apply common styles
         filterable: false,
         renderCell: (value) => { return <div>{value.row.hq_hrs}</div>; },
         },
-        { field: 'site_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,headerAlign:'center',align:'center',filterable: false,},
-        { field: 'working_time', headerName: 'Working Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
-        { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,headerAlign:'center',align:'center',filterable: false,},
+        { field: 'site_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,...columnStyles,filterable: false,},
+        { field: 'working_time', headerName: 'Working Hours', width: 135 ,...columnStyles, filterable: false,},
+        { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,...columnStyles, filterable: false,},
     ];
 
     return (
-        <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
+        <div className="container">
             <DataGrid
                 density="standard"
                 autoHeight
@@ -110,9 +115,7 @@ import axios from "axios";
                 page={data.page-1}
                 pageSize={data.pageSize}
                 paginationMode="server"
-                onPageChange={(newpage) => {
-                updateData("page", newpage+1);
-                }}
+                onPageChange={(newpage) => { updateData("page", newpage+1); }}
                 onPageSizeChange={(newPageSize) => {
                 updateData("page", 1);
                 updateData("pageSize", newPageSize);
@@ -120,11 +123,8 @@ import axios from "axios";
                 rowCount={data.totalRows}
                 rows={data.rows}
                 columns={columns}
-                 filterMode="server" // enable server-side filtering
-                onFilterModelChange={
-                    (newFilterModel) => setFilterModel(newFilterModel)
-                } 
-                 // handle filter changes made by the user
+                filterMode="server" // enable server-side filtering
+                onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)} // handle filter changes made by the user
                  filterModel={filterModel} // pass filterModel state to the DataGrid component
                 components={{Toolbar: GridToolbar}}
                 />
