@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import { useNavigate,useLocation,useParams} from 'react-router-dom';
-import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab,useMediaQuery,useTheme } from "@mui/material";
+import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab,useMediaQuery,useTheme} from "@mui/material";
 // import ThreePIcon from '@mui/icons-material/ThreeP';
 // import DrawerComp from '../drawer/DrawerComp';
 import ContainerResponsive from '../container/ContainerResponsive';
@@ -108,7 +108,7 @@ const Home = props => {
           <AppBar position='static' sx={{background:'linear-gradient(135deg, #388E3C, #4CAF50)'}}>
             <Toolbar>
               <IconButton size='large' edge='start' color='inherit' aria-label='Logo'>
-              <img src={NhaLogo} alt="Pic" width="70" height="60"/>
+              <img src={NhaLogo} alt="Pic" width="65" height="60"/>
                 {/* <ThreePIcon/> */}
               </IconButton>
               {

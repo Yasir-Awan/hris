@@ -4,6 +4,10 @@ import axios from 'axios';
 import './AttendanceList.css';
 
   const AttendanceList = (props) => {
+    console.log(props.lockedValues.startDate)
+    console.log(props.selectedSite)
+    
+      const [customFilter,setCustomFilter] = useState({filterType: props.filterType,dateRange: props.lockedValues,site: props.selectedSite,role: props.selectedRole,day: props.selectedDay});
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
         { columnField: '', operatorValue: '', value: '' },
@@ -13,8 +17,58 @@ import './AttendanceList.css';
       const userRole = localStorage.getItem('role');
       let attendanceRows = [];
 
+
   useEffect(() => {
       updateData('loading', true);
+      // Inside the useEffect, create a variable to store the updated custom filter
+      let formattedStartDate = null;
+      let formattedEndDate = null;
+      let formattedSelectedDay = null;
+      if(props.filterType==='1'){
+        if(props.lockedValues.startDate!==null||props.lockedValues.endDate!==null){
+        let stDate = new Date(props.lockedValues.startDate); // Assuming the input is in UTC
+        let enDate = new Date(props.lockedValues.endDate); // Assuming the input is in UTC    
+            // Adjust for the time zone offset for userStartDate
+        const offsetStartDate = stDate.getTimezoneOffset();
+        const adjustedStartDate = new Date(stDate.getTime() - offsetStartDate * 60 * 1000);
+              formattedStartDate = adjustedStartDate.toISOString().split('T')[0];
+
+        // Adjust for the time zone offset for userEndDate
+        const offsetEndDate = enDate.getTimezoneOffset();
+        const adjustedEndDate = new Date(enDate.getTime() - offsetEndDate * 60 * 1000);
+              formattedEndDate = adjustedEndDate.toISOString().split('T')[0];
+        }
+      }
+
+      if(props.filterType==='2'){
+        if(props.selectedDay!==null){
+        let slctDate = new Date(props.selectedDay); // Assuming the input is in UTC 
+        // Adjust for the time zone offset for userStartDate
+        const offsetSelectedDate = slctDate.getTimezoneOffset();
+        const adjustedSelectedDate = new Date(slctDate.getTime() - offsetSelectedDate * 60 * 1000);
+              formattedSelectedDay = adjustedSelectedDate.toISOString().split('T')[0];
+
+        }
+      }
+
+      const updatedDateRange = {
+        ...customFilter.dateRange,
+        startDate:formattedStartDate,
+        endDate:formattedEndDate
+      }
+      const updatedCustomFilter = {
+        ...customFilter,
+        filterType: props.filterType,
+        site:props.selectedSite,
+        role:props.selectedRole,
+        day:formattedSelectedDay,
+        dateRange: updatedDateRange,
+      };
+
+      if(props.filterType === '1')
+
+      // Update the state with the new custom filter
+      setCustomFilter(updatedCustomFilter);
       let counter = 1;
       axios({
         method: 'post',
@@ -23,6 +77,7 @@ import './AttendanceList.css';
         data: {
           pageSize: data.pageSize,
           page: data.page,
+          customFilter:updatedCustomFilter,
           filters: filterModel, // pass filterModel to the server,
           role: localStorage.getItem('role'),
           emp_id: localStorage.getItem('bio_id')
@@ -64,7 +119,8 @@ import './AttendanceList.css';
       .catch(error => {
         console.error(error);// Handle errors or show a user-friendly message
       });
-  }, [data.page, data.pageSize,filterModel]);
+  }, [data.page, data.pageSize,filterModel,props.selectedSite,props.lockedValues,props.selectedDay,props.selectedRole]);
+
 
   const renderFormattedDateTime = (dateTime, shiftType) => {
     if (dateTime !== null) {

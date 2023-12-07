@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './AddSchedule.css';
 import axios from 'axios';
@@ -253,7 +253,7 @@ function AddSchedule(props) {
             }
 
             const handleRoleChange = (event) => {
-              const { name, value } = event.target;
+              const {  value } = event.target;
               setSelectedRole('')
               setCheckboxStatus({})
               setSelectedUsers([])

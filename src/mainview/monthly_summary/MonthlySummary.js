@@ -106,6 +106,7 @@ import './MonthlySummary.css';
     ];
 
     return (
+        <>
         <div className="container">
             <DataGrid
                 density="standard"
@@ -130,6 +131,7 @@ import './MonthlySummary.css';
                 components={{Toolbar: GridToolbar}}
                 />
         </div>
+        </>
     )
 }
 

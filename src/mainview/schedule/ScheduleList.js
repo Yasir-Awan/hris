@@ -91,7 +91,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 
       const ConditionalComponent = ({ role }) => {
         if (role ==='3') {
-          return <Box sx={{marginLeft:'97%', position: "absolute",top:'92px',right:'20px'}}>
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
                       <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) } refreshList={refreshSchedulesList}>
                           <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
                       </CustomizedDialogs>
@@ -124,7 +124,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
 
     return (
       <>
-        <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
+        <div className="container">
             <ConditionalComponent role={localStorage.getItem('role')}/>
             <DataGrid
                 autoHeight
