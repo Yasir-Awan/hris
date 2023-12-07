@@ -318,6 +318,7 @@ const IOSSwitch = styled((props) => (
                                   checked={params.row.leave_status === 'Approved'}
                                   onChange={() => handleToggleLeaveApproval(params.row.leave_id, params.row.leave_status,params.row.id)}
                                   leavestatus={params.row.leave_status}
+                                  disabled={userRole !== '3'} // Disable for non-admin users
                                 />
                                 </Box>
                               </>

@@ -235,7 +235,7 @@ export default function BasicCard(props) {
                         name="start_date"
                         value={dateRange.startDate}
                         onChange={(date) => handleFilterChange({ ...dateRange, startDate: date })}
-                        renderInput={(params) => <TextField {...params}sx={{ ...datePickerStyles.root, width: '80%'}} />}
+                        renderInput={(params) => <TextField {...params} sx={{ ...datePickerStyles.root, width: '80%'}} />}
                       />
                         <Grid item xs={0.5}></Grid>
                         <DatePicker
@@ -243,7 +243,7 @@ export default function BasicCard(props) {
                         name="end_date"
                         value={dateRange.endDate}
                         onChange={(date) => handleFilterChange({ ...dateRange, endDate: date })}
-                        renderInput={(params) => <TextField {...params} sx={{ ...datePickerStyles.root, width: '80%'}}/>}
+                        renderInput={(params) => <TextField {...params}  sx={{ ...datePickerStyles.root, width: '80%'}}/>}
                         />
                         </ThemeProvider>
                         </div>
