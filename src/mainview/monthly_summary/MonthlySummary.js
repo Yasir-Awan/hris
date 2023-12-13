@@ -133,7 +133,7 @@ import './MonthlySummary.css';
         filterable: false,
         renderCell: (value) => { return <div>{value.row.hq_hrs}</div>; },
         },
-        { field: 'site_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,...columnStyles,filterable: false,},
+        { field: 'total_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,...columnStyles,filterable: false,},
         { field: 'working_time', headerName: 'Working Hours', width: 135 ,...columnStyles, filterable: false,},
         { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,...columnStyles, filterable: false,},
     ];
