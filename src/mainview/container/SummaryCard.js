@@ -1,12 +1,12 @@
 // AttendanceCard.js
 import React, { useState } from 'react';
-import {Box,Grid,MenuItem,Card,CardContent,Typography,IconButton,TextField,createTheme,ThemeProvider,} from '@mui/material';
+import {Box,Grid,MenuItem,Card,CardContent,Typography,TextField,createTheme,ThemeProvider,} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FilterIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
-import AttendanceList from '../attandance/AttendanceList';
+// import AttendanceList from '../attandance/AttendanceList';
+import MonthlySummary from '../monthly_summary/MonthlySummary';
 
 const bull = (
     <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>
@@ -27,20 +27,14 @@ const customTheme = createTheme({
     },
 });
 
-const AttendanceCard = (props) => {
+const SummaryCard = (props) => {
   // ... (copy the content of renderAttendanceCard here)
     const [filterType, setFilterType] = useState('');
     const [selectedSite, setSelectedSite] = useState('');
+    const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedRole, setSelectedRole] = useState('');
-    const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-    });
+
     const [selectedDay, setSelectedDay] = useState(null);
-    const [lockedValues, setLockedValues] = useState({
-    startDate: null,
-    endDate: null,
-    });
     const [sites,setSites] = useState([]);
     const [roles,setRoles] = useState([]);
   // Extract the value of LocalStorage.getItem('role') to a variable
@@ -48,24 +42,10 @@ const AttendanceCard = (props) => {
 
   // Extracted helper function to reset filters
     const resetFilters = () => {
-    setDateRange({ startDate: null, endDate: null });
-    setLockedValues({ startDate: null, endDate: null });
+    setSelectedMonth(null)
     setSelectedRole('');
     setSelectedSite('');
     setSelectedDay(null);
-    };
-
-    const handleFilterChange = (newFilterValues) => {
-      // Using the resetFilters helper function
-      // resetFilters();
-    setDateRange(newFilterValues);
-    };
-
-    const handleApplyFilters = () => {
-      // Using the resetFilters helper function
-        resetFilters();
-    setLockedValues(dateRange)
-    console.log('Filters Applied:', dateRange);
     };
 
   // Extracted helper function to handle site change
@@ -130,7 +110,6 @@ const AttendanceCard = (props) => {
     }
     };
 
-
     const datePickerStyles = {
     root: {
         '& .MuiOutlinedInput-notchedOutline': {
@@ -164,12 +143,12 @@ const AttendanceCard = (props) => {
     <Card sx={{ minWidth: 275 }}>
         <CardContent>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
-            <Grid item xs={2.5}  >
+            <Grid item xs={3}  >
                 <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px', paddingTop:'0.2rem' }}>
-                    Attendance{bull}Daily
+                    Attendance{bull}Summary
                     </Typography>
                 </Grid>
-                <Grid item xs={1.5}>
+                <Grid item xs={1}>
                     {/* <Tags fieldName='attendance_date' header='Date'/> */}
                 </Grid>
                 <Grid item xs={1.45} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom:'0.25rem'}}>
@@ -181,9 +160,9 @@ const AttendanceCard = (props) => {
                                 multiple: false
                             }}>
                           {/* <MenuItem value="6">Select Filter</MenuItem> */}
-                            <MenuItem key='1' value="1">Date Range</MenuItem>
-                            <MenuItem key='2' value="2">Day</MenuItem>
-                          {/* <MenuItem value="3">Month</MenuItem> */}
+                            {/* <MenuItem key='1' value="1">Date Range</MenuItem> */}
+                            {/* <MenuItem key='2' value="2">Day</MenuItem> */}
+                            <MenuItem value="3">Month</MenuItem>
                             {userRole === '3' ? [
                                 <MenuItem key="4" value="4">Site</MenuItem>,
                                 <MenuItem key="5" value="5">Role</MenuItem>
@@ -192,34 +171,27 @@ const AttendanceCard = (props) => {
                             </div>
                             </ThemeProvider>
                 </Grid>
-                {filterType === '1' && (
-                <Grid item xs={4.55} sx={datePickerStyles.container}>
+                {filterType === '3' && (
+                <Grid item xs={2.55} sx={datePickerStyles.container}>
                         <LocalizationProvider dateAdapter={AdapterDayjs} >
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom:'0.25rem'}}>
                         <ThemeProvider theme={customTheme}>
                         <DatePicker
-                        label="Start Date"
-                        name="start_date"
-                        value={dateRange.startDate}
-                        onChange={(date) => handleFilterChange({ ...dateRange, startDate: date })}
-                        renderInput={(params) => <TextField {...params} sx={{ ...datePickerStyles.root, width: '80%'}} />}
-                        />
-                        <Grid item xs={0.5}></Grid>
-                        <DatePicker
-                        label="End Date"
-                        name="end_date"
-                        value={dateRange.endDate}
-                        onChange={(date) => handleFilterChange({ ...dateRange, endDate: date })}
-                        renderInput={(params) => <TextField {...params}  sx={{ ...datePickerStyles.root, width: '80%'}}/>}
-                        />
+                                    label="Select Month"
+                                    name="month"
+                                    value={selectedMonth}
+                                    inputFormat="YYYY-MM"
+                                    outputFormat="YYYY-MM"
+                                    onChange={(date) => setSelectedMonth(date)}
+                                    views={['year','month']}
+                                    openTo="month"
+                                    minDate={new Date('2023-09-01')}
+                                    maxDate={new Date('2024-12-31')}
+                                    renderInput={(params) => <TextField {...params} sx={{ ...datePickerStyles.root, width: '100%'}} />}
+                                />
                         </ThemeProvider>
                         </div>
                                 </LocalizationProvider>
-                                <Grid item xs={1}>
-                        <IconButton onClick={handleApplyFilters} color="primary">
-                            <FilterIcon />
-                        </IconButton>
-                        </Grid>
                     </Grid>
                     )}
                     {filterType === '4' && (
@@ -240,23 +212,7 @@ const AttendanceCard = (props) => {
                                     </ThemeProvider>
                         </Grid>
                     )}
-                    {filterType === '2' && (
-                    <Grid item xs={2.5} sx={{...datePickerStyles.container, paddingBottom:'0.2rem'}}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                            <ThemeProvider theme={customTheme}>
-                            <DatePicker
-                                    label="Select Date"
-                                    name="day"
-                                    value={selectedDay}
-                                    onChange={(date) => setSelectedDay(date)}
-                                    renderInput={(params) => <TextField {...params}sx={{ ...datePickerStyles.root, width: '100%'}} />}
-                            />
-                            </ThemeProvider>
-                            </div>
-                        </LocalizationProvider>
-                        </Grid>
-                    )}
+                    
                     {filterType === '5' && (
                     <Grid item xs={2.5} sx={{...datePickerStyles.container, paddingBottom:'0.25rem'}}>
                         <ThemeProvider theme={customTheme}>
@@ -280,11 +236,11 @@ const AttendanceCard = (props) => {
                     {/* <Tags fieldName='attendance_date' header='Date'/> */}
                 </Grid>
         </Grid>
-        <AttendanceList filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedRole={selectedRole} selectedDay={selectedDay}/>
+        <MonthlySummary filterType={filterType} selectedMonth={selectedMonth} selectedSite={selectedSite} selectedRole={selectedRole} selectedDay={selectedDay}/>
         </CardContent>
     </Card>
     </>
     );
 };
 
-export default AttendanceCard;
+export default SummaryCard;

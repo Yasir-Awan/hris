@@ -3,7 +3,8 @@ import { DataGrid,GridToolbar } from '@mui/x-data-grid';
 import axios from "axios";
 import './MonthlySummary.css';
 
-    const MonthlySummary = () => {
+    const MonthlySummary = (props) => {
+        const [customFilter,setCustomFilter] = useState({filterType: props.filterType,month: props.selectedMonth,site: props.selectedSite,role: props.selectedRole});
         const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
         const [filterModel, setFilterModel] = useState({items: [{ columnField: '', operatorValue: '', value: '' }, ]});
         const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
@@ -16,6 +17,7 @@ import './MonthlySummary.css';
                 const response = await axios.post('monthly_summary', {
                     pageSize: data.pageSize,
                     page: data.page,
+                    customFilter:customFilter,
                     filters: filterModel,
                     role: localStorage.getItem('role'),
                     emp_id: localStorage.getItem('bio_id'),
@@ -56,10 +58,41 @@ import './MonthlySummary.css';
                             // api call for summary list END
         };
 
-    useEffect(() => {
-        updateData('loading', true);
-        fetchSummaryData();
-    }, [data.page, data.pageSize,filterModel]);
+        useEffect(() => {
+            let formattedMonth = null;
+        
+            if (props.filterType === '3') {
+                if (props.selectedMonth !== null) {
+                    // Create a Date object from the string
+                    let dateObject = new Date(props.selectedMonth);
+
+                    // Extract year and month
+                    const year = dateObject.getFullYear();
+                    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because months are zero-indexed
+
+                    // Form the "yyyy-mm" format
+                     formattedMonth = year + '-' + month;
+                    // const offsetSelectedDate = slctMonth.getTimezoneOffset();
+                    // const adjustedSelectedDate = new Date(slctMonth.getTime() - offsetSelectedDate * 60 * 1000);
+                    // formattedSelectedMonth = new Date(slctMonth.getMonth())
+                    // adjustedSelectedDate.toISOString().split('T')[0];
+                }
+            }
+
+            setCustomFilter((prevCustomFilter) => ({
+                ...prevCustomFilter,
+                filterType: props.filterType,
+                site: props.selectedSite,
+                role: props.selectedRole,
+                month: formattedMonth,
+            }));
+        }, [props.selectedMonth, props.selectedSite, props.selectedRole]);
+
+        useEffect(()=>{
+            updateData('loading', true);
+            fetchSummaryData();
+        },[customFilter.month,customFilter.site,customFilter.role, data.page, data.pageSize, filterModel])
+        
 
     // Define a separate styles object
         const columnStyles = {

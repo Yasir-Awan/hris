@@ -3,10 +3,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 import './AttendanceList.css';
 
-  const AttendanceList = (props) => {
-    console.log(props.lockedValues.startDate)
-    console.log(props.selectedSite)
-    
+  const AttendanceList = (props) => {    
       const [customFilter,setCustomFilter] = useState({filterType: props.filterType,dateRange: props.lockedValues,site: props.selectedSite,role: props.selectedRole,day: props.selectedDay});
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
@@ -64,8 +61,6 @@ import './AttendanceList.css';
         day:formattedSelectedDay,
         dateRange: updatedDateRange,
       };
-
-      if(props.filterType === '1')
 
       // Update the state with the new custom filter
       setCustomFilter(updatedCustomFilter);

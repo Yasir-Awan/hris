@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import {Card,CardContent,Typography,Grid,} from '@mui/material';
 import UserList from '../users/UserList';
-import MonthlySummary from '../monthly_summary/MonthlySummary';
 import ShiftsList from '../shift/ShiftsList';
 import ScheduleList from '../schedule/ScheduleList';
 import LeavesList from '../leaves/LeavesList';
 import AttendanceCard from './AttendanceCard';
+import SummaryCard from './SummaryCard';
 
 export default function BasicCard(props) {
   const [filterType] = useState('');
   const [selectedSite] = useState('');
   const [selectedRole] = useState('');
   const [selectedDay] = useState(null);
+  const [selectedMonth] = useState(null);
   const [lockedValues] = useState({startDate: null,endDate: null,});
 
   const renderCard = (title, component) => (
@@ -34,6 +35,11 @@ export default function BasicCard(props) {
     selectedDay={selectedDay}/>
   );
 
+  const renderSummaryCard = () => (
+    <SummaryCard filterType={filterType} selectedMonth={selectedMonth} selectedSite={selectedSite} selectedRole={selectedRole} 
+    selectedDay={selectedDay}/>
+  );
+
   switch (props.name) {
     case 0:
       return renderCard('Schedules List', <ScheduleList />);
@@ -42,7 +48,7 @@ export default function BasicCard(props) {
     case 2:
       return renderAttendanceCard();
     case 3:
-      return renderCard('Attendance Summary', <MonthlySummary />);
+      return renderSummaryCard();
     case 4:
       return renderCard('Employees List', <UserList />);
     case 5:
