@@ -49,7 +49,7 @@ export default function Login() {
   localStorage.setItem('lname','');
   localStorage.setItem('bio_id','')
   localStorage.setItem('site','');
-  localStorage.setItem('role','')
+  localStorage.setItem('designation','')
 
   const loginFormSubmit = (event) => {
 
@@ -79,7 +79,7 @@ export default function Login() {
           localStorage.setItem('lname', response.data.lname)
           localStorage.setItem('bio_id', response.data.user_id)
           localStorage.setItem('site', response.data.site)
-          localStorage.setItem('role', response.data.role)
+          localStorage.setItem('designation', response.data.designation)
         }
       })
       .catch(error => {
