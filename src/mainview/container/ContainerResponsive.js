@@ -10,7 +10,7 @@ import SummaryCard from './SummaryCard';
 export default function BasicCard(props) {
   const [filterType] = useState('');
   const [selectedSite] = useState('');
-  const [selectedRole] = useState('');
+  const [selectedDesignation] = useState('');
   const [selectedDay] = useState(null);
   const [selectedMonth] = useState(null);
   const [lockedValues] = useState({startDate: null,endDate: null,});
@@ -31,27 +31,27 @@ export default function BasicCard(props) {
   );
 
   const renderAttendanceCard = () => (
-    <AttendanceCard filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedRole={selectedRole} 
+    <AttendanceCard filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedDesignation={selectedDesignation} 
     selectedDay={selectedDay}/>
   );
 
   const renderSummaryCard = () => (
-    <SummaryCard filterType={filterType} selectedMonth={selectedMonth} selectedSite={selectedSite} selectedRole={selectedRole} 
+    <SummaryCard filterType={filterType} selectedMonth={selectedMonth} selectedSite={selectedSite} selectedDesignation={selectedDesignation} 
     selectedDay={selectedDay}/>
   );
 
   switch (props.name) {
-    case 0:
-      return renderCard('Schedules List', <ScheduleList />);
     case 1:
-      return renderCard('Leaves List', <LeavesList />);
+      return renderCard('Schedules List', <ScheduleList />);
     case 2:
-      return renderAttendanceCard();
+      return renderCard('Leaves List', <LeavesList />);
     case 3:
-      return renderSummaryCard();
+      return renderAttendanceCard();
     case 4:
-      return renderCard('Employees List', <UserList />);
+      return renderSummaryCard();
     case 5:
+      return renderCard('Employees List', <UserList />);
+    case 6:
       return renderCard('Shifts List', <ShiftsList />);
     default:
       return null;

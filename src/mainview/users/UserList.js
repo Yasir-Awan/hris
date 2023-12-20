@@ -27,7 +27,7 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
         pageSize: data.pageSize,
         page: data.page,
         filters: filterModel, // pass filterModel to the server,
-        role: localStorage.getItem('role'),
+        designation: localStorage.getItem('designation'),
         emp_id: localStorage.getItem('bio_id')
       },
     }
@@ -38,7 +38,7 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
               epmloyeeRecords.push({'id':counter,'fullname':element.fullname , 'email':element.email,
               'password':element.password, 'site_name':element.site_name, 'contact':element.contact, 'address':element.address,
               'type_of_employee':element.type_of_employee, 'consultant':element.consultant, 'section_name':element.section_name,'field_name':element.field_name,
-              'role_name':element.role_name,
+              'designation_name':element.designation_name,
           page:response.data.page,
           pagesize:response.data.pagesize,
         });
@@ -74,7 +74,7 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
         },
       },
       { field: 'fullname', headerName: 'Employee', width: 200,headerAlign:'center',align:'center'},
-      { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center'},
+      { field: 'designation_name', headerName: 'Designation', width: 180,headerAlign:'center',align:'center'},
       { field: 'site_name', headerName: 'Site', width: 180,headerAlign:'center',align:'center'},
       { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
       { field: 'contact', headerName: 'Contact', width: 180,headerAlign:'center',align:'center'},
@@ -87,7 +87,6 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
   <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
   <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'22px'}}>
     </Box>
-
     <DataGrid
         density="standard"
         autoHeight

@@ -56,7 +56,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
               pageSize: tableData.pageSize,
               page: tableData.page,
               filters: filterModel, // pass filterModel to the server,
-              role: localStorage.getItem('role'),
+              designation: localStorage.getItem('designation'),
               emp_id: localStorage.getItem('bio_id')
             },
           }
@@ -64,7 +64,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
             .then(function (response) {
               if(response.data.schedule_rows){
                 response.data.schedule_rows.forEach(element => {
-                    mydata.push({id:counter,fullname:element.fullname,site_name:element.site_name,role_name:element.role_name,
+                    mydata.push({id:counter,fullname:element.fullname,site_name:element.site_name,designation_name:element.designation_name,
                     from_date:element.from_date_readable, to_date:element.to_date_readable, shift_name:element.shift_name,
                     shift_start:element.shift_start,shift_end:element.shift_end,page:response.data.page,
                     pagesize:response.data.pagesize
@@ -89,8 +89,8 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
                   // api call for schedule list END
       }
 
-      const ConditionalComponent = ({ role }) => {
-        if (role ==='3') {
+      const ConditionalComponent = ({ designation }) => {
+        if (designation ==='3') {
           return <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
                       <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) } refreshList={refreshSchedulesList}>
                           <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
@@ -114,7 +114,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
             headerAlign:'center',align:'center'},
           { field: 'fullname', headerName: 'Employee', width: 180,headerAlign:'center',align:'center'},
           { field: 'site_name', headerName: 'Site', width: 150,headerAlign:'center',align:'center'},
-          { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center'},
+          { field: 'designation_name', headerName: 'Designation', width: 180,headerAlign:'center',align:'center'},
           { field: 'from_date', headerName: 'Schedule Start', width: 160,headerAlign:'center',align:'center'},
           { field: 'to_date', headerName: 'Schedule End', width: 160,headerAlign:'center',align:'center'},
           { field: 'shift_name', headerName: 'Shift', width: 220,headerAlign:'center',align:'center'},
@@ -125,7 +125,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
     return (
       <>
         <div className="container">
-            <ConditionalComponent role={localStorage.getItem('role')}/>
+            <ConditionalComponent designation={localStorage.getItem('designation')}/>
             <DataGrid
                 autoHeight
                 density="standard"

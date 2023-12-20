@@ -4,11 +4,11 @@ import axios from "axios";
 import './MonthlySummary.css';
 
     const MonthlySummary = (props) => {
-        const [customFilter,setCustomFilter] = useState({filterType: props.filterType,month: props.selectedMonth,site: props.selectedSite,role: props.selectedRole});
+        const [customFilter,setCustomFilter] = useState({filterType: props.filterType,month: props.selectedMonth,site: props.selectedSite,designation: props.selectedDesignation});
         const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
         const [filterModel, setFilterModel] = useState({items: [{ columnField: '', operatorValue: '', value: '' }, ]});
         const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
-        const userRole = localStorage.getItem('role');
+        const userDesignation = localStorage.getItem('designation');
         const userSite = localStorage.getItem('site');
 
         const fetchSummaryData = async () => {
@@ -19,7 +19,7 @@ import './MonthlySummary.css';
                     page: data.page,
                     customFilter:customFilter,
                     filters: filterModel,
-                    role: localStorage.getItem('role'),
+                    designation: localStorage.getItem('designation'),
                     emp_id: localStorage.getItem('bio_id'),
                 },
                 {
@@ -32,7 +32,7 @@ import './MonthlySummary.css';
                                             id:index+1,
                                             fullname:element.fullname,
                                             site_name:element.site_name,
-                                            role_name:element.role_name,
+                                            designation_name:element.designation_name,
                                             schedule_from:element.schedule_start_date,
                                             schedule_to:element.schedule_end_date,
                                             shift_type:element.shift_type,
@@ -69,13 +69,7 @@ import './MonthlySummary.css';
                     // Extract year and month
                     const year = dateObject.getFullYear();
                     const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because months are zero-indexed
-
-                    // Form the "yyyy-mm" format
-                     formattedMonth = year + '-' + month;
-                    // const offsetSelectedDate = slctMonth.getTimezoneOffset();
-                    // const adjustedSelectedDate = new Date(slctMonth.getTime() - offsetSelectedDate * 60 * 1000);
-                    // formattedSelectedMonth = new Date(slctMonth.getMonth())
-                    // adjustedSelectedDate.toISOString().split('T')[0];
+                    formattedMonth = year + '-' + month;
                 }
             }
 
@@ -83,15 +77,15 @@ import './MonthlySummary.css';
                 ...prevCustomFilter,
                 filterType: props.filterType,
                 site: props.selectedSite,
-                role: props.selectedRole,
+                designation: props.selectedDesignation,
                 month: formattedMonth,
             }));
-        }, [props.selectedMonth, props.selectedSite, props.selectedRole]);
+        }, [props.selectedMonth, props.selectedSite, props.selectedDesignation]);
 
         useEffect(()=>{
             updateData('loading', true);
             fetchSummaryData();
-        },[customFilter.month,customFilter.site,customFilter.role, data.page, data.pageSize, filterModel])
+        },[customFilter.month,customFilter.site,customFilter.designation, data.page, data.pageSize, filterModel])
         
 
     // Define a separate styles object
@@ -111,8 +105,8 @@ import './MonthlySummary.css';
         },
         },
     { field: 'fullname', headerName: 'Employee', width: 180 ,...columnStyles,},
-        { field: 'site_name', headerName: 'Site', width: 130,hide: userRole !== '3' ,...columnStyles,},
-        { field: 'role_name', headerName: 'Role', width: 175,hide: userRole !== '3' ,...columnStyles, },
+        { field: 'site_name', headerName: 'Site', width: 130,hide: userDesignation !== '3' ,...columnStyles,},
+        { field: 'designation_name', headerName: 'Designation', width: 175,hide: userDesignation !== '3' ,...columnStyles, },
         { field: 'schedule_from', headerName: 'Schedule Start', width: 180 ,...columnStyles, // Apply common styles
         filterable: false,
         renderCell: (value) => {
@@ -129,11 +123,11 @@ import './MonthlySummary.css';
             return <div>{formattedDate}</div>;
             },
         },
-        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135, hide: (userSite !== '12' && userRole !== '3') ,...columnStyles, // Apply common styles
+        { field: 'hq_hrs', headerName: 'HQ Hours', width: 135, hide: (userSite !== '12' && userDesignation !== '3') ,...columnStyles, // Apply common styles
         filterable: false,
         renderCell: (value) => { return <div>{value.row.hq_hrs}</div>; },
         },
-        { field: 'total_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userRole !== '3') ,...columnStyles,filterable: false,},
+        { field: 'total_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userDesignation !== '3') ,...columnStyles,filterable: false,},
         { field: 'working_time', headerName: 'Working Hours', width: 135 ,...columnStyles, filterable: false,},
         { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,...columnStyles, filterable: false,},
     ];

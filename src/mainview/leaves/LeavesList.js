@@ -110,7 +110,7 @@ const IOSSwitch = styled((props) => (
       const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
       var userRecords = [];
       // Extract the value of LocalStorage.getItem('role') to a variable
-      const userRole = localStorage.getItem('role');
+      const userDesignation = localStorage.getItem('designation');
 
           useEffect(() => {
               refreshUsersList()
@@ -151,7 +151,7 @@ const IOSSwitch = styled((props) => (
                       pageSize: data.pageSize,
                       page: data.page,
                       filters: filterModel, // pass filterModel to the server,
-                      role: localStorage.getItem('role'),
+                      designation: localStorage.getItem('designation'),
                       emp_id: localStorage.getItem('bio_id')
                     },
                   })
@@ -288,7 +288,7 @@ const IOSSwitch = styled((props) => (
                           { field: 'leave_type_readable', headerName: 'Leave Type', width: 120 ,headerAlign:'center',align:'center'},
                           { field: 'leave_start', headerName: 'Start', width: 200 ,headerAlign:'center',align:'center'},
                           { field: 'leave_end', headerName: 'End', width: 200 ,headerAlign:'center',align:'center'},
-                          { field: 'leave_add', headerName: 'Add',hide: userRole !== '3', width: 200 ,headerAlign:'center',align:'center',
+                          { field: 'leave_add', headerName: 'Add',hide: userDesignation !== '3', width: 200 ,headerAlign:'center',align:'center',
                               renderCell: (value) => {
                                 const inputDateTime = value.value; // Get the date and time string from your data
                                 const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
@@ -309,7 +309,7 @@ const IOSSwitch = styled((props) => (
                           },
                           { field: 'leave_status', headerName: 'Status', width: 110 ,headerAlign:'center',align:'center'},
                           { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
-                          { field: 'action', headerName: 'Approval', width: 175, hide: userRole !== '3',headerAlign: 'center', align: 'center',
+                          { field: 'action', headerName: 'Approval', width: 175, hide: userDesignation !== '3',headerAlign: 'center', align: 'center',
                             renderCell: (params) => (
                               <>
                               <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -318,13 +318,13 @@ const IOSSwitch = styled((props) => (
                                   checked={params.row.leave_status === 'Approved'}
                                   onChange={() => handleToggleLeaveApproval(params.row.leave_id, params.row.leave_status,params.row.id)}
                                   leavestatus={params.row.leave_status}
-                                  disabled={userRole !== '3'} // Disable for non-admin users
+                                  disabled={userDesignation !== '3'} // Disable for non-admin users
                                 />
                                 </Box>
                               </>
                             ),
                           },
-                          { field: 'time', headerName: 'Adding Time',hide: userRole === '3', width: 220 ,headerAlign:'center',align:'center'},
+                          { field: 'time', headerName: 'Adding Time',hide: userDesignation === '3', width: 220 ,headerAlign:'center',align:'center'},
                           { field: 'buttons', headerName: 'Action', width: 150, headerAlign:'center',align:'center',
                             renderCell: (params) => (
                               <>

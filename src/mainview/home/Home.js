@@ -15,29 +15,29 @@ const Home = props => {
   const { page } = useParams();
 
   const tabNameToIndex = {
-
-    0: "schedules",
-    1 : "leaves",
-    2: "attendance",
-    3: "monthly_summary",
-    4 : "employees",
-    5 : "shifts",
-    6: "remarks",
-    7: "teams",
-    8: "projects"
+    1: "schedules",
+    2 : "leaves",
+    3: "attendance",
+    4: "monthly_summary",
+    5 : "employees",
+    6 : "shifts",
+    7: "remarks",
+    8: "teams",
+    9: "projects"
   }
   const  indexToTabName = {
-      "schedules":0,
-      "leaves":1,
-      "attendance":2,
-      "monthly_summary":3,
-      "employees":4,
-      "shifts":5,
-      "remarks":6,
-      "teams":7,
-      "projects":8}
+      "schedules":1,
+      "leaves":2,
+      "attendance":3,
+      "monthly_summary":4,
+      "employees":5,
+      "shifts":6,
+      "remarks":7,
+      "teams":8,
+      "projects":9}
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location);
   const [SelectedTab,setSelectedTab] = useState(indexToTabName[page])
 
   const handleChange = (event, newValue) => {
@@ -49,9 +49,9 @@ const Home = props => {
   const scheduleData = location.state && location.state.scheduleData;
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
-  const ConditionalComponent = ({ role }) => {
+  const ConditionalComponent = ({ designation }) => {
     const tabGradientBackground = 'linear-gradient(135deg, #388E3C, #4CAF50)'; // Gradient background for the tabs
-    if (role ==='3') {
+    if (designation ==='3') {
       return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
                 sx={{ marginLeft: 'auto',
                       marginRight: 'auto', 
@@ -60,6 +60,7 @@ const Home = props => {
                       borderRadius: '8px', // Add some border-radius for a softer look
                       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
                       }}>
+      <Tab style={{ display: 'none' }}  disabled label="" /> 
       <Tab label="Schedules" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
       <Tab label="Leaves" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
       <Tab label="Attendance" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
@@ -79,6 +80,7 @@ const Home = props => {
                         borderRadius: '8px', // Add some border-radius for a softer look
                         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
                         }}>
+      <Tab style={{ display: 'none' }}  disabled label="" /> 
       <Tab label="Schedules"/>
       <Tab label="Leaves"/>
       <Tab label="Attendance"/>
@@ -99,7 +101,7 @@ const Home = props => {
         <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary'>
                     <Tab key={0} label={'Schedules'} />
         </Tabs>
-        <ContainerResponsive name={3}></ContainerResponsive>
+        <ContainerResponsive name={2}></ContainerResponsive>
       </>
     );
   }else{
@@ -124,7 +126,7 @@ const Home = props => {
                     HRIS
                   </Typography>
 
-              <ConditionalComponent role={localStorage.getItem('role')}/>
+              <ConditionalComponent designation={localStorage.getItem('designation')}/>
               <AccountMenu/>
               {/* <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button> */}
                   </>
@@ -133,15 +135,15 @@ const Home = props => {
             </Toolbar>
           </AppBar>
 
-          { SelectedTab === 0 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 1 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 3 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 4 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
           { SelectedTab === 5 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 6 && <Remarks/>}
-          { SelectedTab === 7 && <Teams/>}
-          { SelectedTab === 8 && <Projects/>}
+          { SelectedTab === 6 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
+          { SelectedTab === 7 && <Remarks/>}
+          { SelectedTab === 8 && <Teams/>}
+          { SelectedTab === 9 && <Projects/>}
       </>
     )
     }

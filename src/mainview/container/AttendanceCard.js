@@ -8,9 +8,9 @@ import FilterIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
 import AttendanceList from '../attandance/AttendanceList';
 
-const bull = (
-    <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>
-);
+// const bull = (
+//     <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>
+// );
 
 const customTheme = createTheme({
   // ... (existing theme configuration)
@@ -31,7 +31,7 @@ const AttendanceCard = (props) => {
   // ... (copy the content of renderAttendanceCard here)
     const [filterType, setFilterType] = useState('');
     const [selectedSite, setSelectedSite] = useState('');
-    const [selectedRole, setSelectedRole] = useState('');
+    const [selectedDesignation, setSelectedDesignation] = useState('');
     const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -42,15 +42,15 @@ const AttendanceCard = (props) => {
     endDate: null,
     });
     const [sites,setSites] = useState([]);
-    const [roles,setRoles] = useState([]);
+    const [designations,setDesignations] = useState([]);
   // Extract the value of LocalStorage.getItem('role') to a variable
-    const userRole = localStorage.getItem('role');
+    const userDesignation = localStorage.getItem('designation');
 
   // Extracted helper function to reset filters
     const resetFilters = () => {
     setDateRange({ startDate: null, endDate: null });
     setLockedValues({ startDate: null, endDate: null });
-    setSelectedRole('');
+    setSelectedDesignation('');
     setSelectedSite('');
     setSelectedDay(null);
     };
@@ -77,11 +77,11 @@ const AttendanceCard = (props) => {
             }
 
   // Extracted helper function to handle role change
-    const handleRoleChange = (event) => {
+    const handleDesignationChange = (event) => {
       // Using the resetFilters helper function
         resetFilters();
     const { value } = event.target;
-                setSelectedRole(value)
+                setSelectedDesignation(value)
             }
 
     const getSites = () => {
@@ -101,19 +101,19 @@ const AttendanceCard = (props) => {
         .catch(error => {console.error(error)});// api call for users list END
     };
 
-    const getRoles = () => {
+    const getDesignations = () => {
     // api call for roles list START
     axios({
         method: 'get',
-        url:'roles_list',
+        url:'designations_list',
         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
     })
     .then(function (response) {
-        let rolesRecord = [];
-            response.data.roles_info.forEach(element => {
-            rolesRecord.push({'id':element.id,'name':element.role_name})
+        let designationsRecord = [];
+            response.data.designations_info.forEach(element => {
+            designationsRecord.push({'id':element.id,'name':element.designation_name})
             });
-            setRoles(rolesRecord);
+            setDesignations(designationsRecord);
         })
     .catch(error => {console.error(error)});// api call for roles list END
 };
@@ -126,7 +126,7 @@ const AttendanceCard = (props) => {
         getSites();
     }
     if(value === '5'){
-        getRoles();
+        getDesignations();
     }
     };
 
@@ -166,7 +166,7 @@ const AttendanceCard = (props) => {
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
             <Grid item xs={2.5}  >
                 <Typography variant="h5" component="div" sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold', color: '#4CAF50', textShadow: '0 0 10px rgba(33, 150, 243, 0.4)', letterSpacing: '1px', paddingTop:'0.2rem' }}>
-                    Attendance{bull}Daily
+                    Attendance Daily
                     </Typography>
                 </Grid>
                 <Grid item xs={1.5}>
@@ -184,9 +184,9 @@ const AttendanceCard = (props) => {
                             <MenuItem key='1' value="1">Date Range</MenuItem>
                             <MenuItem key='2' value="2">Day</MenuItem>
                           {/* <MenuItem value="3">Month</MenuItem> */}
-                            {userRole === '3' ? [
+                            {userDesignation === '3' ? [
                                 <MenuItem key="4" value="4">Site</MenuItem>,
-                                <MenuItem key="5" value="5">Role</MenuItem>
+                                <MenuItem key="5" value="5">Designation</MenuItem>
                                 ] : null}
                             </TextField>
                             </div>
@@ -260,14 +260,14 @@ const AttendanceCard = (props) => {
                     {filterType === '5' && (
                     <Grid item xs={2.5} sx={{...datePickerStyles.container, paddingBottom:'0.25rem'}}>
                         <ThemeProvider theme={customTheme}>
-                            <TextField label="Select Role" name='role' onChange={handleRoleChange} select value={selectedRole} variant="outlined" sx={{ ...datePickerStyles.root, width: '80%'}} required
+                            <TextField label="Designation" name='designation' onChange={handleDesignationChange} select value={selectedDesignation} variant="outlined" sx={{ ...datePickerStyles.root, width: '80%'}} required
                                         SelectProps={{
                                         multiple: false
                                         }}>
                                         {
-                                            roles.map((role,index) => (
-                                            <MenuItem key={index} value={role.id}>
-                                            {role.name}
+                                            designations.map((designation,index) => (
+                                            <MenuItem key={index} value={designation.id}>
+                                            {designation.name}
                                             </MenuItem>
                                             ))
                                         }
@@ -280,7 +280,7 @@ const AttendanceCard = (props) => {
                     {/* <Tags fieldName='attendance_date' header='Date'/> */}
                 </Grid>
         </Grid>
-        <AttendanceList filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedRole={selectedRole} selectedDay={selectedDay}/>
+        <AttendanceList filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedDesignation={selectedDesignation} selectedDay={selectedDay}/>
         </CardContent>
     </Card>
     </>

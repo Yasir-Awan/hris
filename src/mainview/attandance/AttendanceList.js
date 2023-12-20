@@ -4,7 +4,7 @@ import axios from 'axios';
 import './AttendanceList.css';
 
   const AttendanceList = (props) => {    
-      const [customFilter,setCustomFilter] = useState({filterType: props.filterType,dateRange: props.lockedValues,site: props.selectedSite,role: props.selectedRole,day: props.selectedDay});
+      const [customFilter,setCustomFilter] = useState({filterType: props.filterType,dateRange: props.lockedValues,site: props.selectedSite,designation: props.selectedDesignation,day: props.selectedDay});
       const [data, setData] = useState({loading: true,rows: [],totalRows: 0,rowsPerPageOptions: [5,10,20,50,100],pageSize: 5,page: 1});
       const [filterModel, setFilterModel] = useState({items: [
         { columnField: '', operatorValue: '', value: '' },
@@ -57,7 +57,7 @@ import './AttendanceList.css';
         ...customFilter,
         filterType: props.filterType,
         site:props.selectedSite,
-        role:props.selectedRole,
+        designation:props.selectedDesignation,
         day:formattedSelectedDay,
         dateRange: updatedDateRange,
       };
@@ -74,7 +74,7 @@ import './AttendanceList.css';
           page: data.page,
           customFilter:updatedCustomFilter,
           filters: filterModel, // pass filterModel to the server,
-          role: localStorage.getItem('role'),
+          designation: localStorage.getItem('designation'),
           emp_id: localStorage.getItem('bio_id')
         },
       })
@@ -85,7 +85,7 @@ import './AttendanceList.css';
                             id: counter,
                             fullname: element.fullname,
                             site_name: element.site_name,
-                            role_name: element.role_name,
+                            designation_name: element.designation_name,
                             attendance_date: element.attendance_date,
                             shift_type: element.shift_type,
                             checkin: element.checkin,
@@ -114,7 +114,7 @@ import './AttendanceList.css';
       .catch(error => {
         console.error(error);// Handle errors or show a user-friendly message
       });
-  }, [data.page, data.pageSize,filterModel,props.selectedSite,props.lockedValues,props.selectedDay,props.selectedRole]);
+  }, [data.page, data.pageSize,filterModel,props.selectedSite,props.lockedValues,props.selectedDay,props.selectedDesignation]);
 
 
   const renderFormattedDateTime = (dateTime, shiftType) => {
@@ -162,7 +162,7 @@ import './AttendanceList.css';
       },
     { field: 'fullname', headerName: 'Employee', width: 200,...columnStyles, },
     { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '3', ...columnStyles, },
-    { field: 'role_name', headerName: 'Role', width: 180,hide: userRole !== '3',...columnStyles, },
+    { field: 'designation_name', headerName: 'Designation', width: 180,hide: userRole !== '3',...columnStyles, },
     {
       field: 'attendance_date',
       headerName: 'Date',
