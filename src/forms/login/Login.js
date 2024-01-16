@@ -38,7 +38,7 @@ function ModeToggle() {
   );
 }
 
-axios.defaults.baseURL = 'http://58.27.166.43:80/hris_ci/';
+axios.defaults.baseURL = 'http://localhost:80/hris/';
 
 export default function Login() {
 
@@ -120,6 +120,7 @@ export default function Login() {
           draggable: true,
           progress: undefined,
       });
+      console.log(error.response);
         console.log(error.response.data.error)
     })
   }
