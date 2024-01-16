@@ -19,7 +19,7 @@ function AddLeave( props ) {
     const formSubmit = (event) => {
     event.preventDefault();
     let sendingData ;
-    if(localStorage.getItem('role')==='3'){
+    if(localStorage.getItem('role')==='4'){
         sendingData = {
             user_bio_id : AddLeaveFormData.emp_id,
             leave_type: AddLeaveFormData.leave_type,
@@ -28,7 +28,7 @@ function AddLeave( props ) {
             leave_reason: AddLeaveFormData.leave_reason
             }
     }
-    if(localStorage.getItem('role')!=='3'){
+    if(localStorage.getItem('role')!=='4'){
         sendingData = {
             user_bio_id : localStorage.getItem('bio_id'),
             leave_type: AddLeaveFormData.leave_type,
@@ -335,7 +335,7 @@ function AddLeave( props ) {
             <CardContent>
             <form onSubmit={formSubmit}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                {localStorage.getItem('role') === '3' ? (
+                {localStorage.getItem('role') === '3' || localStorage.getItem('role') === '2' ? (
                                 <Grid xs={12} item sx={{ mt: 2}}>
                                     <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
                                     SelectProps={{

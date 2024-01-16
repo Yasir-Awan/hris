@@ -110,7 +110,9 @@ const IOSSwitch = styled((props) => (
       const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
       var userRecords = [];
       // Extract the value of LocalStorage.getItem('role') to a variable
-      const userDesignation = localStorage.getItem('designation');
+      const approvalPermission = localStorage.getItem('approval_permission');
+      const writePermission = localStorage.getItem('write_permission');
+      const userRole = localStorage.getItem('role');
 
           useEffect(() => {
               refreshUsersList()
@@ -120,10 +122,10 @@ const IOSSwitch = styled((props) => (
           const refreshUsersList = () => {
                   // api call for users list START
                         axios({
-                          method: 'get',
+                          method: 'post',
                           url:'employees_list_for_filters',
-                          headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
-                        }
+                          headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+                          data: { employees: JSON.parse(localStorage.getItem('employees'))},
                         })
                           .then(function (response) {
                               response.data.user_info.forEach(element => {
@@ -151,8 +153,9 @@ const IOSSwitch = styled((props) => (
                       pageSize: data.pageSize,
                       page: data.page,
                       filters: filterModel, // pass filterModel to the server,
-                      designation: localStorage.getItem('designation'),
-                      emp_id: localStorage.getItem('bio_id')
+                      role: localStorage.getItem('role'),
+                      emp_id: localStorage.getItem('bio_id'),
+                      employees: JSON.parse(localStorage.getItem('employees')),
                     },
                   })
                   .then(function (response) {
@@ -288,7 +291,7 @@ const IOSSwitch = styled((props) => (
                           { field: 'leave_type_readable', headerName: 'Leave Type', width: 120 ,headerAlign:'center',align:'center'},
                           { field: 'leave_start', headerName: 'Start', width: 200 ,headerAlign:'center',align:'center'},
                           { field: 'leave_end', headerName: 'End', width: 200 ,headerAlign:'center',align:'center'},
-                          { field: 'leave_add', headerName: 'Add',hide: userDesignation !== '3', width: 200 ,headerAlign:'center',align:'center',
+                          { field: 'leave_add', headerName: 'Add',hide: userRole !== '4', width: 200 ,headerAlign:'center',align:'center',
                               renderCell: (value) => {
                                 const inputDateTime = value.value; // Get the date and time string from your data
                                 const dateValue = new Date(inputDateTime); // Parse the date and time string into a Date object
@@ -309,7 +312,7 @@ const IOSSwitch = styled((props) => (
                           },
                           { field: 'leave_status', headerName: 'Status', width: 110 ,headerAlign:'center',align:'center'},
                           { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
-                          { field: 'action', headerName: 'Approval', width: 175, hide: userDesignation !== '3',headerAlign: 'center', align: 'center',
+                          { field: 'action', headerName: 'Approval', width: 175, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
                             renderCell: (params) => (
                               <>
                               <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -318,13 +321,13 @@ const IOSSwitch = styled((props) => (
                                   checked={params.row.leave_status === 'Approved'}
                                   onChange={() => handleToggleLeaveApproval(params.row.leave_id, params.row.leave_status,params.row.id)}
                                   leavestatus={params.row.leave_status}
-                                  disabled={userDesignation !== '3'} // Disable for non-admin users
+                                  disabled={approvalPermission !== '1'} // Disable for non-admin users
                                 />
                                 </Box>
                               </>
                             ),
                           },
-                          { field: 'time', headerName: 'Adding Time',hide: userDesignation === '3', width: 220 ,headerAlign:'center',align:'center'},
+                          { field: 'time', headerName: 'Adding Time',hide: userRole === '4', width: 220 ,headerAlign:'center',align:'center'},
                           { field: 'buttons', headerName: 'Action', width: 150, headerAlign:'center',align:'center',
                             renderCell: (params) => (
                               <>
@@ -344,30 +347,37 @@ const IOSSwitch = styled((props) => (
     return (
         <>
           <div style={{ height: 'auto', width: '100%' }}>
-              <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
-                    <CustomizedDialogs
-                      size="small"
-                      title={
-                        dialogMode === 'add'
-                          ? 'Add New Leave'
-                          : dialogMode === 'edit'
-                          ? 'Edit Leave'
-                          : 'Sure to delete this leave!'
-                      }
-                      icon={<AddIcon />}
-                      showDialog={showDialog}
-                      setShowDialog={(v) => setShowDialog(v)}
-                      refreshList={refreshLeavesList}
-                    >
-                    {dialogMode === 'add' ? (
-                        <AddLeave employees={users} refreshList={refreshLeavesList} />
-                      ) : dialogMode === 'edit' ? (
-                        <EditLeave EditData={editData} refreshList={refreshLeavesList} />
-                      ) : (
-                        <DeleteLeave DeleteData={deleteData} refreshList={refreshLeavesList} />
-                      )}
-                    </CustomizedDialogs>
-              </Box>
+              
+                {writePermission === '1' ?(
+                  <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
+                  <CustomizedDialogs
+                  size="small"
+                  title={
+                    dialogMode === 'add'
+                      ? 'Add New Leave'
+                      : dialogMode === 'edit'
+                      ? 'Edit Leave'
+                      : 'Sure to delete this leave!'
+                  }
+                  icon={<AddIcon />}
+                  showDialog={showDialog}
+                  setShowDialog={(v) => setShowDialog(v)}
+                  refreshList={refreshLeavesList}
+                >
+                {dialogMode === 'add' ? (
+                    <AddLeave employees={users} refreshList={refreshLeavesList} />
+                  ) : dialogMode === 'edit' ? (
+                    <EditLeave EditData={editData} refreshList={refreshLeavesList} />
+                  ) : (
+                    <DeleteLeave DeleteData={deleteData} refreshList={refreshLeavesList} />
+                  )}
+                </CustomizedDialogs>
+                              </Box>
+                ):(
+                  <Box></Box>
+                )
+                }
+
               <DataGrid
                 density="standard"
                 autoHeight

@@ -38,7 +38,7 @@ function ModeToggle() {
   );
 }
 
-axios.defaults.baseURL = 'http://58.27.166.43:80/hris/';
+axios.defaults.baseURL = 'http://localhost:80/hris/';
 
 export default function Login() {
 
@@ -50,6 +50,16 @@ export default function Login() {
   localStorage.setItem('bio_id','')
   localStorage.setItem('site','');
   localStorage.setItem('designation','')
+  localStorage.setItem('role', '')
+  localStorage.setItem('employees', '')
+  localStorage.setItem('sites', '')
+  localStorage.setItem('tabNameToIndex', '')
+  localStorage.setItem('indexToTabName', '')
+  localStorage.setItem('read_permission', '')
+  localStorage.setItem('write_permission', '')
+  localStorage.setItem('edit_permission', '')
+  localStorage.setItem('approval_permission', '')
+  localStorage.setItem('delete_permission', '')
 
   const loginFormSubmit = (event) => {
 
@@ -64,6 +74,29 @@ export default function Login() {
         console.log(response);
         if(response.data)
         {
+          let employeesArray = response.data.employees.map(function(str) {
+            return parseInt(str, 10);
+        });
+
+        let sitesArray = response.data.sites.map(function(str) {
+          return parseInt(str, 10);
+      });
+        localStorage.setItem('token', response.data.access_token)
+        localStorage.setItem('fname', response.data.fname)
+        localStorage.setItem('lname', response.data.lname)
+        localStorage.setItem('bio_id', response.data.user_id)
+        localStorage.setItem('site', response.data.site)
+        localStorage.setItem('designation', response.data.designation)
+        localStorage.setItem('role', response.data.role)
+        localStorage.setItem('employees', JSON.stringify(employeesArray));
+        localStorage.setItem('sites', JSON.stringify(sitesArray));
+        localStorage.setItem('indexToTabName', JSON.stringify(response.data.indexToTabName))
+        localStorage.setItem('tabNameToIndex', JSON.stringify(response.data.tabNameToIndex))
+        localStorage.setItem('read_permission', response.data.read_permission)
+        localStorage.setItem('write_permission', response.data.write_permission)
+        localStorage.setItem('edit_permission', response.data.edit_permission)
+        localStorage.setItem('approval_permission', response.data.approval_permission)
+        localStorage.setItem('delete_permission', response.data.delete_permission)
           toast.success('Login Success !', {
             position:'top-right',
             autoClose:1000,
@@ -74,12 +107,7 @@ export default function Login() {
       //  autoClose:5000,
       //  onClose: () => history.push('/')
       //     navigate('/home')
-          localStorage.setItem('token', response.data.access_token)
-          localStorage.setItem('fname', response.data.fname)
-          localStorage.setItem('lname', response.data.lname)
-          localStorage.setItem('bio_id', response.data.user_id)
-          localStorage.setItem('site', response.data.site)
-          localStorage.setItem('designation', response.data.designation)
+
         }
       })
       .catch(error => {

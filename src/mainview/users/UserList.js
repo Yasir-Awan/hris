@@ -1,9 +1,62 @@
 import React,{useEffect,useState} from 'react';
 import { DataGrid} from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { Box,Select } from '@mui/material';
 import axios from 'axios';
 
+const SelectEditInputCell = ({ id, value, field, row, onSave, }) => {
+  const [editedValue, setEditedValue] = useState(value);
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+
+    axios({
+      method: 'get',
+      url: 'roles_list_dropdown',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+    })
+      .then(function (response) {
+        if (response.data.roles_dropdown_info) {
+          setRoles(response.data.roles_dropdown_info)
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }, []);
+
+  const handleChange = (event) => {
+    setEditedValue(event.target.value);
+    console.log(roles)
+  };
+
+  const handleSave = () => {
+    const selectedRole = roles.find(item => item.id === editedValue);
+    console.log(selectedRole)
+    onSave(id, field, row.emp_bio_id, selectedRole.name, editedValue);
+  };
+
+  return (
+    <Select
+      value={editedValue}
+      onChange={handleChange}
+      onBlur={handleSave} // Save on blur
+      size="small"
+      sx={{ height: 1, width: "100%" }}
+      native
+      autoFocus
+      disabled={localStorage.getItem('edit_permission') !== '1'}
+    >
+      {roles.map((role, index) => (
+        <option key={index} value={role.id}>
+          {role.name}
+        </option>
+      ))}
+    </Select>
+  );
+};
+
 const UserList = () => {
+
 const [data, setData] = useState({
   loading: true,
   rows: [],
@@ -13,55 +66,84 @@ const [data, setData] = useState({
   page: 1
 });
 const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
+
 const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
 
-  useEffect(() => {
+const editPermission = localStorage.getItem('edit_permission');
 
-    let counter = 1;
-    let epmloyeeRecords = [];
-    axios({
-      method: 'post',
-      url: 'user_list',
-      headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
-      data: {
-        pageSize: data.pageSize,
-        page: data.page,
-        filters: filterModel, // pass filterModel to the server,
-        designation: localStorage.getItem('designation'),
-        emp_id: localStorage.getItem('bio_id')
-      },
-    }
-    )
-      .then(function (response) {
-        if(response.data.employees_rows){
-          response.data.employees_rows.forEach(element => {
-              epmloyeeRecords.push({'id':counter,'fullname':element.fullname , 'email':element.email,
-              'password':element.password, 'site_name':element.site_name, 'contact':element.contact, 'address':element.address,
-              'type_of_employee':element.type_of_employee, 'consultant':element.consultant, 'section_name':element.section_name,'field_name':element.field_name,
-              'designation_name':element.designation_name,
-          page:response.data.page,
-          pagesize:response.data.pagesize,
-        });
-          counter++;
-          }
-            );
-        }
-        else{}
-        setTimeout(() => {
-          const rows = epmloyeeRecords;
-          updateData("totalRows", response.data.total_rows);
-              setTimeout(() => {
-                updateData("loading", false);
-              }, 100);
-              updateData("rows", rows);
-        }, 100);
-      })
-      .catch(error => {
-        console.log(error);
-          })
+  useEffect(() => {
+    updateData("loading", true);
+    refreshUsersList()
 
     },[data.page,data.pageSize,filterModel])
 
+    const refreshUsersList = () => {
+      let counter = 1;
+          let epmloyeeRecords = [];
+          axios({
+            method: 'post',
+            url: 'user_list',
+            headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+            data: {
+              pageSize: data.pageSize,
+              page: data.page,
+              filters: filterModel, // pass filterModel to the server,
+              role: localStorage.getItem('role'),
+              emp_id: localStorage.getItem('bio_id'),
+              employees: JSON.parse(localStorage.getItem('employees'))
+            },
+          }
+          )
+            .then(function (response) {
+              if(response.data.employees_rows){
+                response.data.employees_rows.forEach(element => {
+                    epmloyeeRecords.push({'id':counter,'fullname':element.fullname , 'email':element.email,
+                    'password':element.password, 'site_name':element.site_name, 'contact':element.contact, 'address':element.address,
+                    'type_of_employee':element.type_of_employee, 'consultant':element.consultant, 'section_name':element.section_name,'role_name':element.role_name,
+                    'designation_name':element.designation_name,'emp_bio_id':element.bio_ref_id,
+                page:response.data.page,
+                pagesize:response.data.pagesize,
+              });
+                counter++;
+                }
+              );
+              }
+              else{}
+              // setTimeout(() => {
+                const rows = epmloyeeRecords;
+                updateData("totalRows", response.data.total_rows);
+                    // setTimeout(() => {
+                      updateData("loading", false);
+                    // }, 100);
+                    updateData("rows", rows);
+              // }, 100);
+            })
+            .catch(error => {
+              console.log(error);
+                })
+    }
+
+    const handleCellEdit = (rowId, field, emp_bio_id, selectedRoleName, editedValue) => {
+      // Make the API call
+      axios({
+        method: 'post',
+        url: 'update_employee_role',
+        headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+        data: {
+          bio_id: emp_bio_id,
+          hr_role: editedValue,
+        },
+      })
+        .then(function (response) {
+          console.log("success");
+          // Refresh the users list after successful update
+          refreshUsersList();
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle error if needed
+        });
+    };    
 
     const columns = [
       { field: 'id', headerName: 'Id', width: 20,headerAlign:'center',align:'center',
@@ -79,7 +161,13 @@ const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
       { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
       { field: 'contact', headerName: 'Contact', width: 180,headerAlign:'center',align:'center'},
       { field: 'section_name', headerName: 'Section', width: 180,headerAlign:'center',align:'center'},
-      { field: 'field_name', headerName: 'Field', width: 180,headerAlign:'center',align:'center'},
+      { field: 'role_name', headerName: 'Permission', width: 180,headerAlign:'center',align:'center',
+      renderEditCell: (params) => (
+        // console.log(params)
+        <SelectEditInputCell {...params} onSave={handleCellEdit} disabled={editPermission}/>
+      ),
+      editable: true,
+      },
   ];
 
     return (

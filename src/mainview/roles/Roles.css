@@ -1,0 +1,10 @@
+.modules-cell {
+    overflow: hidden; 
+    padding: 6px; 
+  }
+  
+  .modules-cell:hover {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+  

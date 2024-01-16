@@ -56,8 +56,9 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
               pageSize: tableData.pageSize,
               page: tableData.page,
               filters: filterModel, // pass filterModel to the server,
-              designation: localStorage.getItem('designation'),
-              emp_id: localStorage.getItem('bio_id')
+              role: localStorage.getItem('role'),
+              emp_id: localStorage.getItem('bio_id'),
+              employees: JSON.parse(localStorage.getItem('employees'))
             },
           }
           )
@@ -74,14 +75,14 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
                 );
               }
               else{}
-              setTimeout(() => {
+              // setTimeout(() => {
                 const rows = mydata;
                 updateData("totalRows", response.data.total_rows);
-                    setTimeout(() => {
+                    // setTimeout(() => {
                       updateData("rows", rows);
                       updateData("loading", false);
-                    }, 100);
-              }, 100);
+                    // }, 100);
+              // }, 100);
             })
             .catch(error => {
               console.log(error);
@@ -89,16 +90,16 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
                   // api call for schedule list END
       }
 
-      const ConditionalComponent = ({ designation }) => {
-        if (designation ==='3') {
+      const ConditionalComponent = ({ role }) => {
+        if (role ==='4') {
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
+                  </Box>;
+        } else {
           return <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
                       <CustomizedDialogs size='small' title= "Add New Schedule" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) } refreshList={refreshSchedulesList}>
                           <AddSchedule name={shifts} refreshList = { refreshSchedulesList }/>
                       </CustomizedDialogs>
                   </Box>
-        } else {
-          return <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
-                  </Box>;
         }
       }
 
@@ -125,7 +126,7 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
     return (
       <>
         <div className="container">
-            <ConditionalComponent designation={localStorage.getItem('designation')}/>
+            <ConditionalComponent role={localStorage.getItem('role')}/>
             <DataGrid
                 autoHeight
                 density="standard"

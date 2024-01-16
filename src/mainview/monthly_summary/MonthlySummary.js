@@ -19,8 +19,9 @@ import './MonthlySummary.css';
                     page: data.page,
                     customFilter:customFilter,
                     filters: filterModel,
-                    designation: localStorage.getItem('designation'),
+                    role: localStorage.getItem('role'),
                     emp_id: localStorage.getItem('bio_id'),
+                    employees: JSON.parse(localStorage.getItem('employees'))
                 },
                 {
                     headers: {
@@ -47,12 +48,12 @@ import './MonthlySummary.css';
                                             pagesize:response.data.pagesize,
                 }));
         
-                setTimeout(() => {
+                // setTimeout(() => {
                     const rows = summaryRecords;
                     updateData("totalRows", response.data.total_rows);
                     updateData("rows", rows);
                     updateData("loading", false);
-                }, 100);
+                // }, 0.1);
                 
             } catch (error) {
                 console.error('API Error:', error);

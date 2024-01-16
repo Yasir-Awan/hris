@@ -75,7 +75,8 @@ import './AttendanceList.css';
           customFilter:updatedCustomFilter,
           filters: filterModel, // pass filterModel to the server,
           designation: localStorage.getItem('designation'),
-          emp_id: localStorage.getItem('bio_id')
+          emp_id: localStorage.getItem('bio_id'),
+          employees: JSON.parse(localStorage.getItem('employees'))
         },
       })
       .then(function (response) {
@@ -102,14 +103,14 @@ import './AttendanceList.css';
                         });
                       } else {}
 
-              setTimeout(() => {
+              // setTimeout(() => {
                 const rows = attendanceRows;
                 updateData("totalRows", response.data.total_rows);
-                    setTimeout(() => {
+                    // setTimeout(() => {
                       updateData("rows", rows);
                       updateData("loading", false);
-                    }, 100);
-              }, 200);
+                    // }, 0.0001);
+              // }, 200);
       })
       .catch(error => {
         console.error(error);// Handle errors or show a user-friendly message

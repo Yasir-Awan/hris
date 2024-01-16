@@ -90,9 +90,10 @@ function AddSchedule(props) {
               if(value === '1'){
                 // api call for users list START
                 axios({
-                        method: 'get',
+                        method: 'post',
                         url:'employees_list_for_filters',
-                        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
+                        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+                        data: { employees: JSON.parse(localStorage.getItem('employees'))},
                       })
                     .then(function (response) {
                           let usersRecord = [];
@@ -111,9 +112,10 @@ function AddSchedule(props) {
                 setFilterBySite(true)
                     // api call for sites list START
                     axios({
-                        method: 'get',
+                        method: 'post',
                         url:'sites_list',
-                        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
+                        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+                        data: { sites: JSON.parse(localStorage.getItem('sites'))},
                       })
                     .then(function (response) {
                           let sitesRecord = [];

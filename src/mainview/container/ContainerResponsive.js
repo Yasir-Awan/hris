@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {Card,CardContent,Typography,Grid,} from '@mui/material';
 import UserList from '../users/UserList';
 import ShiftsList from '../shift/ShiftsList';
+import RolesList from '../roles/RolesList';
 import ScheduleList from '../schedule/ScheduleList';
 import LeavesList from '../leaves/LeavesList';
 import AttendanceCard from './AttendanceCard';
@@ -51,8 +52,8 @@ export default function BasicCard(props) {
       return renderSummaryCard();
     case 5:
       return renderCard('Employees List', <UserList />);
-    case 6:
-      return renderCard('Shifts List', <ShiftsList />);
+    case 9:
+      return renderCard('Roles List', <RolesList />);
     default:
       return null;
   }

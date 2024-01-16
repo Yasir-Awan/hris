@@ -14,85 +14,113 @@ const Home = props => {
 
   const { page } = useParams();
 
-  const tabNameToIndex = {
-    1: "schedules",
-    2 : "leaves",
-    3: "attendance",
-    4: "monthly_summary",
-    5 : "employees",
-    6 : "shifts",
-    7: "remarks",
-    8: "teams",
-    9: "projects"
-  }
-  const  indexToTabName = {
-      "schedules":1,
-      "leaves":2,
-      "attendance":3,
-      "monthly_summary":4,
-      "employees":5,
-      "shifts":6,
-      "remarks":7,
-      "teams":8,
-      "projects":9}
+  const tabNameToIndex = JSON.parse(localStorage.getItem('tabNameToIndex'))
+  const  indexToTabName = JSON.parse(localStorage.getItem('indexToTabName'))
   const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
   const [SelectedTab,setSelectedTab] = useState(indexToTabName[page])
 
+  // Convert object to array of objects
+  const tabsConfig = Object.keys(tabNameToIndex).map(key => ({
+    key,
+    value: tabNameToIndex[key]
+  }));
+
+  console.log(tabsConfig)
+
+  const keys = tabsConfig.map(entry => parseInt(entry.key));
+  const minKey = Math.min(...keys);
+  const maxKey = Math.max(...keys);
+
+  const resultArray = Array.from({ length: maxKey - minKey + 1 }, (_, index) => {
+    const key = String(minKey + index);
+    const existingEntry = tabsConfig.find(entry => entry.key === key);
+
+    return existingEntry ? { ...existingEntry } : { key, value: "" };
+  });
+
+  console.log(resultArray);
+
+
+  // console.log(resultArray);
+
+  const indexofTab = (naam) => {
+    return indexToTabName[naam]
+  }
+
+
   const handleChange = (event, newValue) => {
-    navigate(`/home/${tabNameToIndex[newValue]}`);
+    console.log(event.target.innerText.toLowerCase())
+      let tabu = indexofTab(event.target.innerText.toLowerCase());
+        console.log(tabu)
+  //   const selectedTabKey = tabsConfig.find((tab) => tab.value === newValue)?.key;
+  //   console.log(selectedTabKey);
     setSelectedTab(newValue);
+  //   // alert(newValue)
+    navigate(`/home/${tabNameToIndex[newValue]}`);
+  //   // setSelectedTab(newValue);
   };
 
   const theme = useTheme();
   const scheduleData = location.state && location.state.scheduleData;
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
-  const ConditionalComponent = ({ designation }) => {
-    const tabGradientBackground = 'linear-gradient(135deg, #388E3C, #4CAF50)'; // Gradient background for the tabs
-    if (designation ==='3') {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
+  const getTabs = () => {
+    console.log(resultArray)
+    return resultArray.map((tab) => (
+      tab.value ? (  // Use ternary operator for conditional rendering
+                      <Tab
+                        key={tab.key}
+                        label={tab.value}
+                        sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold' }}
+                      />
+                    ) : (
+                      <Tab style={{ display: 'none' }}  disabled label="" />
+                    )
+    ));
+  };
+
+  const TabsComponent = () => {
+    const tabs = getTabs();
+      return <Tabs textColor='inherit' value={SelectedTab}   onChange={(event, newValue) => handleChange(event, newValue, tabsConfig)} indicatorColor='secondary' 
                 sx={{ marginLeft: 'auto',
                       marginRight: 'auto', 
                       color: 'white',
-                      background: tabGradientBackground,
+                      background: '#42ab45',
                       borderRadius: '8px', // Add some border-radius for a softer look
                       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
                       }}>
       <Tab style={{ display: 'none' }}  disabled label="" /> 
-      <Tab label="Schedules" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Leaves" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Attendance" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Summary" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Employees" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Shifts" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Remarks" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Teams" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-      <Tab label="Projects" sx={{ fontFamily: 'Quicksand, sans-serif',fontWeight: 'bold', }}/>
-    </Tabs>;
-    } else {
-      return <Tabs textColor='inherit' value={SelectedTab} onChange={handleChange} indicatorColor='secondary' 
-                  sx={{ marginLeft: 'auto',
-                        marginRight: 'auto', 
-                        color: 'white', 
-                        background: tabGradientBackground,
-                        borderRadius: '8px', // Add some border-radius for a softer look
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
-                        }}>
-      <Tab style={{ display: 'none' }}  disabled label="" /> 
-      <Tab label="Schedules"/>
-      <Tab label="Leaves"/>
-      <Tab label="Attendance"/>
-      <Tab label="Summary"/>
-      {/* <Tab label="Employees"/>
-      <Tab label="Shifts"/>
-      <Tab label="Remarks"/>
-      <Tab label="Teams"/>
-      <Tab label="Projects"/> */}
-    </Tabs>;
-    }
+      {tabs}
+    </Tabs>;  
   }
+
+  const renderContent = (selectedTab) => {
+    switch (selectedTab) {
+      case 1:
+        return <ContainerResponsive name={selectedTab} />;
+      case 2:
+        return <ContainerResponsive name={selectedTab} />;
+      case 3:
+        return <ContainerResponsive name={selectedTab} />;
+      case 4:
+        return <ContainerResponsive name={selectedTab} />;
+      case 5:
+        return <ContainerResponsive name={selectedTab} />;
+      case 6:
+        return <Remarks />;
+      case 7:
+        return <Teams />;
+      case 8:
+        return <Projects />;
+      case 9:
+        return <ContainerResponsive name={selectedTab} />;
+      default:
+        return null;
+    }
+  };
+  
 
   if (scheduleData) {
     return (
@@ -125,8 +153,7 @@ const Home = props => {
                   <Typography variant='h4' component='div' sx={{fontFamily: 'Quicksand, sans-serif', ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
                     HRIS
                   </Typography>
-
-              <ConditionalComponent designation={localStorage.getItem('designation')}/>
+              <TabsComponent/>
               <AccountMenu/>
               {/* <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button> */}
                   </>
@@ -135,15 +162,7 @@ const Home = props => {
             </Toolbar>
           </AppBar>
 
-          { SelectedTab === 1 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 2 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 3 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 4 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 5 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 6 && <ContainerResponsive name={SelectedTab}></ContainerResponsive>}
-          { SelectedTab === 7 && <Remarks/>}
-          { SelectedTab === 8 && <Teams/>}
-          { SelectedTab === 9 && <Projects/>}
+          {renderContent(SelectedTab)}
       </>
     )
     }
