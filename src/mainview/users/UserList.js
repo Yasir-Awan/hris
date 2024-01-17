@@ -161,7 +161,7 @@ const editPermission = localStorage.getItem('edit_permission');
       { field: 'email', headerName: 'Email', width: 300,headerAlign:'center',align:'center'},
       { field: 'contact', headerName: 'Contact', width: 180,headerAlign:'center',align:'center'},
       { field: 'section_name', headerName: 'Section', width: 180,headerAlign:'center',align:'center'},
-      { field: 'role_name', headerName: 'Permission', width: 180,headerAlign:'center',align:'center',
+      { field: 'role_name', headerName: 'Role', width: 180,headerAlign:'center',align:'center',
       renderEditCell: (params) => (
         // console.log(params)
         <SelectEditInputCell {...params} onSave={handleCellEdit} disabled={editPermission}/>
