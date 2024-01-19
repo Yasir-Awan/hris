@@ -12,39 +12,44 @@ import './Roles.css';
     const [loading,setLoading] = useState(true)
 
     useEffect(() => {
-        refreshRolesList();
+        const fetchData = async () => {
+            try {
+                await refreshRolesList();
+            } catch (error) {
+                console.error('Error fetching roles list:', error);
+            }
+        };
+
+        fetchData();
+        // refreshRolesList();
     }, []);
 
-    const refreshRolesList = () => {
-        let rolesRecords =[];
-        // api call for roles list START
-        axios({
-            method: 'get',
-            url:'roles_list',
-            headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),
+    const refreshRolesList = async () => {
+        try {
+            const response = await axios.get('roles_list', {
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+            });
+
+            const rolesRecords = response.data.role_info.map(element => ({
+                'id':element.id,
+                'name':element.name,
+                'read_permission':element.read_permission,
+                'write_permission':element.write_permission,
+                'edit_permission':element.edit_permission,
+                'approval_permission':element.approval_permission,
+                'delete_permission':element.delete_permission,
+                'modules':element.modules,
+                'employees': element.employees,
+                'sites': element.sites,
+            }));
+
+            setRolesList(rolesRecords);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error refreshing roles list:', error);
         }
-        })
-            .then(function (response) {
-                response.data.role_info.forEach(element => {
-                    rolesRecords.push({
-                                        'id':element.id,
-                                        'name':element.name,
-                                        'read_permission':element.read_permission,
-                                        'write_permission':element.write_permission,
-                                        'edit_permission':element.edit_permission,
-                                        'approval_permission':element.approval_permission,
-                                        'delete_permission':element.delete_permission,
-                                        'modules':element.modules,
-                                        'employees': element.employees,
-                                        'sites': element.sites,
-                                    })
-                });
-                setLoading(true)
-                setRolesList(rolesRecords)
-                setLoading(false)
-            })
-            .catch(error => {});// api call for roles list END
-    }
+    };
+
 
     const handleDeleteModule = (chipToDelete, rowId) => () => {
         axios({
@@ -55,8 +60,7 @@ import './Roles.css';
                 module_id: chipToDelete.module_id,
                 role_id: chipToDelete.id
             },
-            }
-            )
+            })
             .then(function (response) {
                 if(response.data.status === '200'){
                     setRolesList((prevRolesList) =>
@@ -67,10 +71,9 @@ import './Roles.css';
                                     modules: role.modules.filter((data) => data !== chipToDelete)
                                 }
                             : role
-                    )
-                );
+                    ));
                 }
-                else{ console.error('module could not deleted') } 
+                else{ console.error('module could not deleted') }
             })
             .catch(error => {
                 console.log(error);
@@ -78,8 +81,6 @@ import './Roles.css';
     };
 
     const handleDeleteEmployee = (chipToDelete, rowId) => () => {
-        console.log(rowId)
-        console.log(chipToDelete)
 
         axios({
             method: 'post',
@@ -104,7 +105,7 @@ import './Roles.css';
                 )
                 );
                 }
-                else{ console.error('employees could not deleted') } 
+                else{ console.error('employees could not deleted') }
             })
             .catch(error => {
                 console.log(error);
@@ -135,7 +136,7 @@ import './Roles.css';
                     )
                 );
                 }
-                else{ console.error('module could not deleted') } 
+                else{ console.error('module could not deleted') }
             })
             .catch(error => {
                 console.log(error);
@@ -179,7 +180,7 @@ import './Roles.css';
                 </div>
             </>
         ),
-        
+
         },
 
         { field: 'employees', headerName: 'Employees', width: '340' , headerAlign:'center',
@@ -197,7 +198,7 @@ import './Roles.css';
                         return data && data.employee_name ? (
                             <Chip
                             key={index}
-                            size="small" 
+                            size="small"
                             icon={icon}
                             label={data.employee_name}
                             onDelete={params.row.name === 'Individual' ? undefined : handleDeleteEmployee(data,params.row.id)}
@@ -224,7 +225,7 @@ import './Roles.css';
                         return data && data.site_name ? (
                             <Chip
                             key={index}
-                            size="small" 
+                            size="small"
                             icon={icon}
                             label={data.site_name}
                             onDelete={params.row.name === 'Individual' ? undefined : handleDeleteSite(data,params.row.id)}
