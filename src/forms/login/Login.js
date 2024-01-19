@@ -3,7 +3,6 @@ import {useNavigate} from 'react-router-dom';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-// import TextField from '@mui/joy/TextField';
 import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import axios from 'axios';
@@ -11,24 +10,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Input } from '@mui/joy';
 
-
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
 
   // necessary for server-side rendering
   // because mode is undefined on the server
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  React.useEffect(() => { setMounted(true); }, []);
 
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) { return null; }
 
   return (
-    <Button
-      variant="outlined"
+    <Button variant="outlined"
       onClick={() => {
         setMode(mode === 'light' ? 'dark' : 'light');
       }}
@@ -38,7 +31,7 @@ function ModeToggle() {
   );
 }
 
-axios.defaults.baseURL = 'http://58.27.166.43/hris_ci/';
+axios.defaults.baseURL = 'http://58.27.166.43:80/hris_ci/';
 
 export default function Login() {
 
@@ -62,71 +55,57 @@ export default function Login() {
   localStorage.setItem('delete_permission', '')
 
   const loginFormSubmit = (event) => {
-
     event.preventDefault();
-    console.log(loginFormData);
     axios({
       method: 'post',
       url:'login',
       data: loginFormData
     })
       .then(function (response) {
-        console.log(response);
-        if(response.data)
-        {
-          let employeesArray = response.data.employees.map(function(str) {
-            return parseInt(str, 10);
-        });
-
-        let sitesArray = response.data.sites.map(function(str) {
-          return parseInt(str, 10);
-      });
-        localStorage.setItem('token', response.data.access_token)
-        localStorage.setItem('fname', response.data.fname)
-        localStorage.setItem('lname', response.data.lname)
-        localStorage.setItem('bio_id', response.data.user_id)
-        localStorage.setItem('site', response.data.site)
-        localStorage.setItem('designation', response.data.designation)
-        localStorage.setItem('role', response.data.role)
-        localStorage.setItem('employees', JSON.stringify(employeesArray));
-        localStorage.setItem('sites', JSON.stringify(sitesArray));
-        localStorage.setItem('indexToTabName', JSON.stringify(response.data.indexToTabName))
-        localStorage.setItem('tabNameToIndex', JSON.stringify(response.data.tabNameToIndex))
-        localStorage.setItem('read_permission', response.data.read_permission)
-        localStorage.setItem('write_permission', response.data.write_permission)
-        localStorage.setItem('edit_permission', response.data.edit_permission)
-        localStorage.setItem('approval_permission', response.data.approval_permission)
-        localStorage.setItem('delete_permission', response.data.delete_permission)
-          toast.success('Login Success !', {
-            position:'top-right',
-            autoClose:1000,
-            onClose: () => navigate('/home')
-        });
-      //     toast('login Failed');
-      //     position:'top-center'
-      //  autoClose:5000,
-      //  onClose: () => history.push('/')
-      //     navigate('/home')
-
-        }
-      })
-      .catch(error => {
-        toast.error("Invalid Credentials", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-      });
-      console.log(error.response);
-        console.log(error.response.data.error)
-    })
+                                  if(response.data){
+                                                      let employeesArray = response.data.employees.map(function(str) {
+                                                                                                      return parseInt(str, 10);
+                                                                                                            });
+                                                      let sitesArray = response.data.sites.map(function(str) {
+                                                                                                  return parseInt(str, 10);
+                                                                                              });
+                                                      localStorage.setItem('token', response.data.access_token)
+                                                      localStorage.setItem('fname', response.data.fname)
+                                                      localStorage.setItem('lname', response.data.lname)
+                                                      localStorage.setItem('bio_id', response.data.user_id)
+                                                      localStorage.setItem('site', response.data.site)
+                                                      localStorage.setItem('designation', response.data.designation)
+                                                      localStorage.setItem('role', response.data.role)
+                                                      localStorage.setItem('employees', JSON.stringify(employeesArray));
+                                                      localStorage.setItem('sites', JSON.stringify(sitesArray));
+                                                      localStorage.setItem('indexToTabName', JSON.stringify(response.data.indexToTabName))
+                                                      localStorage.setItem('tabNameToIndex', JSON.stringify(response.data.tabNameToIndex))
+                                                      localStorage.setItem('read_permission', response.data.read_permission)
+                                                      localStorage.setItem('write_permission', response.data.write_permission)
+                                                      localStorage.setItem('edit_permission', response.data.edit_permission)
+                                                      localStorage.setItem('approval_permission', response.data.approval_permission)
+                                                      localStorage.setItem('delete_permission', response.data.delete_permission)
+                                                      toast.success('Login Success !', {
+                                                        position:'top-right',
+                                                        autoClose:1000,
+                                                        onClose: () => navigate('/home')
+                                                    });
+                                                  }
+          })
+          .catch(error => {
+                      toast.error("Invalid Credentials", {
+                        position: "top-right",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                    });
+          })
   }
 
   const inputEvent = (event) => {
-
     const {name,value} = event.target;
     setLoginFormData((preValue)=>{
       console.log(preValue);
@@ -183,7 +162,6 @@ export default function Login() {
               required
             />
 
-
             <Button type="submit" sx={{ mt: 1 /* margin top */ }} >
               Log in
             </Button>
@@ -194,11 +172,11 @@ export default function Login() {
             >
               Don't have an account?
             </Typography>
-
             </Sheet>
         </form>
     </CssVarsProvider>
     <ToastContainer/>
     </>
   );
+
 }

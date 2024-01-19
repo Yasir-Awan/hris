@@ -4,7 +4,7 @@ import axios from "axios";
 import { Box,Typography } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import { blue } from '@mui/material/colors';
+import { red,deepPurple,green } from '@mui/material/colors';
 import './Roles.css';
 
     const RolesList = () => {
@@ -158,7 +158,7 @@ import './Roles.css';
                     {params.row.modules.map((data, index) => {
                         let icon;
                         icon = (
-                            <Avatar sx={{ width: 20, height: 20, bgcolor: blue[700] }} style={{ color: '#ffff' }}>
+                            <Avatar sx={{ width: 20, height: 20, bgcolor: green[700] }} style={{ color: '#ffff' }}>
                                 <Typography variant="body2" sx={{ fontSize: 12 }}>
                                     {index + 1}
                                 </Typography>
@@ -168,6 +168,7 @@ import './Roles.css';
                             return data && data.module_name ? (  // Use ternary operator for conditional rendering
                         <Chip
                             key={index}
+                            style={{ color: green[700] }}
                             size="small"
                             icon={icon}
                             label={data.module_name}
@@ -190,13 +191,14 @@ import './Roles.css';
                         {
                         params.row.employees.map((data,index) => {
                         let icon;
-                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: blue[700], }} style={{ color: '#ffff' }}>
+                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: green[700], }} style={{ color: '#ffff' }}>
                                                     <Typography variant="body2" sx={{ fontSize: 12 }}>
                                                         {index + 1}
                                                     </Typography>
                                                     </Avatar>;
                         return data && data.employee_name ? (
                             <Chip
+                            style={{ color: green[700] }}
                             key={index}
                             size="small"
                             icon={icon}
@@ -217,7 +219,7 @@ import './Roles.css';
                         {
                         params.row.sites.map((data,index) => {
                         let icon;
-                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: blue[700], }} style={{ color: '#ffff' }}>
+                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: green[700], }} style={{ color: '#ffff' }}>
                                                     <Typography variant="body2" sx={{ fontSize: 12 }}>
                                                         {index + 1}
                                                     </Typography>
@@ -225,6 +227,7 @@ import './Roles.css';
                         return data && data.site_name ? (
                             <Chip
                             key={index}
+                            style={{ color: green[700] }}
                             size="small"
                             icon={icon}
                             label={data.site_name}
