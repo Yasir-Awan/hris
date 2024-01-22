@@ -1,11 +1,99 @@
 import React,{useState, useEffect} from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import axios from "axios";
-import { Box,Typography } from '@mui/material';
+import { Box,Typography,Switch,styled } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import {IconButton} from '@mui/material'
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import { red,deepPurple,green } from '@mui/material/colors';
+import {green } from '@mui/material/colors';
 import './Roles.css';
+
+// Styling part of toogle button  which is used for approval and disapproval of leaves START
+const IOSSwitch = styled((props) => (
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+  ))(({ theme, leavestatus }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+      padding: 0,
+      margin: 2,
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+        transform: 'translateX(16px)',
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          backgroundColor:
+            leavestatus === 'Approved'
+              ? 'green'
+              : leavestatus === 'Disapproved'
+              ? 'red'
+              : theme.palette.mode === 'dark'
+              ? '#2ECA45'
+              : '#65C466',
+          opacity: 1,
+          border: 0,
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+          opacity:
+            leavestatus === 'Pending'
+              ? theme.palette.mode === 'light'
+                ? 0.7
+                : 0.3
+              : 0.5,
+        },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+        color:
+          leavestatus === 'Approved'
+            ? 'green'
+            : leavestatus === 'Disapproved'
+            ? 'red'
+            : '#33cf4d',
+        border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+        color:
+          leavestatus === 'Pending'
+            ? theme.palette.mode === 'light'
+              ? theme.palette.grey[300] // Grey color for pending
+              : theme.palette.grey[700]
+            : leavestatus === 'Approved'
+            ? 'green'
+            : 'red',
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity:
+          leavestatus === 'Pending'
+            ? theme.palette.mode === 'light'
+              ? 0.7
+              : 0.3
+            : 0.5,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: 22,
+      height: 22,
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 26 / 2,
+      backgroundColor:
+        leavestatus === 'Approved'
+          ? 'green'
+          : leavestatus === 'Disapproved'
+          ? 'red'
+          : theme.palette.mode === 'light'
+          ? '#E9E9EA'
+          : '#39393D',
+      opacity: 1,
+      transition: theme.transitions.create(['background-color'], {
+        duration: 500,
+      }),
+    },
+  }));
+  //END Styling part of toogle button  which is used for approval and disapproval of leaves
 
     const RolesList = () => {
     const [rolesList,setRolesList] = useState([])
@@ -49,6 +137,49 @@ import './Roles.css';
             console.error('Error refreshing roles list:', error);
         }
     };
+
+    const handleToggleLeaveApproval = (leaveId, currentStatus,rowId) => {
+        // Determine the new status based on the current status
+        let newStatus;
+        if (currentStatus === 'Pending') {
+          newStatus = 'Approved';
+        } else if (currentStatus === 'Approved') {
+          newStatus = 'Disapproved';
+        } else if (currentStatus === 'Disapproved') {
+          newStatus = 'Approved';
+        }
+              // Send an API request to update the leave status
+              axios({
+                method: 'post',
+                url: newStatus === 'Approved' ? 'approve_leave' : 'disapprove_leave',
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                data: {
+                  leave_id: leaveId,
+                },
+              })
+                .then(function (response) {
+                  if (response.data.status === '200') {
+                    toast.success(`Leave ${newStatus}`, {
+                      position: 'top-right',
+                      autoClose: 1000,
+                      onClose: () => {
+                        // Handle any redirection or page refresh if needed
+                      },
+                    });
+                  } else {
+                    toast.error('Failed to update leave status', {
+                      position: 'top-right',
+                      autoClose: 1000,
+                    });
+                  }
+                  // After a successful API response, update the state to reflect the change.
+                  const updatedRows = rolesList.map((row) =>
+                    row.id === rowId ? { ...row, leave_status: newStatus } : row
+                  );
+                  setRolesList((prevData) => ({ ...prevData, rows: updatedRows }));
+                })
+                .catch((error) => console.error(error));
+        };
 
 
     const handleDeleteModule = (chipToDelete, rowId) => () => {

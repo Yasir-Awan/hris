@@ -21,7 +21,7 @@ function AddLeave( props ) {
     let sendingData ;
     if(localStorage.getItem('role')==='4'){
         sendingData = {
-            user_bio_id : AddLeaveFormData.emp_id,
+            user_bio_id : localStorage.getItem('bio_id'),
             leave_type: AddLeaveFormData.leave_type,
             start_date: AddLeaveFormData.leave_start,
             end_date: AddLeaveFormData.leave_end,
@@ -102,7 +102,7 @@ function AddLeave( props ) {
                         url: 'check_leave_start_date',
                         headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                         data: {
-                                user_id: AddLeaveFormData.emp_id,
+                                user_id: localStorage.getItem('bio_id'),
                                 from_date: reArrangedDateTime,
                             },
                     })
@@ -162,7 +162,7 @@ function AddLeave( props ) {
                         url: 'check_leave_end_date',
                         headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                         data: {
-                                user_id: AddLeaveFormData.emp_id,
+                                user_id: localStorage.getItem('bio_id'),
                                 to_date: reArrangedDateTime,
                             },
                     })
@@ -222,7 +222,7 @@ function AddLeave( props ) {
                         url: 'check_leave_start_date',
                         headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                         data: {
-                                user_id: AddLeaveFormData.emp_id,
+                                user_id: localStorage.getItem('bio_id'),
                                 from_date: reArrangedDateTime,
                             },
                     })
@@ -285,7 +285,7 @@ function AddLeave( props ) {
                         url: 'check_leave_end_date',
                         headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                         data: {
-                                user_id: AddLeaveFormData.emp_id,
+                                user_id: localStorage.getItem('bio_id'),
                                 to_date: reArrangedDateTime,
                             },
                     })
