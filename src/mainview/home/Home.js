@@ -73,7 +73,7 @@ const Home = props => {
                       <Tab
                         key={tab.key}
                         label={tab.value}
-                        sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold' }}
+                        sx={{ fontFamily: 'Quicksand, sans-serif', fontWeight: 'bold',color:'#582a1d' }}
                       />
                     ) : (
                       <Tab style={{ display: 'none' }}  disabled label="" />
@@ -83,17 +83,17 @@ const Home = props => {
 
   const TabsComponent = () => {
     const tabs = getTabs();
-      return <Tabs textColor='inherit' value={SelectedTab}   onChange={(event, newValue) => handleChange(event, newValue, tabsConfig)} indicatorColor='secondary' 
+      return <Tabs textColor='inherit' value={SelectedTab}   onChange={(event, newValue) => handleChange(event, newValue, tabsConfig)} indicatorColor='secondary'
                 sx={{ marginLeft: 'auto',
-                      marginRight: 'auto', 
+                      marginRight: 'auto',
                       color: 'white',
                       background: '#42ab45',
                       borderRadius: '8px', // Add some border-radius for a softer look
                       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
                       }}>
-      <Tab style={{ display: 'none' }}  disabled label="" /> 
+      <Tab style={{ display: 'none' }}  disabled label="" />
       {tabs}
-    </Tabs>;  
+    </Tabs>;
   }
 
   const renderContent = (selectedTab) => {
@@ -120,7 +120,7 @@ const Home = props => {
         return null;
     }
   };
-  
+
 
   if (scheduleData) {
     return (

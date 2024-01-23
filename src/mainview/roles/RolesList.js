@@ -6,13 +6,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import {IconButton} from '@mui/material'
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import {green } from '@mui/material/colors';
+import {deepPurple } from '@mui/material/colors';
 import './Roles.css';
 
 // Styling part of toogle button  which is used for approval and disapproval of leaves START
-const IOSSwitch = styled((props) => (
+const IOSSwitch = styled((props: SwitchProps) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-  ))(({ theme, leavestatus }) => ({
+  ))(({ theme }) => ({
     width: 42,
     height: 26,
     padding: 0,
@@ -24,52 +24,26 @@ const IOSSwitch = styled((props) => (
         transform: 'translateX(16px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor:
-            leavestatus === 'Approved'
-              ? 'green'
-              : leavestatus === 'Disapproved'
-              ? 'red'
-              : theme.palette.mode === 'dark'
-              ? '#2ECA45'
-              : '#65C466',
+          backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
           opacity: 1,
           border: 0,
         },
         '&.Mui-disabled + .MuiSwitch-track': {
-          opacity:
-            leavestatus === 'Pending'
-              ? theme.palette.mode === 'light'
-                ? 0.7
-                : 0.3
-              : 0.5,
+          opacity: 0.5,
         },
       },
       '&.Mui-focusVisible .MuiSwitch-thumb': {
-        color:
-          leavestatus === 'Approved'
-            ? 'green'
-            : leavestatus === 'Disapproved'
-            ? 'red'
-            : '#33cf4d',
+        color: '#33cf4d',
         border: '6px solid #fff',
       },
       '&.Mui-disabled .MuiSwitch-thumb': {
         color:
-          leavestatus === 'Pending'
-            ? theme.palette.mode === 'light'
-              ? theme.palette.grey[300] // Grey color for pending
-              : theme.palette.grey[700]
-            : leavestatus === 'Approved'
-            ? 'green'
-            : 'red',
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[600],
       },
       '&.Mui-disabled + .MuiSwitch-track': {
-        opacity:
-          leavestatus === 'Pending'
-            ? theme.palette.mode === 'light'
-              ? 0.7
-              : 0.3
-            : 0.5,
+        opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
       },
     },
     '& .MuiSwitch-thumb': {
@@ -79,14 +53,7 @@ const IOSSwitch = styled((props) => (
     },
     '& .MuiSwitch-track': {
       borderRadius: 26 / 2,
-      backgroundColor:
-        leavestatus === 'Approved'
-          ? 'green'
-          : leavestatus === 'Disapproved'
-          ? 'red'
-          : theme.palette.mode === 'light'
-          ? '#E9E9EA'
-          : '#39393D',
+      backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
       opacity: 1,
       transition: theme.transitions.create(['background-color'], {
         duration: 500,
@@ -98,6 +65,9 @@ const IOSSwitch = styled((props) => (
     const RolesList = () => {
     const [rolesList,setRolesList] = useState([])
     const [loading,setLoading] = useState(true)
+    const approvalPermission = localStorage.getItem('approval_permission');
+    const writePermission = localStorage.getItem('write_permission');
+    const userRole = localStorage.getItem('role');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -138,28 +108,98 @@ const IOSSwitch = styled((props) => (
         }
     };
 
-    const handleToggleLeaveApproval = (leaveId, currentStatus,rowId) => {
+    const handleToggleWritePermission = (roleId, currentStatus,rowId) => {
         // Determine the new status based on the current status
         let newStatus;
-        if (currentStatus === 'Pending') {
-          newStatus = 'Approved';
-        } else if (currentStatus === 'Approved') {
-          newStatus = 'Disapproved';
-        } else if (currentStatus === 'Disapproved') {
-          newStatus = 'Approved';
+        if (currentStatus === '0') {
+          newStatus = '1';
+        } else if (currentStatus === '1') {
+          newStatus = '0';
         }
+        // } else if (currentStatus === 'Disapproved') {
+        //   newStatus = 'Approved';
+        // }
               // Send an API request to update the leave status
               axios({
                 method: 'post',
-                url: newStatus === 'Approved' ? 'approve_leave' : 'disapprove_leave',
+                url: 'toggle_write_permission',
                 headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                 data: {
-                  leave_id: leaveId,
+                  role_id: roleId,
                 },
               })
                 .then(function (response) {
                   if (response.data.status === '200') {
-                    toast.success(`Leave ${newStatus}`, {
+                    toast.success(`Write Permission Updated`, { position: 'top-right', autoClose: 1000, onClose: () => { /* Handle any redirection or page refresh if needed */ },});
+                  } else {
+                    toast.error('Failed to update leave status', { position: 'top-right', autoClose: 1000, });
+                  }
+                  // After a successful API response, update the state to reflect the change.
+                  const updatedRows = rolesList.map((row) =>
+                    row.id === rowId ? { ...row, write_permission: newStatus } : row
+                  );
+                  setRolesList(updatedRows);
+                })
+                .catch((error) => console.error(error));
+
+    };
+
+    const handleToggleEditPermission = (roleId, currentStatus,rowId) => {
+        // Determine the new status based on the current status
+        let newStatus;
+        if (currentStatus === '0') {
+          newStatus = '1';
+        } else if (currentStatus === '1') {
+          newStatus = '0';
+        }
+        // } else if (currentStatus === 'Disapproved') {
+        //   newStatus = 'Approved';
+        // }
+              // Send an API request to update the leave status
+              axios({
+                method: 'post',
+                url: 'toggle_edit_permission',
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                data: {
+                  role_id: roleId,
+                },
+              })
+                .then(function (response) {
+                  if (response.data.status === '200') {
+                    toast.success(`Edit Permission Updated`, {position: 'top-right',autoClose: 1000,onClose: () => {/* Handle any redirection or page refresh if needed */}, });
+                  } else {
+                    toast.error('Failed to update Role', {position: 'top-right', autoClose: 1000, });
+                  }
+                  // After a successful API response, update the state to reflect the change.
+                  const updatedRows = rolesList.map((row) =>
+                    row.id === rowId ? { ...row, edit_permission: newStatus } : row
+                  );
+                  setRolesList(updatedRows);
+                })
+                .catch((error) => console.error(error));
+
+    };
+
+    const handleToggleApprovePermission = (roleId, currentStatus,rowId) => {
+        // Determine the new status based on the current status
+        let newStatus;
+        if (currentStatus === '0') {
+          newStatus = '1';
+        } else if (currentStatus === '1') {
+          newStatus = '0';
+        }
+              // Send an API request to update the leave status
+              axios({
+                method: 'post',
+                url: 'toggle_approve_permission',
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                data: {
+                  role_id: roleId,
+                },
+              })
+                .then(function (response) {
+                  if (response.data.status === '200') {
+                    toast.success(`Approve Permission Updated`, {
                       position: 'top-right',
                       autoClose: 1000,
                       onClose: () => {
@@ -167,19 +207,63 @@ const IOSSwitch = styled((props) => (
                       },
                     });
                   } else {
-                    toast.error('Failed to update leave status', {
+                    toast.error('Failed to update Approve Permission', {
                       position: 'top-right',
                       autoClose: 1000,
                     });
                   }
                   // After a successful API response, update the state to reflect the change.
                   const updatedRows = rolesList.map((row) =>
-                    row.id === rowId ? { ...row, leave_status: newStatus } : row
+                    row.id === rowId ? { ...row, approval_permission: newStatus } : row
                   );
-                  setRolesList((prevData) => ({ ...prevData, rows: updatedRows }));
+                  setRolesList(updatedRows);
                 })
                 .catch((error) => console.error(error));
-        };
+    };
+
+    const handleToggleDeletePermission = (roleId, currentStatus,rowId) => {
+        // Determine the new status based on the current status
+        let newStatus;
+        if (currentStatus === '0') {
+          newStatus = '1';
+        } else if (currentStatus === '1') {
+          newStatus = '0';
+        }
+              // Send an API request to update the leave status
+              axios({
+                method: 'post',
+                url: 'toggle_delete_permission',
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+                data: {
+                  role_id: roleId,
+                },
+              })
+                .then(function (response) {
+                  if (response.data.status === '200') {
+                    toast.success(`Delelte Permission Updated`, {
+                      position: 'top-right',
+                      autoClose: 1000,
+                      onClose: () => {
+                        // Handle any redirection or page refresh if needed
+                      },
+                    });
+                  } else {
+                    toast.error('Failed to update Delete Permission', {
+                      position: 'top-right',
+                      autoClose: 1000,
+                    });
+                  }
+                  // After a successful API response, update the state to reflect the change.
+                  const updatedRows = rolesList.map((row) =>
+                    row.id === rowId ? { ...row, delete_permission: newStatus } : row
+                  );
+                  setRolesList(updatedRows);
+                })
+                .catch((error) => console.error(error));
+    };
+
+
+
 
 
     const handleDeleteModule = (chipToDelete, rowId) => () => {
@@ -278,10 +362,63 @@ const IOSSwitch = styled((props) => (
         { field: 'id', headerName: 'ID',headerAlign:'center',align:'center' },
         { field: 'name', headerName: 'Role Name', width: 200,headerAlign:'center',align:'center' },
         // { field: 'read_permission', headerName: 'Read', width: 80,headerAlign:'center',align:'center' },
-        { field: 'write_permission', headerName: 'Write', width: 80,headerAlign:'center',align:'center' },
-        { field: 'edit_permission', headerName: 'Edit', width: 80,headerAlign:'center',align:'center' },
-        { field: 'approval_permission', headerName: 'Apporval', width: 80,headerAlign:'center',align:'center' },
-        { field: 'delete_permission', headerName: 'Delete', width: 80,headerAlign:'center',align:'center' },
+        { field: 'write_permission', headerName: 'Write', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
+        renderCell: (params) => (
+            <>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <IOSSwitch
+                color="primary"
+                checked={params.row.write_permission === '1'}
+                onChange={() => handleToggleWritePermission(params.row.id, params.row.write_permission,params.row.id)}
+                status={params.row.write_permission}
+                disabled={writePermission !== '1'} // Disable for non-admin users
+            />
+            </Box>
+            </>
+        ),
+        },
+        { field: 'edit_permission', headerName: 'Edit', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
+                renderCell: (params) => (
+                <>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <IOSSwitch
+                    color="primary"
+                    checked={params.row.edit_permission === '1'}
+                    onChange={() => handleToggleEditPermission(params.row.id, params.row.edit_permission,params.row.id)}
+                    status={params.row.edit_permission}
+                    disabled={approvalPermission !== '1'} // Disable for non-admin users
+                    />
+                    </Box>
+                </>
+                ), },
+        { field: 'approval_permission', headerName: 'Apporval', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
+        renderCell: (params) => (
+        <>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+            <IOSSwitch
+            color="primary"
+            checked={params.row.approval_permission === '1'}
+            onChange={() => handleToggleApprovePermission(params.row.id, params.row.approval_permission,params.row.id)}
+            status={params.row.approval_permission}
+            disabled={approvalPermission !== '1'} // Disable for non-admin users
+            />
+            </Box>
+        </>
+        ), },
+        { field: 'delete_permission', headerName: 'Delete', width: 85 ,hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
+        renderCell: (params) => (
+        <>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+            <IOSSwitch
+            color="primary"
+            checked={params.row.delete_permission === '1'}
+            onChange={() => handleToggleDeletePermission(params.row.id, params.row.delete_permission,params.row.id)}
+            status={params.row.delete_permission}
+            disabled={approvalPermission !== '1'} // Disable for non-admin users
+            />
+            </Box>
+        </>
+        ), },
         { field: 'modules', headerName: 'Modules', width: '340' , headerAlign:'center',
         renderCell: (params) => (
             <>
@@ -289,7 +426,7 @@ const IOSSwitch = styled((props) => (
                     {params.row.modules.map((data, index) => {
                         let icon;
                         icon = (
-                            <Avatar sx={{ width: 20, height: 20, bgcolor: green[700] }} style={{ color: '#ffff' }}>
+                            <Avatar sx={{ width: 20, height: 20, bgcolor: '#582a1d' }} style={{ color: '#ffff' }}>
                                 <Typography variant="body2" sx={{ fontSize: 12 }}>
                                     {index + 1}
                                 </Typography>
@@ -299,7 +436,7 @@ const IOSSwitch = styled((props) => (
                             return data && data.module_name ? (  // Use ternary operator for conditional rendering
                         <Chip
                             key={index}
-                            style={{ color: green[700] }}
+                            style={{ color: '#582a1d' }}
                             size="small"
                             icon={icon}
                             label={data.module_name}
@@ -322,14 +459,14 @@ const IOSSwitch = styled((props) => (
                         {
                         params.row.employees.map((data,index) => {
                         let icon;
-                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: green[700], }} style={{ color: '#ffff' }}>
+                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: '#582a1d', }} style={{ color: '#ffff' }}>
                                                     <Typography variant="body2" sx={{ fontSize: 12 }}>
                                                         {index + 1}
                                                     </Typography>
                                                     </Avatar>;
                         return data && data.employee_name ? (
                             <Chip
-                            style={{ color: green[700] }}
+                            style={{ color: '#582a1d' }}
                             key={index}
                             size="small"
                             icon={icon}
@@ -350,7 +487,7 @@ const IOSSwitch = styled((props) => (
                         {
                         params.row.sites.map((data,index) => {
                         let icon;
-                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: green[700], }} style={{ color: '#ffff' }}>
+                            icon = <Avatar sx={{  width: 20, height: 20, bgcolor: '#582a1d', }} style={{ color: '#ffff' }}>
                                                     <Typography variant="body2" sx={{ fontSize: 12 }}>
                                                         {index + 1}
                                                     </Typography>
@@ -358,7 +495,7 @@ const IOSSwitch = styled((props) => (
                         return data && data.site_name ? (
                             <Chip
                             key={index}
-                            style={{ color: green[700] }}
+                            style={{ color: '#582a1d' }}
                             size="small"
                             icon={icon}
                             label={data.site_name}
@@ -382,6 +519,7 @@ const IOSSwitch = styled((props) => (
                 </CustomizedDialogs> */}
             </Box>
             <DataGrid density="standard" loading={loading} autoHeight rows={rolesList} columns={columns}/>
+            <ToastContainer/>
         </div>
     )
 }
