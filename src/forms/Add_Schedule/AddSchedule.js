@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './AddSchedule.css';
 import axios from 'axios';
-import { 
+import {
           Grid, TextField, Button, Card,Box,Checkbox,
           CardContent, MenuItem,Radio,FormGroup,
           RadioGroup,FormControlLabel,FormLabel,FormControl
@@ -39,7 +39,7 @@ function AddSchedule(props) {
     const [publicHolidays, setPublicHolidays] = useState(0);
     const [publicHolidaysCount, setPublicHolidaysCount] = useState(0);
     const [publicHolidayReason, setPublicHolidaysReason] = useState(null);
-    const [filterBySite,setFilterBySite] = useState(false);  
+    const [filterBySite,setFilterBySite] = useState(false);
      // Handle checkbox states
   const [checkboxStatus, setCheckboxStatus] = useState({});
   const [selectedUsers, setSelectedUsers] = useState([]); // New state for selected users
@@ -50,13 +50,13 @@ function AddSchedule(props) {
       ...prevStatus,
       [userId]: !prevStatus[userId],
     }));
-  
+
     setSelectedUsers((prevSelectedUsers) => {
       if (checkboxStatus[userId]) {
         // If the checkbox is checked, add the user to selectedUsers if not already present
         if (prevSelectedUsers.includes(userId)) {
           return prevSelectedUsers.filter((id) => id !== userId);
-          
+
         }
       } else {
         return [...prevSelectedUsers, userId];
@@ -136,7 +136,7 @@ function AddSchedule(props) {
                 };
               })
             }
-      
+
     const getDates = (startDate, stopDate) => {
         let dateArray = [];
         let currentDate = startDate;
@@ -214,10 +214,11 @@ function AddSchedule(props) {
       setSelectedUsers([])
       setFilteredUsersList([])
       setSelectedSite(value)
+      const employees = JSON.parse(localStorage.getItem('employees'))
                 // api call for site_users list START
                 axios({
                         method: 'get',
-                        url:'site_employees/'+value,
+                        url:'site_employees/'+value+'/'+employees,
                         headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
                       })
                     .then(function (response) {
@@ -464,13 +465,24 @@ function AddSchedule(props) {
                         <form onSubmit={formSubmit}>
                           <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                                 <Grid xs={gridWidth} item>
-                                    <TextField label="Choose Option" name='option_selection' onChange={OptionSelection} select value={addScheduleFormData.option_selection} variant="outlined" sx={{ width: inpuWidth }} required
-                                    SelectProps={{
-                                      multiple: false
-                                    }}>
-                                    <MenuItem value="1">Single Employee</MenuItem>
-                                    <MenuItem value="2">Group by Site</MenuItem>
-                                  </TextField>
+
+                                    {localStorage.getItem('role')==='2' ? (
+                                            <TextField label="Choose Option" name='option_selection' onChange={OptionSelection} select value={addScheduleFormData.option_selection} variant="outlined" sx={{ width: inpuWidth }} required
+                                            SelectProps={{
+                                              multiple: false
+                                            }}>
+                                                <MenuItem value="1">Single Employee</MenuItem>
+                                                <MenuItem value="2">Group by Site</MenuItem>
+                                            </TextField>
+                                    ) : (
+                                      <TextField label="Choose Option" name='option_selection' onChange={OptionSelection} select value={addScheduleFormData.option_selection} variant="outlined" sx={{ width: inpuWidth }} required
+                                      SelectProps={{
+                                        multiple: false
+                                      }}>
+                                          <MenuItem value="1">Single Employee</MenuItem>
+                                          {/* <MenuItem value="2">Group by Site</MenuItem> */}
+                                      </TextField>)
+                                }
                                 </Grid>
                                 {usersList.length > 0 ? (
                                 <Grid xs={6} item >
@@ -506,7 +518,7 @@ function AddSchedule(props) {
                                 }
                                 { rolesList.length > 0 ? (
                                 <Grid xs={12} item >
-                                    <TextField label="Select Role" name='role_id' onChange={handleRoleChange} select value={selectedRole} variant="outlined" sx={{ width: "95%" }} 
+                                    <TextField label="Select Role" name='role_id' onChange={handleRoleChange} select value={selectedRole} variant="outlined" sx={{ width: "95%" }}
                                       SelectProps={{
                                         multiple: false
                                       }}>
@@ -537,7 +549,7 @@ function AddSchedule(props) {
                                           />
                                           ))
                                         }
-                                      
+
                                     </FormGroup>
                                   </FormControl>
                                 </Box>):(<div></div>)

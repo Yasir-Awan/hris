@@ -278,6 +278,17 @@ const IOSSwitch = styled((props) => (
           setShowDialog(true);
         };
 
+           // Function to check conditions for disabling the approve toggle button
+           const isToggleDisabled = (empId) => {
+            const currentEmpId = localStorage.getItem('bio_id');
+            const currentRole = localStorage.getItem('role');
+            const approvalPermission = localStorage.getItem('approval_permission');
+
+            // Disable if empId is not the current user's ID, or role is '2' (assuming '2' means admin), or approvalPermission is not '1'
+            return (empId === currentEmpId && currentRole !== '2') || approvalPermission !== '1';
+          };
+
+
         const columns = [
                           { field: 'id', headerName: 'ID',width:80,headerAlign:'center',align:'center',filterable: false,
                             renderCell: (value) => {
@@ -321,7 +332,7 @@ const IOSSwitch = styled((props) => (
                                   checked={params.row.leave_status === 'Approved'}
                                   onChange={() => handleToggleLeaveApproval(params.row.leave_id, params.row.leave_status,params.row.id)}
                                   leavestatus={params.row.leave_status}
-                                  disabled={approvalPermission !== '1'} // Disable for non-admin users
+                                  disabled={isToggleDisabled(params.row.bio_id)} // Disable for non-admin users
                                 />
                                 </Box>
                               </>
@@ -347,7 +358,7 @@ const IOSSwitch = styled((props) => (
     return (
         <>
           <div style={{ height: 'auto', width: '100%' }}>
-              
+
                 {writePermission === '1' ?(
                   <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
                   <CustomizedDialogs
