@@ -83,18 +83,44 @@ const Home = props => {
 
   const TabsComponent = () => {
     const tabs = getTabs();
-      return <Tabs textColor='inherit' value={SelectedTab}   onChange={(event, newValue) => handleChange(event, newValue, tabsConfig)} indicatorColor='secondary'
-                sx={{ marginLeft: 'auto',
-                      marginRight: 'auto',
-                      color: 'white',
-                      background: '#42ab45',
-                      borderRadius: '8px', // Add some border-radius for a softer look
-                      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Add a subtle shadow
-                      }}>
-      <Tab style={{ display: 'none' }}  disabled label="" />
-      {tabs}
-    </Tabs>;
-  }
+    return (
+      <Tabs
+        textColor='inherit'
+        value={SelectedTab}
+        onChange={(event, newValue) => handleChange(event, newValue, tabsConfig)}
+        indicatorColor='secondary'
+        sx={{
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          color: 'white',
+          background: '#f1f1f1', // Subdued gray background
+          borderRadius: '8px',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          "& .MuiTabs-indicator": {
+            backgroundColor: '#ff5722', // Vibrant orange indicator color
+          },
+          "& .MuiTab-root": {
+            "&:hover": {
+              color: '#ff5722',
+              backgroundColor: '#f9f9f9', // Slightly lighter gray on hover
+              fontWeight: 'bold',
+            },
+          },
+        }}
+      >
+        <Tab style={{ display: 'none' }} disabled label="" />
+        {tabs}
+      </Tabs>
+    );
+  };
+
+
+
+
+
+
+
+
 
   const renderContent = (selectedTab) => {
     switch (selectedTab) {

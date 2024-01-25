@@ -1,13 +1,15 @@
 import React,{useState, useEffect} from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import axios from "axios";
+import CustomizedDialogs from '../../components/dialog';
+import AddRole from "../../forms/add_role/AddRole";
 import { Box,Typography,Switch,styled } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
-import {IconButton} from '@mui/material'
+
+import AddIcon from '@mui/icons-material/Add'
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import {deepPurple } from '@mui/material/colors';
-import './Roles.css';
+import './RolesList.css';
 
 // Styling part of toogle button  which is used for approval and disapproval of leaves START
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -65,12 +67,15 @@ const IOSSwitch = styled((props: SwitchProps) => (
     const RolesList = () => {
     const [rolesList,setRolesList] = useState([])
     const [loading,setLoading] = useState(true)
+    // const [dialogMode, setDialogMode] = useState('add');
+    // const [users,setUsers] = useState([]);
+    const [showDialog,setShowDialog] = useState(false)
     const approvalPermission = localStorage.getItem('approval_permission');
     const writePermission = localStorage.getItem('write_permission');
-    const userRole = localStorage.getItem('role');
+    // const userRole = localStorage.getItem('role');
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchRoles = async () => {
             try {
                 await refreshRolesList();
             } catch (error) {
@@ -78,11 +83,41 @@ const IOSSwitch = styled((props: SwitchProps) => (
             }
         };
 
-        fetchData();
-        // refreshRolesList();
+        // const fetchEmployees = async () => {
+        //     try {
+        //         await refreshUsersList();
+        //     } catch (error) {
+        //         console.error('Error fetching roles list:', error);
+        //     }
+        // };
+
+        fetchRoles();
+        // fetchEmployees();
     }, []);
 
+//     const refreshUsersList = () => {
+//         let userRecords = [];
+//         // api call for users list START
+//               axios({
+//                 method: 'post',
+//                 url:'employees_list_for_filters',
+//                 headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+//                 data: { employees: JSON.parse(localStorage.getItem('employees'))},
+//               })
+//                 .then(function (response) {
+//                     response.data.user_info.forEach(element => {
+//                         userRecords.push({'id':element.bio_ref_id,'fullname':element.fullname , 'email':element.email,
+//                         'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
+//                       'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
+//                     'empRole':element.role_name,})
+//                     });
+//                     setUsers(userRecords);
+//                 })
+//                 .catch(error => {});// api call for users list END
+// }
+
     const refreshRolesList = async () => {
+      setShowDialog(false)
         try {
             const response = await axios.get('roles_list', {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
@@ -358,6 +393,19 @@ const IOSSwitch = styled((props: SwitchProps) => (
                 })
     };
 
+    const ConditionalComponent = ({ role }) => {
+        if (role ==='4') {
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'80px',right:'20px'}}>
+                  </Box>;
+        } else {
+          return <Box sx={{marginLeft:'97%', position: "absolute",top:'100px',right:'20px'}}>
+                      <CustomizedDialogs size='small' title= "Add New Role" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { (v) => setShowDialog(v) } refreshList={refreshRolesList}>
+                          <AddRole  refreshList = { refreshRolesList }/>
+                      </CustomizedDialogs>
+                  </Box>
+        }
+      }
+
     const columns = [
         { field: 'id', headerName: 'ID',headerAlign:'center',align:'center' },
         { field: 'name', headerName: 'Role Name', width: 200,headerAlign:'center',align:'center' },
@@ -513,11 +561,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
 
     return (
         <div style={{height:'auto', width: '100%', marginBottom:'2px' }}>
-            <Box sx={{marginLeft:'97%', position: "absolute",top:'72px',right:'20px'}}>
-                {/* <CustomizedDialogs size='small' title= "Add New Shift" icon={<AddIcon />} showDialog = { showDialog } setShowDialog = { v => setShowDialog(v) }>
-                    <AddShift refreshList = { refreshShiftsList } />
-                </CustomizedDialogs> */}
-            </Box>
+            <ConditionalComponent role={localStorage.getItem('role')}/>
             <DataGrid density="standard" loading={loading} autoHeight rows={rolesList} columns={columns}/>
             <ToastContainer/>
         </div>
