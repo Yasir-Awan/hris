@@ -342,7 +342,9 @@ const IOSSwitch = styled((props) => (
                           { field: 'buttons', headerName: 'Action', width: 150, headerAlign:'center',align:'center',
                             renderCell: (params) => (
                               <>
-                            <IconButton onClick={() => handleEditButtonClick(params.row.leave_id,params.row.bio_id,
+                            <IconButton
+                              // disabled={isToggleDisabled(params.row.bio_id)} // Disable for non-admin users
+                              onClick={() => handleEditButtonClick(params.row.leave_id,params.row.bio_id,
                             params.row.full_name,params.row.leave_type,params.row.leave_start,params.row.leave_end,params.row.status,params.row.reason)}>
                                 <EditIcon />
                               </IconButton>
