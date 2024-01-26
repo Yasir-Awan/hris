@@ -439,7 +439,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
                     </Box>
                 </>
                 ), },
-        { field: 'approval_permission', headerName: 'Apporval', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
+        { field: 'approval_permission', headerName: 'Apporve', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
         renderCell: (params) => (
         <>
         <Box display="flex" justifyContent="space-between" alignItems="center">

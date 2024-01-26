@@ -323,7 +323,7 @@ const IOSSwitch = styled((props) => (
                           },
                           { field: 'leave_status', headerName: 'Status', width: 110 ,headerAlign:'center',align:'center'},
                           { field: 'reason', headerName: 'Reason', width: 210 ,headerAlign:'center',align:'center'},
-                          { field: 'action', headerName: 'Approval', width: 175, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
+                          { field: 'action', headerName: 'Approve', width: 175, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
                             renderCell: (params) => (
                               <>
                               <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -338,7 +338,7 @@ const IOSSwitch = styled((props) => (
                               </>
                             ),
                           },
-                          { field: 'time', headerName: 'Adding Time',hide: userRole === '4', width: 220 ,headerAlign:'center',align:'center'},
+                          { field: 'time', headerName: 'Add Time',hide: userRole === '4', width: 220 ,headerAlign:'center',align:'center'},
                           { field: 'buttons', headerName: 'Action', width: 150, headerAlign:'center',align:'center',
                             renderCell: (params) => (
                               <>

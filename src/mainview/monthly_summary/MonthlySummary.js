@@ -30,7 +30,7 @@ import './MonthlySummary.css';
                 });
 
                 console.log(response.data.summary_rows)
-        
+
                 const summaryRecords = response.data.summary_rows.map((element, index) => ({
                                             id:index+1,
                                             fullname:element.fullname,
@@ -47,14 +47,14 @@ import './MonthlySummary.css';
                                             page:response.data.page,
                                             pagesize:response.data.pagesize,
                 }));
-        
+
                 // setTimeout(() => {
                     const rows = summaryRecords;
                     updateData("totalRows", response.data.total_rows);
                     updateData("rows", rows);
                     updateData("loading", false);
                 // }, 0.1);
-                
+
             } catch (error) {
                 console.error('API Error:', error);
             }
@@ -63,7 +63,7 @@ import './MonthlySummary.css';
 
         useEffect(() => {
             let formattedMonth = null;
-        
+
             if (props.filterType === '3') {
                 if (props.selectedMonth !== null) {
                     // Create a Date object from the string
@@ -89,7 +89,7 @@ import './MonthlySummary.css';
             updateData('loading', true);
             fetchSummaryData();
         },[customFilter.month,customFilter.site,customFilter.designation, data.page, data.pageSize, filterModel])
-        
+
 
     // Define a separate styles object
         const columnStyles = {
@@ -131,7 +131,7 @@ import './MonthlySummary.css';
         renderCell: (value) => { return <div>{value.row.hq_hrs}</div>; },
         },
         { field: 'site_hrs', headerName: 'Site Hours', width: 135, hide: (userSite === '12' && userDesignation !== '3') ,...columnStyles,filterable: false,},
-        { field: 'working_time', headerName: 'Working Hours', width: 135 ,...columnStyles, filterable: false,},
+        { field: 'working_time', headerName: 'Work Hours', width: 135 ,...columnStyles, filterable: false,},
         { field: 'acceptable_time', headerName: 'Acceptable Hours', width: 135 ,...columnStyles, filterable: false,},
     ];
 
