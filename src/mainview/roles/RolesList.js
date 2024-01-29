@@ -125,7 +125,8 @@ const IOSSwitch = styled((props: SwitchProps) => (
 
 
             const rolesRecords = response.data.role_info.map((element,index) => ({
-                'id':index+1,
+                'id':element.id,
+                'index':index+1,
                 'name':element.name,
                 'read_permission':element.read_permission,
                 'write_permission':element.write_permission,
@@ -408,7 +409,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
       }
 
     const columns = [
-        { field: 'id', headerName: 'ID',headerAlign:'center',align:'center' },
+        { field: 'index', headerName: 'Serial #',headerAlign:'center',align:'center' },
         { field: 'name', headerName: 'Role Name', width: 230,headerAlign:'center',align:'center' },
         // { field: 'read_permission', headerName: 'Read', width: 80,headerAlign:'center',align:'center' },
         { field: 'write_permission', headerName: 'Write', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
