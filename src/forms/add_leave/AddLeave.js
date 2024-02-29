@@ -335,7 +335,7 @@ function AddLeave( props ) {
             <CardContent>
             <form onSubmit={formSubmit}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                {localStorage.getItem('role') === '3' || localStorage.getItem('role') === '2' ? (
+                {localStorage.getItem('role') !== '1' || localStorage.getItem('role') !== '4' ? (
                                 <Grid xs={12} item sx={{ mt: 2}}>
                                     <TextField label="Select Employee" name='emp_id' onChange={inputEvent} select value={AddLeaveFormData.emp_id} variant="outlined" sx={{ width: "100%" }} required
                                     SelectProps={{
