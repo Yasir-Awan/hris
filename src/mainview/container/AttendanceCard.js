@@ -1,6 +1,6 @@
 // AttendanceCard.js
 import React, { useState } from 'react';
-import {Box,Grid,MenuItem,Card,CardContent,Typography,IconButton,TextField,createTheme,ThemeProvider,} from '@mui/material';
+import {Grid,MenuItem,Card,CardContent,Typography,IconButton,TextField,createTheme,ThemeProvider,} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -175,7 +175,7 @@ const AttendanceCard = (props) => {
                 <Grid item xs={1.45} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom:'0.25rem'}}>
                 <ThemeProvider theme={customTheme}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                
+
                 <TextField label="Filter By" name='filter_type' onChange={handleFilterTypeChange} select value={filterType} variant="outlined" sx={{ ...datePickerStyles.root,minWidth: '130px' }} required
                             SelectProps={{
                                 multiple: false
