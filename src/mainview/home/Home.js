@@ -177,7 +177,7 @@ const Home = props => {
                 (
                   <>
                   <Typography variant='h4' component='div' sx={{fontFamily: 'Quicksand, sans-serif', ml: 2, color: 'white', fontWeight: 'bold', letterSpacing: 1 }}>
-                    HRIS
+                    NTOC HRIS
                   </Typography>
               <TabsComponent/>
               <AccountMenu/>
