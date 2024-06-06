@@ -31,7 +31,7 @@ function ModeToggle() {
   );
 }
 
-axios.defaults.baseURL = 'http://58.27.166.43:80/hris_ci/';
+axios.defaults.baseURL = 'https://ettm.nha.gov.pk/hris_ci/';
 
 export default function Login() {
 
