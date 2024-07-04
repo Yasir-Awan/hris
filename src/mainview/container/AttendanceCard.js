@@ -42,9 +42,11 @@ const AttendanceCard = (props) => {
     endDate: null,
     });
     const [sites,setSites] = useState([]);
+    const [sessionSites,setSessionSites] = useState([]);
     const [designations,setDesignations] = useState([]);
   // Extract the value of LocalStorage.getItem('role') to a variable
     const userDesignation = localStorage.getItem('designation');
+    // const sessionSites = localStorage.getItem('sites');
 
   // Extracted helper function to reset filters
     const resetFilters = () => {
@@ -59,6 +61,7 @@ const AttendanceCard = (props) => {
       // Using the resetFilters helper function
       // resetFilters();
     setDateRange(newFilterValues);
+    setSessionSites(localStorage.getItem('sites'))
     };
 
     const handleApplyFilters = () => {
@@ -87,9 +90,10 @@ const AttendanceCard = (props) => {
     const getSites = () => {
       // api call for sites list START
         axios({
-        method: 'get',
+        method: 'post',
         url:'sites_list',
-        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
+        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+        data:sessionSites,
         })
         .then(function (response) {
             let sitesRecord = [];

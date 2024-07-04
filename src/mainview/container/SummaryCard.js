@@ -29,6 +29,7 @@ const SummaryCard = (props) => {
 
     const [selectedDay, setSelectedDay] = useState(null);
     const [sites,setSites] = useState([]);
+    const [sessionSites,setSessionSites] = useState([]);
     const [designations,setDesignations] = useState([]);
   // Extract the value of LocalStorage.getItem('role') to a variable
     const userDesignation = localStorage.getItem('designation');
@@ -60,9 +61,10 @@ const SummaryCard = (props) => {
     const getSites = () => {
       // api call for sites list START
         axios({
-        method: 'get',
+        method: 'post',
         url:'sites_list',
-        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
+        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
+        data:sessionSites,
         })
         .then(function (response) {
             let sitesRecord = [];
@@ -96,6 +98,7 @@ const SummaryCard = (props) => {
     const { value } = event.target;
     setFilterType(value);
     if(value === '4'){
+        setSessionSites(localStorage.getItem('sites'))
         getSites();
     }
     if(value === '5'){
@@ -200,7 +203,7 @@ const SummaryCard = (props) => {
                                     </ThemeProvider>
                         </Grid>
                     )}
-                    
+
                     {filterType === '5' && (
                     <Grid item xs={2.5} sx={{...datePickerStyles.container, paddingBottom:'0.25rem'}}>
                         <ThemeProvider theme={customTheme}>

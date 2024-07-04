@@ -162,7 +162,7 @@ import './AttendanceList.css';
         ...columnStyles, // Apply common styles
       },
     { field: 'fullname', headerName: 'Employee', width: 200,...columnStyles, },
-    { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '3', ...columnStyles, },
+    { field: 'site_name', headerName: 'Site', width: 150,hide: userRole !== '2', ...columnStyles, },
     { field: 'designation_name', headerName: 'Designation', width: 180,hide: userRole !== '3',...columnStyles, },
     {
       field: 'attendance_date',
