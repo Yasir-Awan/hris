@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {Card,CardContent,Typography,Grid,} from '@mui/material';
 import UserList from '../users/UserList';
-import ShiftsList from '../shift/ShiftsList';
+// import ShiftsList from '../shift/ShiftsList';
 import RolesList from '../roles/RolesList';
 import ScheduleList from '../schedule/ScheduleList';
 import LeavesList from '../leaves/LeavesList';
 import AttendanceCard from './AttendanceCard';
 import SummaryCard from './SummaryCard';
+import ReportWrapperCard from './reporting/ReportWrapperCard';
 
 export default function BasicCard(props) {
   const [filterType] = useState('');
@@ -32,13 +33,17 @@ export default function BasicCard(props) {
   );
 
   const renderAttendanceCard = () => (
-    <AttendanceCard filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedDesignation={selectedDesignation} 
+    <AttendanceCard filterType={filterType} lockedValues={lockedValues} selectedSite={selectedSite} selectedDesignation={selectedDesignation}
     selectedDay={selectedDay}/>
   );
 
   const renderSummaryCard = () => (
-    <SummaryCard filterType={filterType} selectedMonth={selectedMonth} selectedSite={selectedSite} selectedDesignation={selectedDesignation} 
+    <SummaryCard filterType={filterType} selectedMonth={selectedMonth} selectedSite={selectedSite} selectedDesignation={selectedDesignation}
     selectedDay={selectedDay}/>
+  );
+
+  const renderReportWrapperCard = () => (
+    <ReportWrapperCard/>
   );
 
   switch (props.name) {
@@ -52,6 +57,8 @@ export default function BasicCard(props) {
       return renderSummaryCard();
     case 5:
       return renderCard('Employees List', <UserList />);
+    case 6:
+      return renderReportWrapperCard();
     case 9:
       return renderCard('Roles List', <RolesList />);
     default:

@@ -4,7 +4,7 @@ import { AppBar, Toolbar,IconButton,Typography, Tabs, Tab,useMediaQuery,useTheme
 // import ThreePIcon from '@mui/icons-material/ThreeP';
 // import DrawerComp from '../drawer/DrawerComp';
 import ContainerResponsive from '../container/ContainerResponsive';
-import Remarks from '../remarks/Remarks';
+// import ReportList from '../report/ReportList';
 import Teams from '../teams/Teams';
 import Projects from '../projects/Projects';
 import AccountMenu from '../../components/Menu';
@@ -18,7 +18,6 @@ const Home = props => {
   const  indexToTabName = JSON.parse(localStorage.getItem('indexToTabName'))
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const [SelectedTab,setSelectedTab] = useState(indexToTabName[page])
 
   // Convert object to array of objects
@@ -40,26 +39,20 @@ const Home = props => {
     return existingEntry ? { ...existingEntry } : { key, value: "" };
   });
 
-  console.log(resultArray);
-
-
-  // console.log(resultArray);
-
-  const indexofTab = (naam) => {
-    return indexToTabName[naam]
-  }
-
+  // const indexofTab = (naam) => {
+  //   return indexToTabName[naam]
+  // }
 
   const handleChange = (event, newValue) => {
     console.log(event.target.innerText.toLowerCase())
-      let tabu = indexofTab(event.target.innerText.toLowerCase());
-        console.log(tabu)
-  //   const selectedTabKey = tabsConfig.find((tab) => tab.value === newValue)?.key;
-  //   console.log(selectedTabKey);
+  //     let tabu = indexofTab(event.target.innerText.toLowerCase());
+  //       console.log(tabu)
+  // //   const selectedTabKey = tabsConfig.find((tab) => tab.value === newValue)?.key;
+  // //   console.log(selectedTabKey);
     setSelectedTab(newValue);
-  //   // alert(newValue)
+     // alert(newValue)
     navigate(`/home/${tabNameToIndex[newValue]}`);
-  //   // setSelectedTab(newValue);
+     // setSelectedTab(newValue);
   };
 
   const theme = useTheme();
@@ -67,7 +60,6 @@ const Home = props => {
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   const getTabs = () => {
-    console.log(resultArray)
     return resultArray.map((tab) => (
       tab.value ? (  // Use ternary operator for conditional rendering
                       <Tab
@@ -116,12 +108,6 @@ const Home = props => {
 
 
 
-
-
-
-
-
-
   const renderContent = (selectedTab) => {
     switch (selectedTab) {
       case 1:
@@ -135,7 +121,7 @@ const Home = props => {
       case 5:
         return <ContainerResponsive name={selectedTab} />;
       case 6:
-        return <Remarks />;
+        return <ContainerResponsive name={selectedTab} />;
       case 7:
         return <Teams />;
       case 8:

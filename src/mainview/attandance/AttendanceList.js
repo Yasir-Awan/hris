@@ -212,15 +212,7 @@ import './AttendanceList.css';
                 rows={data.rows}
                 columns={columns}
                 filterMode="server" // enable server-side filtering
-                onFilterModelChange={
-                  (newFilterModel) => {
-                    // Remove any empty filter items
-                    const nonEmptyFilters = newFilterModel.items.filter(
-                      (filter) => filter.columnField && filter.operatorValue && filter.value
-                    );
-                    setFilterModel({ items: nonEmptyFilters });
-                  }
-                } // handle filter changes made by the user
+                onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)} // handle filter changes made by the user
                 filterModel={filterModel} // pass filterModel state to the DataGrid component
                 components={{Toolbar: GridToolbar}}
               />

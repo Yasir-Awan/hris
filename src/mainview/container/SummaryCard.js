@@ -29,7 +29,6 @@ const SummaryCard = (props) => {
 
     const [selectedDay, setSelectedDay] = useState(null);
     const [sites,setSites] = useState([]);
-    const [sessionSites,setSessionSites] = useState([]);
     const [designations,setDesignations] = useState([]);
   // Extract the value of LocalStorage.getItem('role') to a variable
     const userDesignation = localStorage.getItem('designation');
@@ -61,10 +60,9 @@ const SummaryCard = (props) => {
     const getSites = () => {
       // api call for sites list START
         axios({
-        method: 'post',
+        method: 'get',
         url:'sites_list',
-        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
-        data:sessionSites,
+        headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),}
         })
         .then(function (response) {
             let sitesRecord = [];
@@ -98,7 +96,6 @@ const SummaryCard = (props) => {
     const { value } = event.target;
     setFilterType(value);
     if(value === '4'){
-        setSessionSites(localStorage.getItem('sites'))
         getSites();
     }
     if(value === '5'){

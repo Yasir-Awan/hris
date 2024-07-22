@@ -20,7 +20,6 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
     });
     const [filterModel, setFilterModel] = useState({items: [{columnField: '',operatorValue: '',value: '',},],});
     const updateData = (k, v) => setTableData((prev) => ({ ...prev, [k]: v }));
-    // const userRole = localStorage.getItem('role');
     var shiftRecords = [];
     useEffect(() => {
       updateData('loading', true);
@@ -75,14 +74,10 @@ import AddSchedule from "../../forms/add_schedule/AddSchedule";
                 );
               }
               else{}
-              // setTimeout(() => {
                 const rows = mydata;
                 updateData("totalRows", response.data.total_rows);
-                    // setTimeout(() => {
                       updateData("rows", rows);
                       updateData("loading", false);
-                    // }, 100);
-              // }, 100);
             })
             .catch(error => {
               console.log(error);
