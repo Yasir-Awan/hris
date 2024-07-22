@@ -31,7 +31,9 @@ function ModeToggle() {
   );
 }
 
-axios.defaults.baseURL = 'http://localhost/hris_ci/';
+axios.defaults.baseURL = 'https://ettm.nha.gov.pk/hris_ci/';
+
+// axios.defaults.baseURL = 'http://localhost/hris_ci/';
 
 export default function Login() {
 
