@@ -82,10 +82,10 @@ const ReportWrapperCard = () => {
               Reporting
             </Typography>
           </Grid>
-          <Grid item xs={0.5}>
+          <Grid item xs={0.5} sx={{ visibility: 'hidden' }}>
             <FormGroup>
               <FormControlLabel
-                control={<MaterialUISwitch checked={isChecked} onChange={handleChange} />}
+                control={<MaterialUISwitch checked={isChecked} onChange={handleChange} hide />}
               />
             </FormGroup>
           </Grid>

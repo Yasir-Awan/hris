@@ -137,9 +137,9 @@ const AttendanceReportingCard = ({ onSendData }) => {
                 <MenuItem key="1" value="1">
                   Date Range & Site
                 </MenuItem>
-                <MenuItem key="2" value="2">
+                {/* <MenuItem key="2" value="2">
                   Date Range & Employees
-                </MenuItem>
+                </MenuItem> */}
               </TextField>
             </div>
           </ThemeProvider>
