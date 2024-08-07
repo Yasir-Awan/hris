@@ -101,6 +101,7 @@ const ReportWrapperCard = () => {
             selectedSite={dataFromChild.selectedSite}
             selectedDesignation={dataFromChild.selectedDesignation}
             selectedDay={dataFromChild.selectedDay}
+            selectedEmployees={dataFromChild.selectedEmployees}
           />
         )}
       </CardContent>

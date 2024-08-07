@@ -140,11 +140,16 @@ const ReportList = (props) => {
     }
 
     if (props.filterType === '2') {
-      if (props.selectedDay !== null) {
-        let slctDate = new Date(props.selectedDay);
-        const offsetSelectedDate = slctDate.getTimezoneOffset();
-        const adjustedSelectedDate = new Date(slctDate.getTime() - offsetSelectedDate * 60 * 1000);
-        formattedSelectedDay = adjustedSelectedDate.toISOString().split('T')[0];
+      if (props.dateRange.startDate !== null || props.dateRange.endDate !== null) {
+        let stDate = new Date(props.dateRange.startDate);
+        let enDate = new Date(props.dateRange.endDate);
+        const offsetStartDate = stDate.getTimezoneOffset();
+        const adjustedStartDate = new Date(stDate.getTime() - offsetStartDate * 60 * 1000);
+        formattedStartDate = adjustedStartDate.toISOString().split('T')[0];
+
+        const offsetEndDate = enDate.getTimezoneOffset();
+        const adjustedEndDate = new Date(enDate.getTime() - offsetEndDate * 60 * 1000);
+        formattedEndDate = adjustedEndDate.toISOString().split('T')[0];
       }
     }
 
@@ -160,9 +165,12 @@ const ReportList = (props) => {
       designation: props.selectedDesignation,
       day: formattedSelectedDay,
       dateRange: updatedDateRange,
+      employees: props.selectedEmployees,
     };
 
     setCustomFilter(updatedCustomFilter);
+
+    console.log(updatedCustomFilter);
 
     axios({
       method: 'post',
@@ -197,6 +205,7 @@ const ReportList = (props) => {
     props.dateRange,
     props.selectedDay,
     props.selectedDesignation,
+    props.selectedEmployees,
   ]);
 
   const renderFormattedDateTime = (dateTime) => {

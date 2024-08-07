@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
-import { Grid, MenuItem, IconButton, TextField, createTheme, ThemeProvider } from '@mui/material';
+import {
+  Grid,
+  MenuItem,
+  IconButton,
+  TextField,
+  createTheme,
+  ThemeProvider,
+  Box,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  Select,
+  Chip,
+} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import axios from 'axios';
+import { useTheme } from '@mui/material/styles';
 
 const customTheme = createTheme({
   palette: {
@@ -21,19 +35,31 @@ const customTheme = createTheme({
 });
 
 const AttendanceReportingCard = ({ onSendData }) => {
+  const theme = useTheme();
   const [filterType, setFilterType] = useState('');
   const [selectedSite, setSelectedSite] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState('');
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
   });
   const [sites, setSites] = useState([]);
-  const [employees] = useState([]);
+  const [employees, setEmployees] = useState([]);
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
   const resetFilters = () => {
     setSelectedSite('');
-    setSelectedEmployee('');
+    setSelectedEmployees([]);
   };
 
   const handleFilterChange = (newFilterValues) => {
@@ -48,16 +74,15 @@ const AttendanceReportingCard = ({ onSendData }) => {
   };
 
   const handleEmployeeChange = (event) => {
-    resetFilters();
     const { value } = event.target;
-    setSelectedEmployee(value);
+    setSelectedEmployees(value);
   };
 
   const sendDataToParent = () => {
     const data = {
       filterType,
       selectedSite,
-      selectedEmployee,
+      selectedEmployees,
       dateRange,
     };
     onSendData(data);
@@ -67,7 +92,7 @@ const AttendanceReportingCard = ({ onSendData }) => {
     axios({
       method: 'post',
       url: 'sites_list',
-      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
       data: { sites: JSON.parse(localStorage.getItem('sites')) },
     })
       .then(function (response) {
@@ -82,12 +107,50 @@ const AttendanceReportingCard = ({ onSendData }) => {
       });
   };
 
+  const getEmployees = () => {
+    axios({
+      method: 'post',
+      url: 'employees_list_for_filters',
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+      data: { sites: JSON.parse(localStorage.getItem('employees')) },
+    })
+      .then(function (response) {
+        // console.log(response.data)
+        let employeesRecord = [];
+        response.data.user_info.forEach((element) => {
+          employeesRecord.push({ id: element.bio_ref_id, name: element.fullname });
+        });
+        setEmployees(employeesRecord);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleFilterTypeChange = (event) => {
     const { value } = event.target;
     setFilterType(value);
     if (value === '1') {
       getSites();
     }
+    if (value === '2') {
+      getEmployees();
+    }
+  };
+
+  function getEmployeesStyles(name, selectedEmployees, theme) {
+    return {
+      fontWeight:
+        selectedEmployees.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
+  // Helper function to find employee name with corresponding id
+  const getEmployeeNameById = (employeeId) => {
+    const selectedEmployee = employees.find((employee) => employee.id === employeeId);
+    return selectedEmployee ? selectedEmployee.name : '';
   };
 
   const datePickerStyles = {
@@ -116,6 +179,27 @@ const AttendanceReportingCard = ({ onSendData }) => {
     },
   };
 
+  const customSelectStyles = {
+    root: {
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: customTheme.palette.primary.main,
+      },
+      '& .MuiInputLabel-root': {
+        color: customTheme.palette.primary.main,
+        transform: 'translate(0, 30%)',
+        background: 'white',
+        '&.MuiInputLabel-shrink': {
+          transform: 'translate(0, -40%)',
+        },
+      },
+      '& .MuiInputBase-root': {
+        color: customTheme.palette.primary.main,
+        height: '40px',
+        width: '100%',
+      },
+    },
+  };
+
   return (
     <>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -137,9 +221,9 @@ const AttendanceReportingCard = ({ onSendData }) => {
                 <MenuItem key="1" value="1">
                   Date Range & Site
                 </MenuItem>
-                {/* <MenuItem key="2" value="2">
+                <MenuItem key="2" value="2">
                   Date Range & Employees
-                </MenuItem> */}
+                </MenuItem>
               </TextField>
             </div>
           </ThemeProvider>
@@ -221,26 +305,38 @@ const AttendanceReportingCard = ({ onSendData }) => {
                 </ThemeProvider>
               </div>
             </LocalizationProvider>
-            <Grid item xs={3} sx={{ ...datePickerStyles.container, paddingBottom: '0.25rem' }}>
-              <ThemeProvider theme={customTheme}>
-                <TextField
-                  label="Select Employee"
-                  name="employee"
-                  onChange={handleEmployeeChange}
-                  select
-                  value={selectedEmployee}
-                  variant="outlined"
-                  sx={{ ...datePickerStyles.root, width: '80%' }}
-                  required
-                  SelectProps={{ multiple: false }}
-                >
-                  {employees.map((employee, index) => (
-                    <MenuItem key={index} value={employee.id}>
-                      {employee.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </ThemeProvider>
+            <Grid item xs={6} sx={{ ...datePickerStyles.container, paddingBottom: '0.25rem' }}>
+              <Grid item xs={0.5}></Grid>
+              <FormControl sx={{ width: '95%' }}>
+                <ThemeProvider theme={customTheme}>
+                  <InputLabel id="demo-multiple-chip-label" sx={customSelectStyles.root}>
+                    Employees
+                  </InputLabel>
+                  <Select
+                    labelId="demo-multiple-chip-label"
+                    id="demo-multiple-chip"
+                    multiple
+                    value={selectedEmployees}
+                    onChange={handleEmployeeChange}
+                    input={<OutlinedInput id="select-multiple-chip" label="Employees" />}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={getEmployeeNameById(value)} />
+                        ))}
+                      </Box>
+                    )}
+                    MenuProps={MenuProps}
+                    sx={customSelectStyles.root}
+                  >
+                    {employees.map((user, index) => (
+                      <MenuItem key={index} value={user.id} style={getEmployeesStyles(user.name, selectedEmployees, theme)}>
+                        {user.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </ThemeProvider>
+              </FormControl>
             </Grid>
             <Grid item xs={0.5}>
               <IconButton onClick={sendDataToParent} color="primary" sx={{ position: 'relative', padding: 'unset', top: '-5px' }}>
