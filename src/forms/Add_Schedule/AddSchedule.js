@@ -66,10 +66,6 @@ function AddSchedule(props) {
   };
 
   // Fetch filteredUsersList when selectedSite or selectedRole changes
-  // useEffect(() => {
-  //   console.log('selectedUsers has changed:', selectedUsers);
-  //    // Your API calls for filteredUsersList based on selectedSite and selectedRole
-  // }, [selectedSite, selectedRole,selectedUsers]);
 
     const OptionSelection = (event) => {
       const { name, value } = event.target;

@@ -53,19 +53,13 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const ReportWrapperCard = () => {
+  const ReportWrapperCard = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [dataFromChild, setDataFromChild] = useState('');
 
 
   const handleDataFromChild = (data) => {
     console.log(data); // Verify the received data
-  //   const childData = (
-  //       data.filterType,
-  //       data.selectedSite,
-  //       data.selectedEmployee,
-  //       data.dateRange,
-  // );
     setDataFromChild(data);
   };
 

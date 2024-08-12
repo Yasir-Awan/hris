@@ -39,20 +39,10 @@ const Home = props => {
     return existingEntry ? { ...existingEntry } : { key, value: "" };
   });
 
-  // const indexofTab = (naam) => {
-  //   return indexToTabName[naam]
-  // }
-
   const handleChange = (event, newValue) => {
     console.log(event.target.innerText.toLowerCase())
-  //     let tabu = indexofTab(event.target.innerText.toLowerCase());
-  //       console.log(tabu)
-  // //   const selectedTabKey = tabsConfig.find((tab) => tab.value === newValue)?.key;
-  // //   console.log(selectedTabKey);
     setSelectedTab(newValue);
-     // alert(newValue)
     navigate(`/home/${tabNameToIndex[newValue]}`);
-     // setSelectedTab(newValue);
   };
 
   const theme = useTheme();
@@ -167,7 +157,6 @@ const Home = props => {
                   </Typography>
               <TabsComponent/>
               <AccountMenu/>
-              {/* <Button sx={{marginLeft:"auto"}} onClick={()=>navigate('/')} variant='contained'>Logout</Button> */}
                   </>
                 )
               }

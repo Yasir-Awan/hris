@@ -8,10 +8,6 @@ import FilterIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
 import AttendanceList from '../attandance/AttendanceList';
 
-// const bull = (
-//     <Box component="span" sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}>•</Box>
-// );
-
 const customTheme = createTheme({
   // ... (existing theme configuration)
     palette: {
@@ -56,8 +52,7 @@ const AttendanceCard = (props) => {
 
     const handleFilterChange = (newFilterValues) => {
       // Using the resetFilters helper function
-      // resetFilters();
-      setDateRange({ startDate: null, endDate: null });
+    setDateRange({ startDate: null, endDate: null });
     setDateRange(newFilterValues);
     };
 

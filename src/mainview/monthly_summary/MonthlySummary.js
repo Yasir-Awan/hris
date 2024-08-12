@@ -48,13 +48,10 @@ import './MonthlySummary.css';
                                             pagesize:response.data.pagesize,
                 }));
 
-                // setTimeout(() => {
                     const rows = summaryRecords;
                     updateData("totalRows", response.data.total_rows);
                     updateData("rows", rows);
                     updateData("loading", false);
-                // }, 0.1);
-
             } catch (error) {
                 console.error('API Error:', error);
             }
@@ -63,19 +60,16 @@ import './MonthlySummary.css';
 
         useEffect(() => {
             let formattedMonth = null;
-
             if (props.filterType === '3') {
                 if (props.selectedMonth !== null) {
                     // Create a Date object from the string
                     let dateObject = new Date(props.selectedMonth);
-
                     // Extract year and month
                     const year = dateObject.getFullYear();
                     const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because months are zero-indexed
                     formattedMonth = year + '-' + month;
                 }
             }
-
             setCustomFilter((prevCustomFilter) => ({
                 ...prevCustomFilter,
                 filterType: props.filterType,

@@ -67,12 +67,9 @@ const IOSSwitch = styled((props: SwitchProps) => (
     const RolesList = () => {
     const [rolesList,setRolesList] = useState([])
     const [loading,setLoading] = useState(true)
-    // const [dialogMode, setDialogMode] = useState('add');
-    // const [users,setUsers] = useState([]);
     const [showDialog,setShowDialog] = useState(false)
     const approvalPermission = localStorage.getItem('approval_permission');
     const writePermission = localStorage.getItem('write_permission');
-    // const userRole = localStorage.getItem('role');
 
     useEffect(() => {
         const fetchRoles = async () => {
@@ -83,38 +80,8 @@ const IOSSwitch = styled((props: SwitchProps) => (
             }
         };
 
-        // const fetchEmployees = async () => {
-        //     try {
-        //         await refreshUsersList();
-        //     } catch (error) {
-        //         console.error('Error fetching roles list:', error);
-        //     }
-        // };
-
         fetchRoles();
-        // fetchEmployees();
     }, []);
-
-//     const refreshUsersList = () => {
-//         let userRecords = [];
-//         // api call for users list START
-//               axios({
-//                 method: 'post',
-//                 url:'employees_list_for_filters',
-//                 headers: {'Authorization': 'Bearer '+localStorage.getItem('token'),},
-//                 data: { employees: JSON.parse(localStorage.getItem('employees'))},
-//               })
-//                 .then(function (response) {
-//                     response.data.user_info.forEach(element => {
-//                         userRecords.push({'id':element.bio_ref_id,'fullname':element.fullname , 'email':element.email,
-//                         'password':element.password, 'sitename':element.site_name, 'contact':element.contact, 'address':element.address,
-//                       'empType':element.type_of_employee, 'consultant':element.consultant, 'empSec':element.section_name,'empField':element.field_name,
-//                     'empRole':element.role_name,})
-//                     });
-//                     setUsers(userRecords);
-//                 })
-//                 .catch(error => {});// api call for users list END
-// }
 
     const refreshRolesList = async () => {
       setShowDialog(false)
@@ -122,7 +89,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
             const response = await axios.get('roles_list', {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
             });
-
 
             const rolesRecords = response.data.role_info.map((element,index) => ({
                 'id':element.id,
@@ -153,9 +119,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
         } else if (currentStatus === '1') {
           newStatus = '0';
         }
-        // } else if (currentStatus === 'Disapproved') {
-        //   newStatus = 'Approved';
-        // }
               // Send an API request to update the leave status
               axios({
                 method: 'post',
@@ -189,9 +152,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
         } else if (currentStatus === '1') {
           newStatus = '0';
         }
-        // } else if (currentStatus === 'Disapproved') {
-        //   newStatus = 'Approved';
-        // }
               // Send an API request to update the leave status
               axios({
                 method: 'post',
@@ -411,7 +371,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
     const columns = [
         { field: 'index', headerName: 'Serial #',headerAlign:'center',align:'center' },
         { field: 'name', headerName: 'Role Name', width: 230,headerAlign:'center',align:'center' },
-        // { field: 'read_permission', headerName: 'Read', width: 80,headerAlign:'center',align:'center' },
         { field: 'write_permission', headerName: 'Write', width: 85, hide: approvalPermission !== '1',headerAlign: 'center', align: 'center',
         renderCell: (params) => (
             <>
@@ -482,7 +441,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
                                 </Typography>
                             </Avatar>
                         );
-                        // if (data.length > 0) {
                             return data && data.module_name ? (  // Use ternary operator for conditional rendering
                         <Chip
                             key={index}
@@ -493,13 +451,10 @@ const IOSSwitch = styled((props: SwitchProps) => (
                             onDelete={params.row.name === 'Individual' ? undefined : handleDeleteModule(data, params.row.id)}
                         />
                     ) : null;
-                        // }
-                        // return null; // Add this line to satisfy ESLint
                     })}
                 </div>
             </>
         ),
-
         },
 
         { field: 'employees', headerName: 'Employees', width: '340' , headerAlign:'center',
@@ -558,7 +513,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
                 </>
             ),
         },
-        // { field: 'end', headerName: 'End Time', width: 150 },
     ];
 
     return (
