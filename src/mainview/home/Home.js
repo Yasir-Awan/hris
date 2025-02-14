@@ -42,7 +42,7 @@ const Home = props => {
   const handleChange = (event, newValue) => {
     console.log(event.target.innerText.toLowerCase())
     setSelectedTab(newValue);
-    navigate(`/home/${tabNameToIndex[newValue]}`);
+    navigate(/home/${tabNameToIndex[newValue]});
   };
 
   const theme = useTheme();
@@ -76,12 +76,21 @@ const Home = props => {
           marginRight: 'auto',
           color: 'white',
           background: '#f1f1f1', // Subdued gray background
-          borderRadius: '8px',
+          borderRadius: '1px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          height: '44px', // Increase the height of the navbar
           "& .MuiTabs-indicator": {
             backgroundColor: '#ff5722', // Vibrant orange indicator color
+            paddingRight: '0px',
           },
           "& .MuiTab-root": {
+            borderRight: '1px solid #d1d1d1', // Separation line between tabs
+            padding: '12px 24px', // Increase padding to match the new height
+            margin: '0 0px', // Add margin for better spacing
+            height: '44px', // Match the height of the navbar
+            "&:last-child": {
+              borderRight: 'none', // Remove border from last tab
+            },
             "&:hover": {
               color: '#ff5722',
               backgroundColor: '#f9f9f9', // Slightly lighter gray on hover
