@@ -42,7 +42,7 @@ const Home = props => {
   const handleChange = (event, newValue) => {
     console.log(event.target.innerText.toLowerCase())
     setSelectedTab(newValue);
-    navigate(/home/${tabNameToIndex[newValue]});
+    navigate(`/home/${tabNameToIndex[newValue]}`);
   };
 
   const theme = useTheme();
